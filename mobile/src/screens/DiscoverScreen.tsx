@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { Gift, SlidersHorizontal } from 'lucide-react-native';
 import { useCallback, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -40,8 +41,9 @@ export function DiscoverScreen() {
     deckRef.current?.completeGift();
   }, []);
 
-  // Tapping the avatar is reserved for profile navigation, which isn't built yet.
-  const openProfile = useCallback((_request: GiftRequest) => {}, []);
+  const openProfile = useCallback((request: GiftRequest) => {
+    router.push(`/user/${request.recipient.id}`);
+  }, []);
 
   const emptyState = (
     <View style={styles.empty}>

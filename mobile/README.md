@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds prototypes of the Discover and Profile screens, plus a minimal Ranks screen, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds prototypes of the Discover, Friends, Profile, and public profile screens, plus a minimal Ranks screen, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -29,7 +29,7 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 | Drag down | Expands the card to show the category, description, reactions and comments |
 | Drag up on the expanded header | Collapses the card |
 | Tap the bookmark | Saves or unsaves the request without advancing the deck |
-| Tap the avatar | Does nothing yet; reserved for profile navigation |
+| Tap the avatar | Opens that person's profile card |
 
 A drag locks to one axis after about 6 points of movement, so a diagonal drag can only trigger one action. Horizontal drags are ignored while the card is expanded.
 
@@ -43,19 +43,28 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 | Shortcut cards | Open placeholder screens marked as demo content |
 | View All | Opens a longer mock activity list |
 
-The People and Post tabs do nothing yet.
+The Post tab does nothing yet.
+
+## Friends screen
+
+The People tab lists everyone you follow or who follows you. Search filters by name, and tapping a row opens that person's profile card. The three dots offer **Unfollow** if you follow them and **Remove as follower** if they follow you. Someone leaves the list once neither of you follows the other. Changes stay in local state and reset on reload.
+
+## Public profile card
+
+`/user/[id]` shows a person's name, photo, stats, and wishlist. A dash means they keep their total private. The wishlist is a simplified Discover deck: swipe either way to see the next wish. It has no gifting, saving, or expanding.
 
 ## Code layout
 
 | Path | Contents |
 | --- | --- |
 | `src/app/` | Expo Router routes; each file re-exports a screen |
-| `src/screens/` | `DiscoverScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen`, `ProfileSectionScreen` |
+| `src/screens/` | `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen`, `ProfileSectionScreen` |
 | `src/state/useDiscoverState.ts` | Business state: queue, filters, saves, reactions, comments |
 | `src/animation/useCardGestures.ts` | Gesture and animation logic for the front card |
-| `src/components/` | `SwipeCardDeck`, `GiftRequestCard`, `CardStackLayer`, `ExpandedCardContent`, `ReactionBar`, `CommentList`, `CommentInput`, `BottomSheet`, `FilterBottomSheet`, `GiftAmountBottomSheet`, `BottomNavigation` |
+| `src/components/` | `SwipeCardDeck`, `GiftRequestCard`, `CardStackLayer`, `ExpandedCardContent`, `ReactionBar`, `CommentList`, `CommentInput`, `BottomSheet`, `FilterBottomSheet`, `GiftAmountBottomSheet`, `BottomNavigation`, `WishlistDeck` |
 | `src/data/mockRequests.ts` | Eight mock requests; Jamie's matcha request is first |
 | `src/data/mockProfile.ts`, `src/data/mockLeaderboard.ts` | The mock user and activity, and the weekly board that Ranks and the Your Rank card share |
+| `src/data/mockPeople.ts` | Mock friends, their follow state and wishlists |
 | `src/theme.ts` | Colors, radii, shadows and spring settings |
 
 Amounts are stored as integer cents, as `ARCHITECTURE.md` requires.
@@ -69,3 +78,5 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Recipient age:** `profiles` has no age or birth date column.
 - **Weekly ranks:** The Your Rank card and Ranks screen show a weekly board. `get_leaderboard` and `get_my_rank` only support `all_time` and `month`.
 - **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Ranks screen keeps it. Settle this before connecting Supabase.
+- **Wishlist:** The backend has no wishlist. The mock maps it to a person's requests, which would be their `open` posts once connected. The mock also shares some requests across people.
+- **Friend stats:** `get_public_profile` returns gift totals only if the person shares them, and has no People Helped or Requests Posted counts.
