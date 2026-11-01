@@ -1,3 +1,6 @@
+// Must stay first: patches globals before any module loads three.
+import './src/polyfills';
+
 import { registerRootComponent } from 'expo';
 
 import App from './App';
