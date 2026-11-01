@@ -27,3 +27,32 @@ If you start this repo in a new session, or your context is reset, do these step
 | `npm run db:reset` | Rebuilds the local database from migrations |
 | `npm test` | Runs the database tests |
 | `npm run test:functions` | Runs the Edge Function tests |
+
+## Design
+
+Use a warm, clean, modern design with a soft white background and warm orange accents.
+
+### Color Palette
+- Background: Warm white #FFFAF4
+- Card surfaces: Creamy white #FFFDF9
+- Primary orange: #EAA647
+- Secondary yellow: #F5C85C
+- Accent peach: #F29B65
+- Primary text: Dark brown #35251D
+- Secondary text: Muted warm gray
+- Card borders: Very light warm beige
+- The UI should feel welcoming, minimalist, youthful, and premium.
+- Avoid dark mode, purple accents, overly saturated backgrounds, and unnecessary decorative elements.
+
+###Design Details
+
+- Rounded cards with approximately 24px corners.
+- Soft shadows beneath cards.
+- Smooth layered depth.
+- Generous spacing.
+- Clean, modern typography.
+- Large request imagery.
+- Thin, consistent line icons.
+- Subtle orange highlights.
+- No unnecessary headings or onboarding instructions.
+- The overall screen must closely resemble the latest reference rather than an AI-generated generic social media interface.
