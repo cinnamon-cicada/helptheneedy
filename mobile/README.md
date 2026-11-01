@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds prototypes of the Discover, Friends, Profile, and public profile screens, plus a minimal Ranks screen, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, and a minimal Ranks screen, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -19,6 +19,23 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 | `npm start` | Starts the Expo dev server |
 | `npm run typecheck` | Runs the TypeScript compiler without emitting files |
 | `npm run lint` | Runs ESLint with the Expo config |
+
+## Login and signup
+
+The app opens on the sign-in route, and the tabs appear after logging in or signing up. On first load the mascot drags the gift to the centre of the screen, the gift bursts open, and the gift rises as the login form springs up. Afterward the mascot explores the gift: it wanders, peeks over the side, climbs onto the rim and slides off, hides behind the box, and pokes the loose ribbon.
+
+| To try | Do this |
+| --- | --- |
+| Log in | Use `demo@poki.app` or `demo`, with the password `password123` |
+| Unknown account | Log in with any other email; the form offers to sign up with that email |
+| Skip the intro | Tap Skip or anywhere on the screen |
+| Reduced motion | Turn on Reduce Motion in system settings; the screen opens settled, with no intro or idle motion |
+
+The mascot glances at the form when a field is focused, deflates when a login or signup fails, and hops when one succeeds. A successful signup also gives it a bow. Signup reuses the scene with a smaller gift area instead of replaying the intro.
+
+The scene is drawn with `three` and `@react-three/fiber` on `expo-gl`, from procedural geometry with no model files. It stops rendering while the app is in the background. If WebGL is unavailable or the GL context doesn't start, a 2D vector version of the opened gift is shown instead.
+
+Accounts are kept in memory by `createMockAuthService` and reset when the app reloads. To connect Supabase Auth, implement `AuthService` in `src/auth/types.ts` and export it from `src/auth/authService.ts`; the screens don't need to change.
 
 ## Discover screen
 
@@ -57,8 +74,13 @@ The People tab lists everyone you follow or who follows you. Search filters by n
 
 | Path | Contents |
 | --- | --- |
-| `src/app/` | Expo Router routes; each file re-exports a screen |
-| `src/screens/` | `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen`, `ProfileSectionScreen` |
+| `src/app/` | Expo Router routes; each file re-exports a screen. `_layout.tsx` shows `sign-in` until you log in |
+| `index.ts` | Custom entry: loads `src/polyfills.ts` before `expo-router/entry` so three.js can start under Hermes |
+| `src/screens/` | `AuthScreen`, `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen` |
+| `src/components/auth/` | `LoginForm`, `SignupForm`, `PaymentPlaceholders`, and shared fields |
+| `src/auth/` | `AuthService` interface, the mock service, the session context, and validation rules |
+| `src/components/poki/` | `AuthScene` (canvas and fallback), `MascotAnimationController`, `PokiMascot`, `GiftBox`, `GiftExplosion` |
+| `src/animation/poki/` | Intro timeline and phases, intro choreography, idle behaviour scheduler, reactions, confetti physics |
 | `src/state/useDiscoverState.ts` | Business state: queue, filters, saves, reactions, comments |
 | `src/animation/useCardGestures.ts` | Gesture and animation logic for the front card |
 | `src/components/` | `SwipeCardDeck`, `GiftRequestCard`, `CardStackLayer`, `ExpandedCardContent`, `ReactionBar`, `CommentList`, `CommentInput`, `BottomSheet`, `FilterBottomSheet`, `GiftAmountBottomSheet`, `BottomNavigation`, `WishlistDeck` |
@@ -76,6 +98,10 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Right swipe:** In the prototype, a right swipe opens a gift amount sheet. In the backend, a right swipe calls `record_swipe` to send a match request, and the gifter records a gift only after the receiver accepts.
 - **Comments, reactions and saves:** These have no tables or RPCs in the backend yet.
 - **Recipient age:** `profiles` has no age or birth date column.
+- **Login by username:** Supabase Auth signs in by email. Username login needs a lookup the backend doesn't have yet.
+- **Unknown accounts:** The mock reports `account_not_found` so the signup handoff can be tried. Supabase doesn't reveal whether an account exists, so that path may never trigger once connected.
+- **Backup email:** Collected on the signup form but not saved; `profiles` has no column for it.
+- **Payment methods:** The PayPal, Venmo and Stripe rows are disabled placeholders. The app doesn't handle money.
 - **Weekly ranks:** The Your Rank card and Ranks screen show a weekly board. `get_leaderboard` and `get_my_rank` only support `all_time` and `month`.
 - **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Ranks screen keeps it. Settle this before connecting Supabase.
 - **Wishlist:** The backend has no wishlist. The mock maps it to a person's requests, which would be their `open` posts once connected. The mock also shares some requests across people.

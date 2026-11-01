@@ -1,5 +1,5 @@
 begin;
-select plan(15);
+select plan(28);
 
 create temp table u on commit drop as
   select tests.create_user('alice') as alice, tests.create_user('bob') as bob, tests.create_user('carol') as carol;
@@ -13,19 +13,28 @@ update public.profiles set general_location = 'nashville' where id = (select ali
 
 select tests.login((select alice from u));
 
--- Friends
-create temp table f on commit drop as select public.request_friend((select bob from u)) as id;
-grant select on f to authenticated;
-select is((select public.request_friend((select bob from u))), (select id from f), 'requesting twice is harmless');
-select is((select count(*)::int from public.get_friends()), 0, 'not friends until accepted');
-select throws_ok($$select public.respond_friend((select id from f), true)$$, 'cannot_respond_to_own_request', 'cannot accept your own request');
+-- Follows
+select lives_ok($$select public.follow_user((select bob from u))$$, 'alice follows bob');
+select lives_ok($$select public.follow_user((select bob from u))$$, 'following twice is harmless');
+select is((select count(*)::int from public.follows), 1, 'one row per follow');
+select is((select is_following from public.get_follows()), true, 'alice is following bob');
+select is((select follows_me from public.get_follows()), false, 'bob does not follow alice yet');
+select throws_ok($$select public.follow_user((select alice from u))$$, 'cannot_follow_self', 'cannot follow yourself');
+select is((select count(*)::int from public.get_friend_activity()), 0, 'a one-way follow is not enough for activity');
 
 select tests.login((select carol from u));
-select throws_ok($$select public.respond_friend((select id from f), true)$$, 'friendship_not_found', 'strangers cannot accept');
+select is((select count(*)::int from public.follows), 0, 'strangers cannot read follows');
 
 select tests.login((select bob from u));
-select lives_ok($$select public.respond_friend((select id from f), true)$$, 'recipient accepts');
-select is((select count(*)::int from public.get_friends()), 1, 'now friends');
+select is((select count(*)::int from public.notifications where type = 'new_follower'), 1, 'only the first follow notifies');
+select is((select follows_me from public.get_follows()), true, 'bob sees his follower');
+select lives_ok($$select public.remove_follower((select alice from u))$$, 'bob removes alice as a follower');
+select is((select count(*)::int from public.get_follows()), 0, 'removing the follower ends the connection');
+select lives_ok($$select public.follow_user((select alice from u))$$, 'bob follows alice');
+
+select tests.login((select alice from u));
+select lives_ok($$select public.follow_user((select bob from u))$$, 'alice follows bob back');
+select is((select is_following and follows_me from public.get_follows()), true, 'a mutual follow shows both flags');
 select tests.logout();
 
 -- Activity feed
@@ -46,12 +55,17 @@ select is((select count(*)::int from public.get_friend_activity()), 0, 'activity
 -- Blocking, in both directions
 select tests.login((select bob from u));
 select lives_ok($$select public.block_user((select alice from u))$$, 'bob blocks alice');
-select is((select count(*)::int from public.get_friends()), 0, 'blocking removes the friendship');
+select is((select count(*)::int from public.get_follows()), 0, 'blocking removes follows in both directions');
 select tests.login((select alice from u));
 select is((select count(*)::int from public.search_posts(p_query := 'groceries')), 0, 'blocked user is gone from discover');
 select is((select count(*)::int from public.get_swipe_feed() where receiver_first_name = 'Bob'), 0, 'blocked user is gone from the feed');
 select is((select count(*)::int from public.search_users('bob')), 0, 'blocked user is gone from search');
-select throws_ok($$select public.request_friend((select bob from u))$$, 'user_not_found', 'cannot friend a blocked user');
+select throws_ok($$select public.follow_user((select bob from u))$$, 'user_not_found', 'cannot follow a blocked user');
+select tests.login((select bob from u));
+select lives_ok($$select public.unblock_user((select alice from u))$$, 'bob unblocks alice');
+select lives_ok($$select public.follow_user((select alice from u))$$, 'bob follows alice again');
+select lives_ok($$select public.unfollow_user((select alice from u))$$, 'bob unfollows alice');
+select is((select count(*)::int from public.get_follows()), 0, 'unfollowing ends a one-way follow');
 select tests.logout();
 
 select * from finish();
