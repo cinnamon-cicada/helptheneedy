@@ -9,6 +9,8 @@ export const colors = {
   peach: '#F29B65',
   text: '#35251D',
   textMuted: '#8C7B70',
+  // Muted text dark enough to stay readable on the Profile gradient.
+  textOnPeach: '#6F5C50',
   textFaint: '#B5A69B',
   border: '#F1E6D8',
   borderStrong: '#E8D8C4',
@@ -19,6 +21,11 @@ export const colors = {
   // Rear deck layers.
   layerPeach: '#F9D3B6',
   layerYellow: '#FAE3B0',
+  // Profile gradient, top to bottom; it fades into background.
+  profileGradientTop: '#FBD9BD',
+  profileGradientMid: '#FCE7D4',
+  rankCard: '#FDEDD6',
+  rankCardBorder: '#F3CE97',
   scrim: 'rgba(53, 37, 29, 0.38)',
 } as const;
 

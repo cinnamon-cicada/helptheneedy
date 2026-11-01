@@ -1,3 +1,4 @@
+import { type Href, router } from 'expo-router';
 import { CirclePlus, type LucideIcon, Search, Trophy, User, Users } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,6 +15,13 @@ const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
   { key: 'profile', label: 'Profile', Icon: User },
 ];
 
+// People and Post aren't built yet, so those tabs do nothing.
+const ROUTES: Partial<Record<TabKey, Href>> = {
+  discover: '/',
+  ranks: '/ranks',
+  profile: '/profile',
+};
+
 export const NAV_HEIGHT = 66;
 export const NAV_MARGIN = 12;
 
@@ -23,13 +31,7 @@ export function useBottomNavSpace() {
   return NAV_HEIGHT + Math.max(insets.bottom, NAV_MARGIN) + 6;
 }
 
-type Props = {
-  active: TabKey;
-  onPress?: (key: TabKey) => void;
-};
-
-/** Visual-only for now: only Discover is built. */
-export function BottomNavigation({ active, onPress }: Props) {
+export function BottomNavigation({ active }: { active: TabKey }) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -44,7 +46,10 @@ export function BottomNavigation({ active, onPress }: Props) {
           return (
             <Pressable
               key={key}
-              onPress={() => onPress?.(key)}
+              onPress={() => {
+                const route = ROUTES[key];
+                if (route) router.navigate(route);
+              }}
               accessibilityRole="tab"
               accessibilityLabel={label}
               accessibilityState={{ selected: isActive }}
