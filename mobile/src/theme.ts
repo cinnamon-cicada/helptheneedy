@@ -1,5 +1,7 @@
 export const colors = {
   background: '#FFFAF4',
+  // Auth screens use pure white so the gift scene reads clean.
+  white: '#FFFFFF',
   card: '#FFFDF9',
   orange: '#EAA647',
   // Slightly deeper shade of the primary orange, used only where orange text
@@ -18,6 +20,9 @@ export const colors = {
   peachSoft: '#FCE6D8',
   skip: '#E5566B',
   skipSoft: '#FDE8EC',
+  // Form errors: a warm red that stays readable as small text on white.
+  error: '#B8432F',
+  errorSoft: '#FCEDE8',
   // Rear deck layers.
   layerPeach: '#F9D3B6',
   layerYellow: '#FAE3B0',
@@ -31,6 +36,7 @@ export const radius = {
   sheet: 28,
   pill: 999,
   input: 22,
+  field: 16,
 } as const;
 
 export const shadow = {
