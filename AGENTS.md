@@ -8,7 +8,7 @@ See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order
 
 ## Rules
 
-- The app never handles or moves money. Gifts happen outside the app and are recorded here.
+- The app never does not handle or move money, for now.
 - Only a receiver's confirmation counts a gift toward post progress and leaderboards.
 - Store money as integer cents, and label totals as reported by members, not verified.
 - Enable Row Level Security (RLS) on every table. Clients read through RLS and write through RPCs.
