@@ -64,7 +64,7 @@ All tables have `id uuid` primary keys and `created_at`, unless noted. Use Postg
 | `match_requests` | `gifter_id`, `post_id`, `status` (`pending`, `accepted`, `declined`, `cancelled`) | Unique on (`gifter_id`, `post_id`) |
 | `matches` | `request_id`, `gifter_id`, `receiver_id`, `post_id`, `status` | Unique on `request_id` |
 | `gifts` | `match_id`, `gifter_id`, `receiver_id`, `post_id`, `amount_cents`, `is_anonymous`, `status` (`pending`, `confirmed`, `disputed`, `cancelled`), `confirmed_at` | `amount_cents > 0`; `gifter_id <> receiver_id` |
-| `friendships` | `user_low`, `user_high`, `requested_by`, `status` | One row per pair, with `user_low < user_high` |
+| `follows` | `follower_id`, `followed_id` | Primary key on the pair; a follow needs no approval, and a mutual follow makes two people friends |
 | `blocks` | `blocker_id`, `blocked_id` | Unique on the pair |
 | `reports` | `reporter_id`, `target_user_id`, `target_post_id`, `reason`, `status` | Readable only by moderators |
 | `notifications` | `user_id`, `type`, `payload`, `read_at` | Delivered through Realtime while the app is open, and by push otherwise |
@@ -79,7 +79,7 @@ Each RPC runs as the signed-in user and enforces the rules above.
 - **Swiping:** `get_swipe_feed(limit)`, `record_swipe(post_id, direction)`, `respond_to_request(request_id, accept)`
 - **Gifts:** `record_gift(match_id, amount_cents, is_anonymous)`, `cancel_gift(gift_id)`, `respond_to_gift(gift_id, confirm)`
 - **Discover:** `search_posts(query, category, max_remaining_cents, location, sort, cursor)`
-- **Friends:** `search_users`, `request_friend`, `respond_friend`, `remove_friend`, `block_user`, `unblock_user`, `get_friend_activity(cursor)`
+- **Friends:** `search_users`, `follow_user`, `unfollow_user`, `remove_follower`, `get_follows`, `block_user`, `unblock_user`, `get_friend_activity(cursor)`
 - **Leaderboard:** `get_leaderboard(board, period, scope, cursor)`, `get_my_rank(board, period, scope)`
 - **Moderation:** `report(target_user_id, target_post_id, reason)`
 
@@ -130,13 +130,13 @@ Add full-text search with a GIN index on `posts.search`, filters, sorts, and cur
 
 ### 6. Friends (#5)
 
-Add `friendships`, user search, and the friend RPCs. The activity feed shows confirmed gifts from friends with `share_activity` on and omits anonymous gifts entirely.
+Add `follows`, user search, and the follow RPCs. The activity feed shows confirmed gifts from mutual follows with `share_activity` on and omits anonymous gifts entirely.
 
 **Done when** the #5 acceptance criteria pass.
 
 ### 7. Leaderboard (#6)
 
-Create a materialized view that aggregates each user's confirmed gift cents by board and month, refreshed every 5 minutes with `pg_cron`. RPCs filter by opt-in settings and blocks, and friends scope joins `friendships`. Ties share a rank.
+Create a materialized view that aggregates each user's confirmed gift cents by board and month, refreshed every 5 minutes with `pg_cron`. RPCs filter by opt-in settings and blocks, and friends scope includes only mutual follows. Ties share a rank.
 
 Totals are self-reported, and two colluding accounts can confirm gifts that never happened. Add these from the start:
 
@@ -148,7 +148,7 @@ Totals are self-reported, and two colluding accounts can confirm gifts that neve
 
 ### 8. Profile, safety, and launch readiness (#7)
 
-Add public and own-profile queries, gift history, the report queue, and full account deletion. Add rate limits on swipes, posts, friend requests, and reports. Add basic post moderation (`removed` status and a moderator role) and audit logs for moderator actions.
+Add public and own-profile queries, gift history, the report queue, and full account deletion. Add rate limits on swipes, posts, follows, and reports. Add basic post moderation (`removed` status and a moderator role) and audit logs for moderator actions.
 
 **Done when** the #7 acceptance criteria pass and the launch checklist below is complete.
 
