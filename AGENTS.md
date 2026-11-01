@@ -26,8 +26,3 @@ If you start this repo in a new session, or your context is reset, do these step
 | `npm run db:stop` | Stops local Supabase |
 | `npm run db:reset` | Rebuilds the local database from migrations |
 | `npm test` | Runs the database tests |
-
-## Before you finish
-
-- Run `npm run db:reset` and `npm test` after any change under `supabase/`, and report the results.
-- Say plainly if you skipped a check or something is unfinished.
