@@ -16,4 +16,5 @@ jobs:
       - run: npm ci
       - run: npx supabase start -x studio,imgproxy,mailpit,logflare,vector,edge-runtime
       - run: npm test
+      - run: npm run test:functions
       - run: npx supabase db lint --schema public,private --level warning --fail-on error

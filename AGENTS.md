@@ -26,3 +26,4 @@ If you start this repo in a new session, or your context is reset, do these step
 | `npm run db:stop` | Stops local Supabase |
 | `npm run db:reset` | Rebuilds the local database from migrations |
 | `npm test` | Runs the database tests |
+| `npm run test:functions` | Runs the Edge Function tests |
