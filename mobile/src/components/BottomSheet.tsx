@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { BackHandler, KeyboardAvoidingView, Pressable, StyleSheet, View } from 'react-native';
-import { usePanGesture, GestureDetector } from 'react-native-gesture-handler';
+import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { usePanGesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -20,11 +20,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-const OFFSCREEN = 800;
-
 /** Shared bottom sheet: springs up, drag down or tap the scrim to close. */
 export function BottomSheet({ visible, onClose, accessibilityLabel, children }: Props) {
   const insets = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
   const [mounted, setMounted] = useState(visible);
   const progress = useSharedValue(0);
   const dragY = useSharedValue(0);
@@ -42,15 +41,6 @@ export function BottomSheet({ visible, onClose, accessibilityLabel, children }: 
       }));
     }
   }, [visible, dragY, progress]);
-
-  useEffect(() => {
-    if (!visible) return;
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      onClose();
-      return true;
-    });
-    return () => sub.remove();
-  }, [visible, onClose]);
 
   const pan = usePanGesture({
     activeOffsetY: 10,
@@ -71,33 +61,47 @@ export function BottomSheet({ visible, onClose, accessibilityLabel, children }: 
 
   const scrimStyle = useAnimatedStyle(() => ({ opacity: progress.value }));
   const sheetStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: (1 - progress.value) * OFFSCREEN + dragY.value }],
+    transform: [{ translateY: (1 - progress.value) * height + dragY.value }],
   }));
 
   if (!mounted) return null;
 
+  // A separate presentation surface keeps animated/elevated cards below the sheet.
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents={visible ? 'auto' : 'none'}>
-      <Animated.View style={[styles.scrim, scrimStyle]}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close" />
-      </Animated.View>
-      <KeyboardAvoidingView behavior="padding" style={styles.avoider} pointerEvents="box-none">
-        <GestureDetector gesture={pan}>
-          <Animated.View
-            style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 16) + 8 }, sheetStyle]}
-            accessibilityViewIsModal
-            accessibilityLabel={accessibilityLabel}
-          >
-            <View style={styles.handle} />
-            {children}
+    <Modal
+      visible={mounted}
+      transparent
+      animationType="none"
+      presentationStyle="overFullScreen"
+      statusBarTranslucent
+      navigationBarTranslucent
+      onRequestClose={visible ? onClose : undefined}
+    >
+      <GestureHandlerRootView style={styles.root}>
+        <View style={styles.root} pointerEvents={visible ? 'auto' : 'none'}>
+          <Animated.View style={[styles.scrim, scrimStyle]}>
+            <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Close" />
           </Animated.View>
-        </GestureDetector>
-      </KeyboardAvoidingView>
-    </View>
+          <KeyboardAvoidingView behavior="padding" style={styles.avoider} pointerEvents="box-none">
+            <GestureDetector gesture={pan}>
+              <Animated.View
+                style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 16) + 8 }, sheetStyle]}
+                accessibilityViewIsModal
+                accessibilityLabel={accessibilityLabel}
+              >
+                <View style={styles.handle} />
+                {children}
+              </Animated.View>
+            </GestureDetector>
+          </KeyboardAvoidingView>
+        </View>
+      </GestureHandlerRootView>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1 },
   scrim: { ...StyleSheet.absoluteFill, backgroundColor: colors.scrim },
   avoider: { flex: 1, justifyContent: 'flex-end' },
   sheet: {
