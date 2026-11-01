@@ -6,7 +6,7 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "test": "supabase test db",
-    "test:functions": "node --test supabase/functions/tests/"
+    "test:functions": "node --test \"supabase/functions/tests/*.test.ts\""
   },
   "devDependencies": {
     "supabase": "^2.122.0"
