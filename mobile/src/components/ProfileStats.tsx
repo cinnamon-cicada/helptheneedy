@@ -2,12 +2,16 @@ import { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '../theme';
-import type { UserProfile } from '../types';
+import type { Person } from '../types';
 import { formatDollars } from '../utils/format';
 
-export function ProfileStats({ profile }: { profile: UserProfile }) {
+export function ProfileStats({
+  profile,
+}: {
+  profile: Pick<Person, 'totalGiftedCents' | 'peopleHelped' | 'requestsPosted'>;
+}) {
   const stats = [
-    { label: 'Total Gifted', value: formatDollars(profile.totalGiftedCents) },
+    { label: 'Total Gifted', value: profile.totalGiftedCents === null ? '–' : formatDollars(profile.totalGiftedCents) },
     { label: 'People Helped', value: String(profile.peopleHelped) },
     { label: 'Requests Posted', value: String(profile.requestsPosted) },
   ];

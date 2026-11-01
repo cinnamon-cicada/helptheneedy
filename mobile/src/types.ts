@@ -75,3 +75,17 @@ export type MyRank = {
   category: string;
   period: string;
 };
+
+export type Person = {
+  id: string;
+  displayName: string;
+  avatarUrl: string;
+  isFollowing: boolean;
+  followsMe: boolean;
+  /** null means they keep this total private. */
+  totalGiftedCents: number | null;
+  peopleHelped: number;
+  requestsPosted: number;
+  /** Ids of this person's open requests. */
+  wishlistIds: string[];
+};

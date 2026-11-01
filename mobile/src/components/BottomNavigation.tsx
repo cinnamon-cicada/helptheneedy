@@ -15,9 +15,10 @@ const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
   { key: 'profile', label: 'Profile', Icon: User },
 ];
 
-// People and Post aren't built yet, so those tabs do nothing.
+// Post isn't built yet, so that tab does nothing.
 const ROUTES: Partial<Record<TabKey, Href>> = {
   discover: '/',
+  people: '/friends',
   ranks: '/ranks',
   profile: '/profile',
 };

@@ -10,6 +10,7 @@ export default function TabsLayout() {
       screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.background } }}
     >
       <Tabs.Screen name="index" />
+      <Tabs.Screen name="friends" />
       <Tabs.Screen name="ranks" />
       <Tabs.Screen name="profile" />
     </Tabs>
