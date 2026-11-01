@@ -2,7 +2,7 @@
 
 helptheneedy is a dating-style mobile app that matches gifters with receivers. The client is React Native with Expo, and the backend is Supabase with TypeScript.
 
-**Status:** The backend is being built in `supabase/`, one milestone at a time. Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
+**Status:** The backend is implemented in `supabase/`, and the mobile client isn't started. Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
 
 See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order, and testing requirements.
 
