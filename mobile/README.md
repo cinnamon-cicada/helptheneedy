@@ -40,7 +40,7 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 | Avatar pencil | Opens the Edit Profile sheet; saves to local state only and resets on reload |
 | Settings gear | Opens a placeholder screen |
 | Your Rank card | Opens the Ranks tab |
-| Shortcut cards | Open placeholder screens marked as demo content |
+| Shortcut tiles | Expand into a window with a simple mock list; tap the X or outside it to close |
 | View All | Opens a longer mock activity list |
 
 The People and Post tabs do nothing yet.
@@ -50,7 +50,7 @@ The People and Post tabs do nothing yet.
 | Path | Contents |
 | --- | --- |
 | `src/app/` | Expo Router routes; each file re-exports a screen |
-| `src/screens/` | `DiscoverScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen`, `ProfileSectionScreen` |
+| `src/screens/` | `DiscoverScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen` |
 | `src/state/useDiscoverState.ts` | Business state: queue, filters, saves, reactions, comments |
 | `src/animation/useCardGestures.ts` | Gesture and animation logic for the front card |
 | `src/components/` | `SwipeCardDeck`, `GiftRequestCard`, `CardStackLayer`, `ExpandedCardContent`, `ReactionBar`, `CommentList`, `CommentInput`, `BottomSheet`, `FilterBottomSheet`, `GiftAmountBottomSheet`, `BottomNavigation` |

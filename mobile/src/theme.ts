@@ -21,9 +21,6 @@ export const colors = {
   // Rear deck layers.
   layerPeach: '#F9D3B6',
   layerYellow: '#FAE3B0',
-  // Profile gradient, top to bottom; it fades into background.
-  profileGradientTop: '#FBD9BD',
-  profileGradientMid: '#FCE7D4',
   rankCard: '#FDEDD6',
   rankCardBorder: '#F3CE97',
   scrim: 'rgba(53, 37, 29, 0.38)',
