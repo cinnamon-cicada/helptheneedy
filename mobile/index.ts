@@ -1,11 +1,4 @@
-// Must stay first: patches globals before any module loads three.
+// Custom entry so polyfills run before any route module loads three.
+// See src/polyfills.ts: without it the app crashes on startup in Hermes.
 import './src/polyfills';
-
-import { registerRootComponent } from 'expo';
-
-import App from './App';
-
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+import 'expo-router/entry';

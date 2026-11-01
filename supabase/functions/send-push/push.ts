@@ -9,8 +9,7 @@ const MESSAGES: Record<string, PushMessage> = {
   gift_recorded: { title: "Gift recorded", body: "A gifter says they sent you a gift. Please confirm it." },
   gift_confirmed: { title: "Gift confirmed", body: "Your gift was confirmed. Thank you." },
   gift_disputed: { title: "Gift disputed", body: "A receiver says they didn't get your gift." },
-  friend_request: { title: "New friend request", body: "Someone wants to be your friend." },
-  friend_accepted: { title: "Friend request accepted", body: "You have a new friend." },
+  new_follower: { title: "New follower", body: "Someone started following you." },
 };
 
 export function renderMessage(type: string): PushMessage | null {
