@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds only the Discover screen prototype for now, and that screen runs on local mock data. It doesn't call Supabase and doesn't process payments.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds only the Discover screen prototype for now, and that screen runs on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -9,6 +9,8 @@ cd mobile
 npm install
 npx expo start
 ```
+
+Before importing the Supabase client, copy `.env.example` to `.env.local` and fill it in.
 
 Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go doesn't support one of the native libraries, build a development client with `npx expo run:ios` or `npx expo run:android`.
 
