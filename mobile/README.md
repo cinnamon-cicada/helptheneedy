@@ -40,7 +40,7 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 | Avatar pencil | Opens the Edit Profile sheet; saves to local state only and resets on reload |
 | Settings gear | Opens a placeholder screen |
 | Your Rank card | Opens the Ranks tab |
-| Shortcut cards | Open placeholder screens marked as demo content |
+| Shortcut tiles | Expand into a window with a simple mock list; tap the X or outside it to close |
 | View All | Opens a longer mock activity list |
 
 The Post tab does nothing yet.

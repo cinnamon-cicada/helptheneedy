@@ -1,42 +1,55 @@
-import { ChevronRight, type LucideIcon } from 'lucide-react-native';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import type { LucideIcon } from 'lucide-react-native';
+import { type ComponentRef, useRef } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, ICON_STROKE } from '../theme';
 
-type Props = { title: string; Icon: LucideIcon; onPress: () => void };
+export type TileRect = { x: number; y: number; width: number; height: number };
+
+type Props = { title: string; Icon: LucideIcon; onPress: (origin: TileRect) => void };
 
 export function ProfileShortcutCard({ title, Icon, onPress }: Props) {
+  const ref = useRef<ComponentRef<typeof View>>(null);
+
   return (
     <Pressable
-      onPress={onPress}
+      ref={ref}
+      onPress={() => ref.current?.measureInWindow((x, y, width, height) => onPress({ x, y, width, height }))}
       accessibilityRole="button"
       accessibilityLabel={title}
-      style={({ pressed }) => [styles.card, pressed && { transform: [{ scale: 0.97 }] }]}
+      style={({ pressed }) => [styles.tile, pressed && { opacity: 0.6 }]}
     >
       <Icon size={22} color={colors.orange} strokeWidth={ICON_STROKE} style={styles.icon} />
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
-      <ChevronRight size={16} color={colors.textMuted} strokeWidth={ICON_STROKE} style={styles.icon} />
+      <View style={styles.corner} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
+  tile: {
     flex: 1,
-    minHeight: 68,
+    minHeight: 60,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 9,
-    paddingHorizontal: 13,
-    paddingVertical: 12,
-    borderRadius: radius.card,
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    paddingLeft: 4,
+    paddingRight: 18,
+    paddingVertical: 10,
   },
   icon: { flexShrink: 0 },
   title: { flex: 1, fontSize: 14, fontWeight: '700', color: colors.text },
+  // The flipped "L" that marks a tile as expandable.
+  corner: {
+    position: 'absolute',
+    right: 2,
+    bottom: 2,
+    width: 11,
+    height: 11,
+    borderRightWidth: 1.75,
+    borderBottomWidth: 1.75,
+    borderColor: colors.orange,
+  },
 });

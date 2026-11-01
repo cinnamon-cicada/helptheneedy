@@ -15,7 +15,6 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="activity" />
           <Stack.Screen name="settings" />
-          <Stack.Screen name="profile-section/[section]" />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>

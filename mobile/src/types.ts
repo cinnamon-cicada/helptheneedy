@@ -57,6 +57,12 @@ export type ActivityRecord = { id: string; minutesAgo: number } & (
   | { kind: 'request_posted' }
 );
 
+export type ProfileListItem = {
+  id: string;
+  title: string;
+  detail: string;
+};
+
 export type LeaderboardEntry = {
   id: string;
   username: string;

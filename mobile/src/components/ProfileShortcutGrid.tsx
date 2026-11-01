@@ -1,7 +1,7 @@
 import { Bookmark, FileText, Gift, Inbox, type LucideIcon } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
-import { ProfileShortcutCard } from './ProfileShortcutCard';
+import { ProfileShortcutCard, type TileRect } from './ProfileShortcutCard';
 
 export type ProfileSection = 'gifts-sent' | 'gifts-received' | 'saved-requests' | 'my-posts';
 
@@ -16,13 +16,13 @@ const SHORTCUTS: { section: ProfileSection; title: string; Icon: LucideIcon }[][
   ],
 ];
 
-export function ProfileShortcutGrid({ onOpen }: { onOpen: (section: ProfileSection) => void }) {
+export function ProfileShortcutGrid({ onOpen }: { onOpen: (section: ProfileSection, origin: TileRect) => void }) {
   return (
     <View style={styles.grid}>
       {SHORTCUTS.map((row) => (
         <View key={row[0].section} style={styles.row}>
           {row.map(({ section, title, Icon }) => (
-            <ProfileShortcutCard key={section} title={title} Icon={Icon} onPress={() => onOpen(section)} />
+            <ProfileShortcutCard key={section} title={title} Icon={Icon} onPress={(origin) => onOpen(section, origin)} />
           ))}
         </View>
       ))}
