@@ -1,1 +1,1 @@
-export { RanksScreen as default } from '../../screens/RanksScreen';
+export { LeaderboardScreen as default } from '../../screens/LeaderboardScreen';
