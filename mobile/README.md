@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds only the Discover screen prototype for now, and that screen runs on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds prototypes of the Discover and Profile screens, plus a minimal Ranks screen, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -33,15 +33,29 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 
 A drag locks to one axis after about 6 points of movement, so a diagonal drag can only trigger one action. Horizontal drags are ignored while the card is expanded.
 
+## Profile screen
+
+| Control | Result |
+| --- | --- |
+| Avatar pencil | Opens the Edit Profile sheet; saves to local state only and resets on reload |
+| Settings gear | Opens a placeholder screen |
+| Your Rank card | Opens the Ranks tab |
+| Shortcut tiles | Expand into a window with a simple mock list; tap the X or outside it to close |
+| View All | Opens a longer mock activity list |
+
+The People and Post tabs do nothing yet.
+
 ## Code layout
 
 | Path | Contents |
 | --- | --- |
-| `src/screens/DiscoverScreen.tsx` | Screen layout and sheet wiring |
+| `src/app/` | Expo Router routes; each file re-exports a screen |
+| `src/screens/` | `DiscoverScreen`, `ProfileScreen`, `RanksScreen`, `ActivityScreen` |
 | `src/state/useDiscoverState.ts` | Business state: queue, filters, saves, reactions, comments |
 | `src/animation/useCardGestures.ts` | Gesture and animation logic for the front card |
 | `src/components/` | `SwipeCardDeck`, `GiftRequestCard`, `CardStackLayer`, `ExpandedCardContent`, `ReactionBar`, `CommentList`, `CommentInput`, `BottomSheet`, `FilterBottomSheet`, `GiftAmountBottomSheet`, `BottomNavigation` |
 | `src/data/mockRequests.ts` | Eight mock requests; Jamie's matcha request is first |
+| `src/data/mockProfile.ts`, `src/data/mockLeaderboard.ts` | The mock user and activity, and the weekly board that Ranks and the Your Rank card share |
 | `src/theme.ts` | Colors, radii, shadows and spring settings |
 
 Amounts are stored as integer cents, as `ARCHITECTURE.md` requires.
@@ -53,3 +67,5 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Right swipe:** In the prototype, a right swipe opens a gift amount sheet. In the backend, a right swipe calls `record_swipe` to send a match request, and the gifter records a gift only after the receiver accepts.
 - **Comments, reactions and saves:** These have no tables or RPCs in the backend yet.
 - **Recipient age:** `profiles` has no age or birth date column.
+- **Weekly ranks:** The Your Rank card and Ranks screen show a weekly board. `get_leaderboard` and `get_my_rank` only support `all_time` and `month`.
+- **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Ranks screen keeps it. Settle this before connecting Supabase.

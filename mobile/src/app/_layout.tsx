@@ -1,17 +1,21 @@
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { DiscoverScreen } from './src/screens/DiscoverScreen';
-import { colors } from './src/theme';
+import { colors } from '../theme';
 
-export default function App() {
+export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <StatusBar style="dark" />
-        <DiscoverScreen />
+        <Stack screenOptions={{ headerShown: false, contentStyle: styles.root }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="activity" />
+          <Stack.Screen name="settings" />
+        </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
