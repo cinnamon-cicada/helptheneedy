@@ -1,5 +1,7 @@
 export const colors = {
   background: '#FFFAF4',
+  // Auth screens use pure white so the gift scene reads clean.
+  white: '#FFFFFF',
   card: '#FFFDF9',
   orange: '#EAA647',
   // Slightly deeper shade of the primary orange, used only where orange text
@@ -9,6 +11,8 @@ export const colors = {
   peach: '#F29B65',
   text: '#35251D',
   textMuted: '#8C7B70',
+  // Muted text dark enough to stay readable on the Profile gradient.
+  textOnPeach: '#6F5C50',
   textFaint: '#B5A69B',
   border: '#F1E6D8',
   borderStrong: '#E8D8C4',
@@ -16,9 +20,14 @@ export const colors = {
   peachSoft: '#FCE6D8',
   skip: '#E5566B',
   skipSoft: '#FDE8EC',
+  // Form errors: a warm red that stays readable as small text on white.
+  error: '#B8432F',
+  errorSoft: '#FCEDE8',
   // Rear deck layers.
   layerPeach: '#F9D3B6',
   layerYellow: '#FAE3B0',
+  rankCard: '#FDEDD6',
+  rankCardBorder: '#F3CE97',
   scrim: 'rgba(53, 37, 29, 0.38)',
 } as const;
 
@@ -27,6 +36,7 @@ export const radius = {
   sheet: 28,
   pill: 999,
   input: 22,
+  field: 16,
 } as const;
 
 export const shadow = {

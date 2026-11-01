@@ -42,3 +42,50 @@ export type Filters = {
   /** null means no limit. */
   maxAmountCents: number | null;
 };
+
+export type UserProfile = {
+  username: string;
+  avatarUrl: string;
+  /** Lifetime, not limited to the current leaderboard week. */
+  totalGiftedCents: number;
+  peopleHelped: number;
+  requestsPosted: number;
+};
+
+export type ActivityRecord = { id: string; minutesAgo: number } & (
+  | { kind: 'gift_sent'; amountCents: number; recipientName: string }
+  | { kind: 'request_posted' }
+);
+
+export type ProfileListItem = {
+  id: string;
+  title: string;
+  detail: string;
+};
+
+export type LeaderboardEntry = {
+  id: string;
+  username: string;
+  giftedCents: number;
+};
+
+export type MyRank = {
+  /** null means the user isn't on the board. */
+  rank: number | null;
+  category: string;
+  period: string;
+};
+
+export type Person = {
+  id: string;
+  displayName: string;
+  avatarUrl: string;
+  isFollowing: boolean;
+  followsMe: boolean;
+  /** null means they keep this total private. */
+  totalGiftedCents: number | null;
+  peopleHelped: number;
+  requestsPosted: number;
+  /** Ids of this person's open requests. */
+  wishlistIds: string[];
+};
