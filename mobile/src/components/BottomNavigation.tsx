@@ -15,10 +15,10 @@ const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
   { key: 'profile', label: 'Profile', Icon: User },
 ];
 
-// Post isn't built yet, so that tab does nothing.
-const ROUTES: Partial<Record<TabKey, Href>> = {
+const ROUTES: Record<TabKey, Href> = {
   discover: '/',
   people: '/friends',
+  post: '/post',
   ranks: '/ranks',
   profile: '/profile',
 };
@@ -48,8 +48,9 @@ export function BottomNavigation({ active }: { active: TabKey }) {
             <Pressable
               key={key}
               onPress={() => {
-                const route = ROUTES[key];
-                if (route) router.navigate(route);
+                // Post opens the full-screen camera over the tabs.
+                if (key === 'post') router.push(ROUTES.post);
+                else router.navigate(ROUTES[key]);
               }}
               accessibilityRole="tab"
               accessibilityLabel={label}

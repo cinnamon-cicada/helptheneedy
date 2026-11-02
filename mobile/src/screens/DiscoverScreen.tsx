@@ -27,6 +27,11 @@ export function DiscoverScreen() {
   const { markHandled } = state;
 
   const openGift = useCallback((request: GiftRequest) => {
+    // You can't gift your own wish: a right swipe just moves past it.
+    if (request.isMine) {
+      deckRef.current?.completeGift();
+      return;
+    }
     setGiftRequest(request);
     setGiftOpen(true);
   }, []);
@@ -42,7 +47,8 @@ export function DiscoverScreen() {
   }, []);
 
   const openProfile = useCallback((request: GiftRequest) => {
-    router.push(`/user/${request.recipient.id}`);
+    if (request.isMine) router.navigate('/profile');
+    else router.push(`/user/${request.recipient.id}`);
   }, []);
 
   const emptyState = (

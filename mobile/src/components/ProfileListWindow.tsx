@@ -6,7 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { PROFILE_LISTS } from '../data/mockProfile';
+import { useMyPosts } from '../post/MyPostsContext';
 import { colors, fonts, ICON_STROKE, shadow } from '../theme';
+import { formatCents } from '../utils/format';
 import type { TileRect } from './ProfileShortcutCard';
 import type { ProfileSection } from './ProfileShortcutGrid';
 
@@ -55,7 +57,25 @@ export function ProfileListWindow({ section, origin, onClose }: Props) {
   }, [visible, onClose]);
 
   const from = shown.origin ?? { x: 0, y: 0, width: 0, height: 0 };
-  const list = shown.section ? PROFILE_LISTS[shown.section] : null;
+  const { posts } = useMyPosts();
+  const base = shown.section ? PROFILE_LISTS[shown.section] : null;
+  // Posts made on this device go first in My Posts.
+  const list =
+    base && shown.section === 'my-posts'
+      ? {
+          ...base,
+          items: [
+            ...posts.map((p) => ({
+              id: p.id,
+              title: p.title,
+              detail: [p.amountCents !== null ? formatCents(p.amountCents) : null, p.status === 'draft' ? 'Draft' : 'In Discover']
+                .filter(Boolean)
+                .join(' · '),
+            })),
+            ...base.items,
+          ],
+        }
+      : base;
   const width = screen.width - MARGIN * 2;
   // Fit the rows, centered; longer lists scroll inside the largest window that fits.
   const maxHeight = screen.height - insets.top - Math.max(insets.bottom, MARGIN) - MARGIN;

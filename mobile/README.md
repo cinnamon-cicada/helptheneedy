@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, and the Leaderboard, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, the Leaderboard, and the Create Post flow, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -60,8 +60,6 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 | Shortcut tiles | Expand into a window with a simple mock list; tap the X or outside it to close |
 | View All | Opens a longer mock activity list |
 
-The Post tab does nothing yet.
-
 ## Friends screen
 
 The People tab lists everyone you follow or who follows you. Search filters by name, and tapping a row opens that person's profile card. The three dots offer **Unfollow** if you follow them and **Remove as follower** if they follow you. Someone leaves the list once neither of you follows the other. Changes stay in local state and reset on reload.
@@ -83,13 +81,39 @@ Rankings are computed from mock transactions in `src/data/mockLeaderboard.ts`, f
 
 Your Overall totals match the Profile screen: $210 and 12 people helped.
 
+## Create Post
+
+The center Post tab opens the camera, with a 3:4 viewfinder the shape of a wish card. Photos taken with the shutter are cropped to exactly what the viewfinder showed. Take a photo with the shutter, or choose one with the album button at the bottom left. The photo then freezes, and a toolbar on the right offers optional edits:
+
+| Tool | What it does |
+| --- | --- |
+| Crop | Rotates in 90° steps and centre-crops to Original, 3:4 (card), 1:1, 4:5 or 16:9. This changes the image with `expo-image-manipulator`, always starting from the original photo |
+| Text | Adds text in five colours and three sizes. Drag to move; tap to select, then Edit or Remove |
+| Stickers | Adds an emoji sticker. Drag to move; tap to select, then Remove |
+| Filters | Warm, Golden, Soft, Cool or Mono, drawn as colour layers with blend modes |
+
+Text, stickers and filters are saved as data on top of the photo rather than burned into it, so they look the same at every size. The arrow at the bottom right opens the details page. It shows the photo centre-cropped in the top third (the full photo is kept) and asks for:
+- a title
+- a price from $1 to $10,000
+- a category
+- a description, where `#` adds tags and `@` suggests friends (mutual follows) to mention
+- optional gift instructions
+
+The button reads **Post wish** once title, price, category and description are all valid; gift instructions are optional and don't affect it. Until then it reads **Save as draft** and saves whatever is filled in. Fields that are filled in must still be valid, so a $0.50 price blocks even a draft. The back button on each step keeps everything entered.
+
+To try it in Expo Go: allow the camera when asked (or use the album), edit, tap the arrow, fill in the details, and tap **Post wish**. Then tap **See it in Discover**.
+
+A posted wish goes to the front of your Discover deck, with your edited photo and a **Your wish** badge. It also appears first in Profile > My Posts. You can react to it and comment on it. You can't gift your own wish, so it has no gift indicator or save button, and a right swipe just moves past it. Drafts never appear in Discover.
+
+Posts are stored in memory on the device (`MyPostsProvider`) and reset when the app reloads; nothing is uploaded.
+
 ## Code layout
 
 | Path | Contents |
 | --- | --- |
 | `src/app/` | Expo Router routes; each file re-exports a screen. `_layout.tsx` shows `sign-in` until you log in |
 | `index.ts` | Custom entry: loads `src/polyfills.ts` before `expo-router/entry` so three.js can start under Hermes |
-| `src/screens/` | `AuthScreen`, `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `LeaderboardScreen`, `ActivityScreen` |
+| `src/screens/` | `AuthScreen`, `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `LeaderboardScreen`, `ActivityScreen`; the Create Post steps are in `src/screens/post/` |
 | `src/components/auth/` | `LoginForm`, `SignupForm`, `PaymentPlaceholders`, and shared fields |
 | `src/auth/` | `AuthService` interface, the mock service, the session context, and validation rules |
 | `src/components/poki/` | `AuthScene` (canvas and fallback), `MascotAnimationController`, `PokiMascot`, `GiftBox`, `GiftExplosion` |
@@ -101,6 +125,9 @@ Your Overall totals match the Profile screen: $210 and 12 people helped.
 | `src/data/mockProfile.ts` | The mock user and activity |
 | `src/data/mockLeaderboard.ts` | Mock members and gift transactions that the Leaderboard and the Your Rank card both rank |
 | `src/leaderboard/` | Ranking rules (`computeLeaderboard`) and the board's labels, separate from the UI |
+| `src/app/post/` | Create Post routes: `index` (camera and editor), `details`, `published`; the layout holds the shared draft |
+| `src/post/` | Draft and my-posts state, photo crop and filter helpers, details validation, and hashtag and mention parsing |
+| `src/components/post/` | `PhotoStage` (draws a photo with its edits), the edit sheets, `MentionInput` |
 | `src/components/leaderboard/` | `LeaderboardHeader`, `SegmentedControl` (`RankingTypeSelector`, `TimePeriodSelector`), `TopThreePodium`, `YourRankSummary`, `RankingList`, the info and profile preview sheets, `AliasAvatar` |
 | `src/data/mockPeople.ts` | Mock friends, their follow state and wishlists |
 | `src/theme.ts` | Colors, radii, shadows and spring settings |
@@ -118,6 +145,11 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Unknown accounts:** The mock reports `account_not_found` so the signup handoff can be tried. Supabase doesn't reveal whether an account exists, so that path may never trigger once connected.
 - **Backup email:** Collected on the signup form but not saved; `profiles` has no column for it.
 - **Payment methods:** The PayPal, Venmo and Stripe rows are disabled placeholders. The app doesn't handle money.
+- **Your own wishes in Discover:** The prototype puts your posted wishes in your own deck so you can see them. The backend's `get_swipe_feed` and `search_posts` leave your own posts out, so once connected they'll show only to other people.
+- **Posting:** Create Post saves to local state only. `create_post` and `publish_post` aren't called, and the photo isn't uploaded to the `post-photos` bucket.
+- **Photo edits:** Text, stickers and filters are kept as data next to the photo. The backend stores only photo paths, so before connecting it either flatten them into the uploaded image or add a column for them.
+- **Gift instructions:** `publish_post` requires gift instructions, but the app lets you post without them. Settle this before connecting the backend: either make the field required for posting, or relax the rule in the backend.
+- **Hashtags and mentions:** Parsed and shown on the card, but the backend has no tags or mentions, and mentions don't notify anyone.
 - **Most Helped:** The Leaderboard ranks people by how many different people they gifted. The backend's boards are `gifted` and `received`, so this needs a new board in `get_leaderboard` and `get_my_rank`.
 - **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Leaderboard keeps it. Settle this before connecting Supabase.
 - **Wishlist:** The backend has no wishlist. The mock maps it to a person's requests, which would be their `open` posts once connected. The mock also shares some requests across people.

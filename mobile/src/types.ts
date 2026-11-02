@@ -1,3 +1,5 @@
+import type { PostPhoto } from './post/types';
+
 export type Category = 'Food' | 'Product' | 'Bills' | 'School' | 'Celebration';
 
 export type Recipient = {
@@ -35,6 +37,10 @@ export type GiftRequest = {
   comments: Comment[];
   reactions: Reactions;
   saved: boolean;
+  /** A photo with on-device edits; drawn instead of `imageUrl` when set. */
+  postPhoto?: PostPhoto;
+  /** The signed-in user's own wish: shown in their deck but never giftable. */
+  isMine?: boolean;
 };
 
 export type Filters = {
