@@ -30,7 +30,7 @@ import { LoginForm } from '../components/auth/LoginForm';
 import { SignupForm } from '../components/auth/SignupForm';
 import { AuthScene, type StageLayout } from '../components/poki/AuthScene';
 import { TextButton } from '../components/ui';
-import { colors, radius, spring } from '../theme';
+import { colors, fonts, radius, spring } from '../theme';
 
 type Mode = 'login' | 'signup';
 
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   header: { position: 'absolute', left: 0, right: 0, top: 0, alignItems: 'center', justifyContent: 'center' },
   wordmark: { flexDirection: 'row', alignItems: 'flex-end', gap: 3 },
-  wordmarkText: { fontSize: 30, fontWeight: '800', color: colors.text, letterSpacing: -1.2 },
+  wordmarkText: { fontSize: 30, fontFamily: fonts.display, color: colors.text, letterSpacing: -1.2 },
   wordmarkDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.orange, marginBottom: 7 },
   skip: { position: 'absolute', right: 16 },
   sheet: {

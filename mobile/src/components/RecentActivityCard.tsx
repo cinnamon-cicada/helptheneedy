@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { ActivityRecord } from '../types';
 import { ActivityRow } from './ActivityRow';
 
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     boxShadow: shadow.layer,
   },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
-  title: { fontSize: 16.5, fontWeight: '700', color: colors.text },
+  title: { fontSize: 16.5, fontFamily: fonts.display, color: colors.text },
   viewAll: { flexDirection: 'row', alignItems: 'center', gap: 2 },
-  viewAllText: { fontSize: 13.5, fontWeight: '600', color: colors.orangeText },
+  viewAllText: { fontSize: 13.5, fontFamily: fonts.semibold, color: colors.orangeText },
 });

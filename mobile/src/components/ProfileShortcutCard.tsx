@@ -2,7 +2,7 @@ import type { LucideIcon } from 'lucide-react-native';
 import { type ComponentRef, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 
 export type TileRect = { x: number; y: number; width: number; height: number };
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   icon: { flexShrink: 0 },
-  title: { flex: 1, fontSize: 14, fontWeight: '700', color: colors.text },
+  title: { flex: 1, fontSize: 14, fontFamily: fonts.bold, color: colors.text },
   // The flipped "L" that marks a tile as expandable.
   corner: {
     position: 'absolute',

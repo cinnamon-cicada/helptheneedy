@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 import type { Person } from '../types';
 import { formatDollars } from '../utils/format';
 
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   stat: { flex: 1, alignItems: 'center', paddingHorizontal: 4 },
   divider: { width: 1, height: 34, backgroundColor: colors.borderStrong },
-  value: { fontSize: 21, fontWeight: '700', color: colors.text, fontVariant: ['tabular-nums'] },
-  label: { marginTop: 3, fontSize: 12.5, color: colors.textOnPeach, textAlign: 'center' },
+  value: { fontSize: 21, fontFamily: fonts.bold, color: colors.text, fontVariant: ['tabular-nums'] },
+  label: { marginTop: 3, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textOnPeach, textAlign: 'center' },
 });

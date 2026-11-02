@@ -3,7 +3,7 @@ import { CirclePlus, type LucideIcon, Search, Trophy, User, Users } from 'lucide
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 
 export type TabKey = 'discover' | 'people' | 'post' | 'ranks' | 'profile';
 
@@ -56,7 +56,7 @@ export function BottomNavigation({ active }: { active: TabKey }) {
               accessibilityState={{ selected: isActive }}
               style={({ pressed }) => [styles.item, pressed && { transform: [{ scale: 0.94 }] }]}
             >
-              <Icon size={23} color={color} strokeWidth={isActive ? ICON_STROKE + 0.35 : ICON_STROKE} />
+              <Icon size={20} color={color} strokeWidth={isActive ? ICON_STROKE + 0.35 : ICON_STROKE} />
               <Text style={[styles.label, { color }, isActive && styles.labelActive]}>{label}</Text>
             </Pressable>
           );
@@ -93,6 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 4,
   },
-  label: { fontSize: 11, fontWeight: '500' },
-  labelActive: { fontWeight: '700' },
+  label: { fontSize: 11, fontFamily: fonts.medium },
+  labelActive: { fontFamily: fonts.bold },
 });

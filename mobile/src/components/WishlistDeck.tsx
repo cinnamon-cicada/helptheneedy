@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { colors, radius, shadow, spring } from '../theme';
+import { colors, fonts, radius, shadow, spring } from '../theme';
 import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { CardStackLayer, LAYER_POSES, type Rect } from './CardStackLayer';
@@ -138,7 +138,7 @@ function WishCard({
 }
 
 const styles = StyleSheet.create({
-  empty: { paddingHorizontal: 18, paddingTop: 8, fontSize: 15, color: colors.textMuted },
+  empty: { paddingHorizontal: 18, paddingTop: 8, fontSize: 15, fontFamily: fonts.regular, color: colors.textMuted },
   card: {
     position: 'absolute',
     zIndex: 10,
@@ -157,11 +157,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
   },
   info: { height: INFO_HEIGHT, paddingHorizontal: 16, justifyContent: 'center' },
-  title: { fontSize: 18, fontWeight: '700', letterSpacing: -0.3, color: colors.text },
+  title: { fontSize: 18, fontFamily: fonts.display, letterSpacing: -0.3, color: colors.text },
   amount: {
     marginTop: 4,
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: colors.orangeText,
     fontVariant: ['tabular-nums'],
   },
