@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, type ViewStyle } from 'react-native';
 
-import { colors, radius } from '../theme';
+import { colors, fonts, radius } from '../theme';
 
 export function Chip({
   label,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
     borderColor: colors.orange,
   },
-  chipText: { fontSize: 14.5, fontWeight: '500', color: colors.text, fontVariant: ['tabular-nums'] },
-  chipTextSelected: { fontWeight: '600', color: colors.text },
+  chipText: { fontSize: 14.5, fontFamily: fonts.medium, color: colors.text, fontVariant: ['tabular-nums'] },
+  chipTextSelected: { fontFamily: fonts.semibold, color: colors.text },
   pressed: { transform: [{ scale: 0.97 }] },
   primary: {
     height: 54,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   primaryDisabled: { opacity: 0.45, boxShadow: 'none' },
   // Dark text: white on this orange is below 3:1 contrast.
-  primaryText: { fontSize: 16.5, fontWeight: '700', color: colors.text, letterSpacing: 0.1 },
+  primaryText: { fontSize: 16.5, fontFamily: fonts.bold, color: colors.text, letterSpacing: 0.1 },
   textButton: { paddingVertical: 8, paddingHorizontal: 4 },
-  textButtonText: { fontSize: 15, fontWeight: '600', color: colors.textMuted },
+  textButtonText: { fontSize: 15, fontFamily: fonts.semibold, color: colors.textMuted },
 });

@@ -1,7 +1,7 @@
 import { Heart } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { Comment } from '../types';
 import { formatCompact, formatRelative } from '../utils/format';
 import { Avatar } from './Avatar';
@@ -77,14 +77,14 @@ function CommentRow({
 
 const styles = StyleSheet.create({
   content: { paddingTop: 4, paddingBottom: 12, gap: 16 },
-  empty: { color: colors.textMuted, fontSize: 14, textAlign: 'center', paddingVertical: 24 },
+  empty: { color: colors.textMuted, fontSize: 14, fontFamily: fonts.regular, textAlign: 'center', paddingVertical: 24 },
   row: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
   body: { flex: 1, gap: 2 },
-  username: { fontSize: 12.5, fontWeight: '600', color: colors.textMuted },
-  text: { fontSize: 14.5, lineHeight: 20, color: colors.text },
+  username: { fontSize: 12.5, fontFamily: fonts.semibold, color: colors.textMuted },
+  text: { fontSize: 14.5, fontFamily: fonts.regular, lineHeight: 20, color: colors.text },
   meta: { flexDirection: 'row', alignItems: 'center', gap: 14, marginTop: 3 },
-  time: { fontSize: 12, color: colors.textFaint },
-  reply: { fontSize: 12, fontWeight: '600', color: colors.textMuted },
+  time: { fontSize: 12, fontFamily: fonts.regular, color: colors.textFaint },
+  reply: { fontSize: 12, fontFamily: fonts.semibold, color: colors.textMuted },
   like: { alignItems: 'center', gap: 2, paddingTop: 4, minWidth: 28 },
-  likeCount: { fontSize: 11.5, color: colors.textFaint, fontVariant: ['tabular-nums'] },
+  likeCount: { fontSize: 11.5, fontFamily: fonts.regular, color: colors.textFaint, fontVariant: ['tabular-nums'] },
 });

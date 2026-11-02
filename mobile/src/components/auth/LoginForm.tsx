@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { MascotSignals } from '../../animation/poki/signals';
 import type { AuthService, AuthUser } from '../../auth/types';
 import { type LoginErrors, hasErrors, isEmail, validateLogin } from '../../auth/validation';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 import { PrimaryButton } from '../ui';
 import { FormNotice, PasswordField, TextField, type TextInputInstance, fieldStyles } from './fields';
 
@@ -155,15 +155,15 @@ export function LoginForm({ service, signals, initialIdentifier = '', onSignUp, 
 
 export const authFormStyles = StyleSheet.create({
   switchRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6, paddingVertical: 4 },
-  switchText: { fontSize: 15, color: colors.textMuted },
-  switchLink: { fontSize: 15, fontWeight: '700', color: colors.orangeText },
+  switchText: { fontSize: 15, fontFamily: fonts.regular, color: colors.textMuted },
+  switchLink: { fontSize: 15, fontFamily: fonts.bold, color: colors.orangeText },
 });
 
 const styles = StyleSheet.create({
   form: { gap: 18 },
   passwordBlock: { gap: 10 },
   forgot: { alignSelf: 'flex-end', paddingVertical: 2 },
-  forgotText: { fontSize: 14, fontWeight: '600', color: colors.orangeText },
-  noticeAction: { fontSize: 14, fontWeight: '700', color: colors.orangeText },
+  forgotText: { fontSize: 14, fontFamily: fonts.semibold, color: colors.orangeText },
+  noticeAction: { fontSize: 14, fontFamily: fonts.bold, color: colors.orangeText },
   ...authFormStyles,
 });

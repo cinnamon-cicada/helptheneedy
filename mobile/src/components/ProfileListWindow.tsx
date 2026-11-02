@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { PROFILE_LISTS } from '../data/mockProfile';
-import { colors, ICON_STROKE, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, shadow } from '../theme';
 import type { TileRect } from './ProfileShortcutCard';
 import type { ProfileSection } from './ProfileShortcutGrid';
 
@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 10,
   },
-  title: { fontSize: 18, fontWeight: '700', color: colors.text },
+  title: { fontSize: 18, fontFamily: fonts.display, color: colors.text },
   list: { paddingHorizontal: 18, paddingBottom: 18 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 13 },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
-  rowTitle: { flex: 1, fontSize: 14.5, fontWeight: '500', color: colors.text },
-  rowDetail: { fontSize: 12.5, color: colors.textMuted },
-  note: { marginTop: 14, fontSize: 12.5, color: colors.textMuted, textAlign: 'center' },
+  rowTitle: { flex: 1, fontSize: 14.5, fontFamily: fonts.medium, color: colors.text },
+  rowDetail: { fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted },
+  note: { marginTop: 14, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
 });

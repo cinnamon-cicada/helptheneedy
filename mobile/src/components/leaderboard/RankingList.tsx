@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { formatMetric } from '../../leaderboard/copy';
-import { colors, ICON_STROKE, radius, shadow } from '../../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
 
@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   rowMe: { backgroundColor: colors.orangeSoft },
   pressed: { backgroundColor: colors.background },
-  rank: { width: 26, fontSize: 14.5, fontWeight: '700', color: colors.textMuted, textAlign: 'center', fontVariant: ['tabular-nums'] },
-  alias: { flex: 1, fontSize: 15, fontWeight: '500', color: colors.text },
-  aliasMe: { fontWeight: '700' },
-  metric: { maxWidth: '45%', fontSize: 14, fontWeight: '600', color: colors.text, textAlign: 'right', fontVariant: ['tabular-nums'] },
+  rank: { width: 26, fontSize: 14.5, fontFamily: fonts.bold, color: colors.textMuted, textAlign: 'center', fontVariant: ['tabular-nums'] },
+  alias: { flex: 1, fontSize: 15, fontFamily: fonts.medium, color: colors.text },
+  aliasMe: { fontFamily: fonts.bold },
+  metric: { maxWidth: '45%', fontSize: 14, fontFamily: fonts.semibold, color: colors.text, textAlign: 'right', fontVariant: ['tabular-nums'] },
   metricCompact: { maxWidth: 76, fontSize: 13 },
 });

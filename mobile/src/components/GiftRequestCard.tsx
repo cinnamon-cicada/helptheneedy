@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useCardGestures } from '../animation/useCardGestures';
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { LAYER_POSES, type Rect } from './CardStackLayer';
@@ -328,8 +328,8 @@ const styles = StyleSheet.create({
     outlineWidth: 1,
     outlineOffset: -1,
   },
-  name: { fontSize: 15, fontWeight: '600', color: colors.text },
-  age: { fontWeight: '400', color: colors.textMuted },
+  name: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },
+  age: { fontFamily: fonts.regular, color: colors.textMuted },
   badge: {
     paddingHorizontal: 10,
     height: 24,
@@ -337,12 +337,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
     justifyContent: 'center',
   },
-  badgeText: { fontSize: 12, fontWeight: '600', color: colors.orangeText },
+  badgeText: { fontSize: 12, fontFamily: fonts.semibold, color: colors.orangeText },
   title: {
     marginTop: 10,
     fontSize: 22,
     lineHeight: 27,
-    fontWeight: '700',
+    fontFamily: fonts.display,
     letterSpacing: -0.4,
     color: colors.text,
   },
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     fontSize: 19,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: colors.orangeText,
     fontVariant: ['tabular-nums'],
   },

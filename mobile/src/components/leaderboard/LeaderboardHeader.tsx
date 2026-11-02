@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Defs, Ellipse, G, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 
 const GOLD = '#E9B949';
 const GOLD_DEEP = '#C9922B';
@@ -58,5 +58,5 @@ export function LeaderboardHeader() {
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center' },
-  title: { marginTop: 2, fontSize: 30, fontWeight: '800', color: colors.text, letterSpacing: -0.8 },
+  title: { marginTop: 2, fontSize: 30, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.8 },
 });

@@ -8,7 +8,7 @@ import { ProfileStats } from '../components/ProfileStats';
 import { WishlistDeck } from '../components/WishlistDeck';
 import { mockPeople } from '../data/mockPeople';
 import { mockRequests } from '../data/mockRequests';
-import { colors, radius, shadow } from '../theme';
+import { colors, fonts, radius, shadow } from '../theme';
 
 const IMAGE_INSET = 8;
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 12,
     fontSize: 28,
-    fontWeight: '700',
+    fontFamily: fonts.display,
     letterSpacing: -0.5,
     color: colors.text,
   },
@@ -88,15 +88,15 @@ const styles = StyleSheet.create({
   },
   image: { width: '100%', aspectRatio: 1 },
   stats: { paddingHorizontal: 4, paddingTop: 18 },
-  disclaimer: { marginTop: 10, fontSize: 12, color: colors.textMuted, textAlign: 'center' },
+  disclaimer: { marginTop: 10, fontSize: 12, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
   wishlistTitle: {
     paddingHorizontal: 18,
     paddingTop: 20,
     paddingBottom: 4,
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: fonts.display,
     letterSpacing: -0.3,
     color: colors.text,
   },
-  missing: { marginTop: 48, fontSize: 15, color: colors.textMuted, textAlign: 'center' },
+  missing: { marginTop: 48, fontSize: 15, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
 });

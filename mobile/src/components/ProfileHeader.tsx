@@ -2,7 +2,7 @@ import { Settings } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { UserProfile } from '../types';
 import { ProfileAvatar } from './ProfileAvatar';
 
@@ -46,5 +46,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  username: { marginTop: 14, fontSize: 24, fontWeight: '700', color: colors.text, letterSpacing: -0.4 },
+  username: { marginTop: 14, fontSize: 24, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.4 },
 });

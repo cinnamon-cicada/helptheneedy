@@ -1,7 +1,7 @@
 import { FileText, Gift } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { ActivityRecord } from '../types';
 import { formatCents, formatTimeAgo } from '../utils/format';
 
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
   },
   text: { flex: 1 },
-  description: { fontSize: 14.5, fontWeight: '500', color: colors.text },
-  time: { marginTop: 2, fontSize: 12.5, color: colors.textMuted },
+  description: { fontSize: 14.5, fontFamily: fonts.medium, color: colors.text },
+  time: { marginTop: 2, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted },
 });

@@ -1,7 +1,7 @@
 import { CreditCard, type LucideIcon, Smartphone, Wallet } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE, radius } from '../../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../../theme';
 
 const PROVIDERS: { name: string; Icon: LucideIcon }[] = [
   { name: 'PayPal', Icon: Wallet },
@@ -49,8 +49,8 @@ export function PaymentPlaceholders() {
 
 const styles = StyleSheet.create({
   section: { gap: 14 },
-  title: { fontSize: 16.5, fontWeight: '700', color: colors.text, letterSpacing: -0.2 },
-  subtitle: { marginTop: 4, fontSize: 13.5, color: colors.textMuted },
+  title: { fontSize: 16.5, fontFamily: fonts.bold, color: colors.text, letterSpacing: -0.2 },
+  subtitle: { marginTop: 4, fontSize: 13.5, fontFamily: fonts.regular, color: colors.textMuted },
   list: {
     borderRadius: radius.field + 2,
     borderWidth: 1,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  name: { flex: 1, fontSize: 15, fontWeight: '500', color: colors.textMuted },
+  name: { flex: 1, fontSize: 15, fontFamily: fonts.medium, color: colors.textMuted },
   pill: {
     paddingHorizontal: 10,
     height: 26,
@@ -76,5 +76,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
     justifyContent: 'center',
   },
-  pillText: { fontSize: 12, fontWeight: '600', color: colors.orangeText },
+  pillText: { fontSize: 12, fontFamily: fonts.semibold, color: colors.orangeText },
 });

@@ -10,7 +10,7 @@ import {
   normalizeUsername,
   validateSignup,
 } from '../../auth/validation';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 import { Chip, PrimaryButton } from '../ui';
 import { Checkbox, FormNotice, PasswordField, TextField, type TextInputInstance, fieldStyles } from './fields';
 import { authFormStyles } from './LoginForm';
@@ -258,9 +258,9 @@ export function SignupForm({ service, signals, initialEmail = '', onLogIn, onAut
 const styles = StyleSheet.create({
   form: { gap: 18 },
   group: { gap: 9 },
-  groupLabel: { fontSize: 13.5, fontWeight: '600', color: colors.text, letterSpacing: 0.1 },
+  groupLabel: { fontSize: 13.5, fontFamily: fonts.semibold, color: colors.text, letterSpacing: 0.1 },
   chips: { flexDirection: 'row', gap: 8 },
   chip: { flex: 1 },
-  error: { fontSize: 12.5, lineHeight: 17, color: colors.error, fontWeight: '500' },
+  error: { fontSize: 12.5, lineHeight: 17, color: colors.error, fontFamily: fonts.medium },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: 4 },
 });

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { formatMetric } from '../../leaderboard/copy';
-import { colors, radius, shadow } from '../../theme';
+import { colors, fonts, radius, shadow } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
 
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
     boxShadow: shadow.layer,
   },
   rankBlock: { marginRight: 2 },
-  label: { fontSize: 12, fontWeight: '600', color: colors.textOnPeach },
-  rank: { fontSize: 24, fontWeight: '800', color: colors.text, letterSpacing: -0.5, fontVariant: ['tabular-nums'] },
-  alias: { flex: 1, fontSize: 14.5, fontWeight: '700', color: colors.text },
+  label: { fontSize: 12, fontFamily: fonts.semibold, color: colors.textOnPeach },
+  rank: { fontSize: 24, fontFamily: fonts.bold, color: colors.text, letterSpacing: -0.5, fontVariant: ['tabular-nums'] },
+  alias: { flex: 1, fontSize: 14.5, fontFamily: fonts.bold, color: colors.text },
   // Wraps rather than squeezing the alias when the metric is long.
-  metric: { maxWidth: '30%', fontSize: 14, fontWeight: '700', color: colors.orangeText, textAlign: 'right', fontVariant: ['tabular-nums'] },
+  metric: { maxWidth: '30%', fontSize: 14, fontFamily: fonts.bold, color: colors.orangeText, textAlign: 'right', fontVariant: ['tabular-nums'] },
   text: { flex: 1 },
-  unranked: { marginTop: 2, fontSize: 16, fontWeight: '700', color: colors.text },
-  hint: { marginTop: 2, fontSize: 13, color: colors.textOnPeach },
+  unranked: { marginTop: 2, fontSize: 16, fontFamily: fonts.bold, color: colors.text },
+  hint: { marginTop: 2, fontSize: 13, fontFamily: fonts.regular, color: colors.textOnPeach },
 });

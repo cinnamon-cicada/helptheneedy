@@ -14,7 +14,7 @@ import { YourRankSummary } from '../components/leaderboard/YourRankSummary';
 import { LEADERBOARD_USERS, MOCK_TRANSACTIONS, MY_LEADERBOARD_ID } from '../data/mockLeaderboard';
 import { describeBoard } from '../leaderboard/copy';
 import { computeLeaderboard, findRow } from '../leaderboard/ranking';
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { LeaderboardRow, RankingCategory, RankingPeriod } from '../types';
 
 const CONTENT_MAX_W = 520;
@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
   column: { width: '100%', maxWidth: CONTENT_MAX_W, alignSelf: 'center', gap: 16 },
   filters: { gap: 10, marginTop: 4 },
   description: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingHorizontal: 8 },
-  descriptionText: { flexShrink: 1, fontSize: 14, color: colors.textMuted, textAlign: 'center' },
-  footnote: { fontSize: 12, color: colors.textFaint, textAlign: 'center' },
+  descriptionText: { flexShrink: 1, fontSize: 14, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
+  footnote: { fontSize: 12, fontFamily: fonts.regular, color: colors.textFaint, textAlign: 'center' },
 });

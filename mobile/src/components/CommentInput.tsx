@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { ME } from '../data/mockRequests';
-import { colors, ICON_STROKE, radius } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import { Avatar } from './Avatar';
 
 export type TextInputHandle = React.ComponentRef<typeof TextInput>;
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
     paddingRight: 6,
   },
   fieldFocused: { borderColor: colors.yellow },
-  input: { flex: 1, fontSize: 14.5, color: colors.text, paddingVertical: 0, outlineWidth: 0 },
+  input: { flex: 1, fontSize: 14.5, fontFamily: fonts.regular, color: colors.text, paddingVertical: 0, outlineWidth: 0 },
   send: { width: 34, height: 34, alignItems: 'center', justifyContent: 'center' },
 });

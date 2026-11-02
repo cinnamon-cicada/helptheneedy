@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ActivityRow } from '../components/ActivityRow';
 import { SubScreen } from '../components/SubScreen';
 import { MOCK_ACTIVITY } from '../data/mockProfile';
-import { colors, radius, shadow } from '../theme';
+import { colors, fonts, radius, shadow } from '../theme';
 
 export function ActivityScreen() {
   return (
@@ -28,5 +28,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     boxShadow: shadow.layer,
   },
-  note: { marginTop: 14, fontSize: 12.5, color: colors.textMuted, textAlign: 'center' },
+  note: { marginTop: 14, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
 });

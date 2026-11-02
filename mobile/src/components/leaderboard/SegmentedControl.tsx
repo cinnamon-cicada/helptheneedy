@@ -3,7 +3,7 @@ import { type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { CATEGORY_LABELS, PERIOD_LABELS } from '../../leaderboard/copy';
-import { colors, radius } from '../../theme';
+import { colors, fonts, radius } from '../../theme';
 import type { RankingCategory, RankingPeriod } from '../../types';
 
 type Props<T extends string> = {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     boxShadow: '0px 3px 10px rgba(234, 166, 71, 0.35)',
   },
   option: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
-  label: { fontSize: 15, fontWeight: '600', color: colors.text },
+  label: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },
   // Dark text on the orange pill: white on #EAA647 is below 3:1 contrast.
-  labelSelected: { fontWeight: '700', color: colors.text },
+  labelSelected: { fontFamily: fonts.bold, color: colors.text },
 });

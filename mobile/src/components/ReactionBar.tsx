@@ -1,7 +1,7 @@
 import { Heart, MessageCircle, Sparkles } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { Reactions } from '../types';
 import { formatCompact } from '../utils/format';
 
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.6, transform: [{ scale: 0.96 }] },
   count: {
     fontSize: 13,
-    fontWeight: '600',
+    fontFamily: fonts.semibold,
     color: colors.textMuted,
     fontVariant: ['tabular-nums'],
   },

@@ -8,7 +8,7 @@ import { Avatar } from '../components/Avatar';
 import { BottomNavigation, useBottomNavSpace } from '../components/BottomNavigation';
 import { BottomSheet } from '../components/BottomSheet';
 import { mockPeople } from '../data/mockPeople';
-import { colors, ICON_STROKE, radius } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { Person } from '../types';
 
 export function FriendsScreen() {
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  searchInput: { flex: 1, height: '100%', fontSize: 16, color: colors.text },
-  empty: { marginTop: 32, fontSize: 15, color: colors.textMuted, textAlign: 'center' },
+  searchInput: { flex: 1, height: '100%', fontSize: 16, fontFamily: fonts.regular, color: colors.text },
+  empty: { marginTop: 32, fontSize: 15, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
   row: {
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   person: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 14 },
-  name: { flexShrink: 1, fontSize: 17, fontWeight: '600', color: colors.text },
+  name: { flexShrink: 1, fontSize: 17, fontFamily: fonts.semibold, color: colors.text },
   more: { width: 40, height: 40, marginRight: -8, alignItems: 'center', justifyContent: 'center' },
   action: { height: 54, justifyContent: 'center' },
-  actionText: { fontSize: 16.5, fontWeight: '600', color: colors.text },
+  actionText: { fontSize: 16.5, fontFamily: fonts.semibold, color: colors.text },
 });

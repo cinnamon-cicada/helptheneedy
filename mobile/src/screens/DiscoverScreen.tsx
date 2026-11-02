@@ -10,7 +10,7 @@ import { GiftAmountBottomSheet } from '../components/GiftAmountBottomSheet';
 import { SwipeCardDeck, type SwipeCardDeckHandle } from '../components/SwipeCardDeck';
 import { PrimaryButton, TextButton } from '../components/ui';
 import { DEFAULT_FILTERS, useDiscoverState } from '../state/useDiscoverState';
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { GiftRequest } from '../types';
 
 export function DiscoverScreen() {
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  emptyTitle: { fontSize: 19, fontWeight: '700', color: colors.text, textAlign: 'center', letterSpacing: -0.3 },
-  emptyBody: { marginTop: 6, fontSize: 14.5, color: colors.textMuted, textAlign: 'center' },
+  emptyTitle: { fontSize: 19, fontFamily: fonts.display, color: colors.text, textAlign: 'center', letterSpacing: -0.3 },
+  emptyBody: { marginTop: 6, fontSize: 14.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
   emptyAction: { marginTop: 18, alignSelf: 'stretch' },
 });

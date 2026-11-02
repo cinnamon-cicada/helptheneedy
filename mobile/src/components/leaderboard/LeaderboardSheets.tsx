@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CATEGORY_LABELS, PERIOD_LABELS, formatMetric } from '../../leaderboard/copy';
-import { colors, radius } from '../../theme';
+import { colors, fonts, radius } from '../../theme';
 import type { LeaderboardRow, RankingCategory, RankingPeriod } from '../../types';
 import { BottomSheet } from '../BottomSheet';
 import { PrimaryButton } from '../ui';
@@ -73,14 +73,14 @@ export function ProfilePreviewSheet({ row, visible, category, period, isMe, onCl
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 20, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
+  title: { fontSize: 20, fontFamily: fonts.bold, color: colors.text, letterSpacing: -0.3 },
   rules: { marginTop: 14, gap: 12 },
   rule: { gap: 2 },
-  term: { fontSize: 14.5, fontWeight: '700', color: colors.text },
-  detail: { fontSize: 14, lineHeight: 20, color: colors.textMuted },
-  note: { marginTop: 16, marginBottom: 18, fontSize: 13, lineHeight: 19, color: colors.textMuted, textAlign: 'center' },
+  term: { fontSize: 14.5, fontFamily: fonts.bold, color: colors.text },
+  detail: { fontSize: 14, fontFamily: fonts.regular, lineHeight: 20, color: colors.textMuted },
+  note: { marginTop: 16, marginBottom: 18, fontSize: 13, fontFamily: fonts.regular, lineHeight: 19, color: colors.textMuted, textAlign: 'center' },
   preview: { alignItems: 'center', paddingTop: 4 },
-  alias: { marginTop: 10, fontSize: 20, fontWeight: '700', color: colors.text },
+  alias: { marginTop: 10, fontSize: 20, fontFamily: fonts.bold, color: colors.text },
   stat: {
     marginTop: 14,
     alignSelf: 'stretch',
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.rankCardBorder,
   },
-  statRank: { fontSize: 26, fontWeight: '800', color: colors.text },
-  statLabel: { marginTop: 2, fontSize: 13, color: colors.textOnPeach },
-  statValue: { marginTop: 6, fontSize: 15, fontWeight: '700', color: colors.orangeText },
+  statRank: { fontSize: 26, fontFamily: fonts.bold, color: colors.text },
+  statLabel: { marginTop: 2, fontSize: 13, fontFamily: fonts.regular, color: colors.textOnPeach },
+  statValue: { marginTop: 6, fontSize: 15, fontFamily: fonts.bold, color: colors.orangeText },
   action: { alignSelf: 'stretch' },
 });

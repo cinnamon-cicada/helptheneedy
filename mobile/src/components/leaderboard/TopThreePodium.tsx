@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { formatMetric } from '../../leaderboard/copy';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
 
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  medalText: { fontSize: 12.5, fontWeight: '800', color: colors.text },
+  medalText: { fontSize: 12.5, fontFamily: fonts.bold, color: colors.text },
   block: {
     alignSelf: 'stretch',
     marginTop: 16,
@@ -140,13 +140,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     boxShadow: '0px 8px 20px rgba(138, 90, 43, 0.10)',
   },
-  name: { fontSize: 14, fontWeight: '700', color: colors.text },
+  name: { fontSize: 14, fontFamily: fonts.bold, color: colors.text },
   nameFirst: { fontSize: 15 },
   nameCompact: { fontSize: 12.5 },
   value: {
     marginTop: 3,
     fontSize: 12.5,
-    fontWeight: '600',
+    fontFamily: fonts.semibold,
     color: colors.text,
     opacity: 0.75,
     textAlign: 'center',

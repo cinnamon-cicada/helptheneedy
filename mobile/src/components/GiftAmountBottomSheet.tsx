@@ -2,7 +2,7 @@ import { Check, EyeOff } from 'lucide-react-native';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
-import { colors, ICON_STROKE, radius } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { Avatar } from './Avatar';
@@ -181,8 +181,8 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   headerText: { flex: 1, gap: 2 },
-  title: { fontSize: 19, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
-  subtitle: { fontSize: 14, color: colors.textMuted },
+  title: { fontSize: 19, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
+  subtitle: { fontSize: 14, fontFamily: fonts.regular, color: colors.textMuted },
   askPill: {
     alignItems: 'flex-end',
     paddingHorizontal: 12,
@@ -190,9 +190,9 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: colors.orangeSoft,
   },
-  askLabel: { fontSize: 11, fontWeight: '600', color: colors.textMuted },
-  askAmount: { fontSize: 15, fontWeight: '700', color: colors.orangeText, fontVariant: ['tabular-nums'] },
-  sectionLabel: { marginTop: 22, marginBottom: 10, fontSize: 13, fontWeight: '600', color: colors.textMuted },
+  askLabel: { fontSize: 11, fontFamily: fonts.semibold, color: colors.textMuted },
+  askAmount: { fontSize: 15, fontFamily: fonts.bold, color: colors.orangeText, fontVariant: ['tabular-nums'] },
+  sectionLabel: { marginTop: 22, marginBottom: 10, fontSize: 13, fontFamily: fonts.semibold, color: colors.textMuted },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   customField: {
     marginTop: 12,
@@ -206,9 +206,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   customFieldError: { borderColor: colors.skip },
-  currency: { fontSize: 20, fontWeight: '600', color: colors.textMuted, marginRight: 4 },
-  customInput: { flex: 1, fontSize: 20, fontWeight: '600', color: colors.text, paddingVertical: 0, outlineWidth: 0 },
-  error: { marginTop: 6, fontSize: 12.5, color: colors.skip },
+  currency: { fontSize: 20, fontFamily: fonts.semibold, color: colors.textMuted, marginRight: 4 },
+  customInput: { flex: 1, fontSize: 20, fontFamily: fonts.semibold, color: colors.text, paddingVertical: 0, outlineWidth: 0 },
+  error: { marginTop: 6, fontSize: 12.5, fontFamily: fonts.regular, color: colors.skip },
   anonRow: {
     marginTop: 20,
     marginBottom: 20,
@@ -230,9 +230,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   anonText: { flex: 1, gap: 2 },
-  anonTitle: { fontSize: 15, fontWeight: '600', color: colors.text },
-  anonBody: { fontSize: 12.5, lineHeight: 17, color: colors.textMuted },
-  footnote: { marginTop: 12, fontSize: 12, color: colors.textFaint, textAlign: 'center' },
+  anonTitle: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },
+  anonBody: { fontSize: 12.5, fontFamily: fonts.regular, lineHeight: 17, color: colors.textMuted },
+  footnote: { marginTop: 12, fontSize: 12, fontFamily: fonts.regular, color: colors.textFaint, textAlign: 'center' },
   done: { alignItems: 'center', paddingTop: 8 },
   doneBadge: {
     width: 68,
@@ -243,10 +243,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  doneTitle: { fontSize: 20, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
+  doneTitle: { fontSize: 20, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
   doneBody: {
     marginTop: 8,
-    fontSize: 14.5,
+    fontSize: 14.5, fontFamily: fonts.regular,
     lineHeight: 21,
     color: colors.textMuted,
     textAlign: 'center',

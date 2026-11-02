@@ -25,7 +25,8 @@
       "expo-image",
       "expo-sqlite",
       "expo-asset",
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "backgroundColor": "#FFFAF4",
     "scheme": "helptheneedy"

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { SAMPLE_AVATARS } from '../data/mockProfile';
-import { colors, radius } from '../theme';
+import { colors, fonts, radius } from '../theme';
 import type { UserProfile } from '../types';
 import { Avatar } from './Avatar';
 import { BottomSheet } from './BottomSheet';
@@ -69,10 +69,10 @@ export function EditProfileModal({ visible, profile, onSave, onClose }: Props) {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 19, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
+  title: { fontSize: 19, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
   photoRow: { marginTop: 16, flexDirection: 'row', alignItems: 'center', gap: 14 },
-  photoAction: { fontSize: 14.5, fontWeight: '600', color: colors.orangeText },
-  label: { marginTop: 16, marginBottom: 6, fontSize: 13, fontWeight: '600', color: colors.textMuted },
+  photoAction: { fontSize: 14.5, fontFamily: fonts.semibold, color: colors.orangeText },
+  label: { marginTop: 16, marginBottom: 6, fontSize: 13, fontFamily: fonts.semibold, color: colors.textMuted },
   input: {
     minHeight: 46,
     paddingHorizontal: 16,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.background,
-    fontSize: 15.5,
+    fontSize: 15.5, fontFamily: fonts.regular,
     color: colors.text,
   },
   action: { marginTop: 20 },
