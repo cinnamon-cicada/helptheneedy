@@ -16,6 +16,7 @@ import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { LAYER_POSES, type Rect } from './CardStackLayer';
 import { ExpandedCardContent } from './ExpandedCardContent';
+import { PhotoStage } from './post/PhotoStage';
 
 /** Height of the info block under the image in the collapsed card. */
 export const INFO_HEIGHT = 128;
@@ -160,21 +161,38 @@ export function GiftRequestCard({
           <View collapsable={false}>
             <Animated.View style={[styles.imageWrap, imageStyle]}>
               <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                <Image
-                  source={{ uri: request.imageUrl }}
-                  style={StyleSheet.absoluteFill}
-                  contentFit="cover"
-                  transition={200}
-                  accessibilityLabel={request.title}
-                />
+                {request.postPhoto ? (
+                  <PhotoStage
+                    {...request.postPhoto}
+                    fit="cover"
+                    style={StyleSheet.absoluteFill}
+                    accessibilityLabel={request.title}
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: request.imageUrl }}
+                    style={StyleSheet.absoluteFill}
+                    contentFit="cover"
+                    transition={200}
+                    accessibilityLabel={request.title}
+                  />
+                )}
               </View>
+              {request.isMine ? (
+                <View pointerEvents="none" style={styles.mine}>
+                  <Text style={styles.mineText}>Your wish</Text>
+                </View>
+              ) : null}
               <Animated.View pointerEvents="none" style={[styles.grabber, revealStyle]} />
               <Animated.View pointerEvents="none" style={[styles.indicator, styles.skipIndicator, skipIndicatorStyle]}>
                 <X size={30} color={colors.skip} strokeWidth={2.25} />
               </Animated.View>
-              <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
-                <Gift size={28} color={colors.orange} strokeWidth={2} />
-              </Animated.View>
+              {/* Your own wish can't be gifted, so a right swipe just moves past it. */}
+              {request.isMine ? null : (
+                <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
+                  <Gift size={28} color={colors.orange} strokeWidth={2} />
+                </Animated.View>
+              )}
             </Animated.View>
 
             <View style={[styles.info, !expanded && styles.infoCollapsed]}>
@@ -213,6 +231,7 @@ export function GiftRequestCard({
 
               <View style={styles.amountRow}>
                 <Text style={styles.amount}>{formatCents(request.amountCents)}</Text>
+                {request.isMine ? null : (
                 <Pressable
                   onPress={onToggleSave}
                   hitSlop={12}
@@ -228,6 +247,7 @@ export function GiftRequestCard({
                     fill={request.saved ? colors.orange : 'transparent'}
                   />
                 </Pressable>
+                )}
               </View>
             </View>
           </View>
@@ -301,6 +321,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(253, 232, 236, 0.94)',
     borderColor: 'rgba(229, 86, 107, 0.35)',
   },
+  mine: {
+    position: 'absolute',
+    top: 14,
+    left: 14,
+    paddingHorizontal: 12,
+    height: 30,
+    borderRadius: radius.pill,
+    backgroundColor: 'rgba(255, 253, 249, 0.94)',
+    borderWidth: 1,
+    borderColor: 'rgba(234, 166, 71, 0.45)',
+    justifyContent: 'center',
+  },
+  mineText: { fontSize: 13, fontFamily: fonts.bold, color: colors.orangeText },
   giftIndicator: {
     left: 18,
     backgroundColor: 'rgba(255, 250, 244, 0.95)',

@@ -5,6 +5,7 @@ import { colors, fonts } from '../theme';
 import type { GiftRequest } from '../types';
 import { CommentInput, type TextInputHandle } from './CommentInput';
 import { CommentList } from './CommentList';
+import { RichText } from './post/RichText';
 import { ReactionBar } from './ReactionBar';
 
 type Props = {
@@ -49,7 +50,7 @@ export function ExpandedCardContent({
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.description}>{request.description}</Text>
+        <RichText text={request.description} style={styles.description} />
 
         <View style={styles.reactions}>
           <ReactionBar

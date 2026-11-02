@@ -26,7 +26,23 @@
       "expo-sqlite",
       "expo-asset",
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow poki to use your camera so you can photograph what you're wishing for.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow poki to open your photos so you can choose a picture for your wish.",
+          "cameraPermission": "Allow poki to use your camera so you can photograph what you're wishing for.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "backgroundColor": "#FFFAF4",
     "scheme": "helptheneedy"

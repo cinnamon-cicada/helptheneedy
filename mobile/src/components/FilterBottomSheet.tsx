@@ -7,7 +7,7 @@ import type { Category, Filters } from '../types';
 import { BottomSheet } from './BottomSheet';
 import { Chip, PrimaryButton, TextButton } from './ui';
 
-const CATEGORY_ORDER: Category[] = ['Food', 'Product', 'Bills', 'School', 'Celebration'];
+export const CATEGORY_ORDER: Category[] = ['Food', 'Product', 'Bills', 'School', 'Celebration'];
 
 const AMOUNTS: { label: string; cents: number | null }[] = [
   { label: 'Any amount', cents: null },

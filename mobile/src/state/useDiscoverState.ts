@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { ME, mockRequests } from '../data/mockRequests';
+import { useMyPosts } from '../post/MyPostsContext';
+import { toGiftRequest } from '../post/toGiftRequest';
 import type { Comment, Filters, GiftRequest } from '../types';
 
 export const DEFAULT_FILTERS: Filters = { category: 'All', maxAmountCents: null };
@@ -12,7 +14,20 @@ type ReactionKind = 'hearts' | 'sparkles';
  * no network, no payments. Animation state stays in the card components.
  */
 export function useDiscoverState() {
-  const [requests, setRequests] = useState<GiftRequest[]>(mockRequests);
+  const [others, setOthers] = useState<GiftRequest[]>(mockRequests);
+  // Wishes you posted go to the front of the deck. Reactions and comments on
+  // them are kept here, keyed by id, since the posts themselves live elsewhere.
+  const { posts } = useMyPosts();
+  const [mineEdits, setMineEdits] = useState<Record<string, GiftRequest>>({});
+  const mine = useMemo(
+    () =>
+      posts.flatMap((p) => {
+        const card = toGiftRequest(p);
+        return card ? [mineEdits[card.id] ?? card] : [];
+      }),
+    [posts, mineEdits],
+  );
+  const requests = useMemo(() => [...mine, ...others], [mine, others]);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   // IDs the user has swiped past or gifted, in order.
   const [handledIds, setHandledIds] = useState<string[]>([]);
@@ -37,9 +52,14 @@ export function useDiscoverState() {
   const filtersActive =
     filters.category !== DEFAULT_FILTERS.category || filters.maxAmountCents !== DEFAULT_FILTERS.maxAmountCents;
 
-  const updateRequest = useCallback((id: string, fn: (r: GiftRequest) => GiftRequest) => {
-    setRequests((prev) => prev.map((r) => (r.id === id ? fn(r) : r)));
-  }, []);
+  const updateRequest = useCallback(
+    (id: string, fn: (r: GiftRequest) => GiftRequest) => {
+      const own = mine.find((r) => r.id === id);
+      if (own) setMineEdits((prev) => ({ ...prev, [id]: fn(prev[id] ?? own) }));
+      else setOthers((prev) => prev.map((r) => (r.id === id ? fn(r) : r)));
+    },
+    [mine],
+  );
 
   const markHandled = useCallback((id: string) => {
     setHandledIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
