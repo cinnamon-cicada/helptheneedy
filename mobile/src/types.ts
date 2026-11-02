@@ -63,10 +63,53 @@ export type ProfileListItem = {
   detail: string;
 };
 
-export type LeaderboardEntry = {
+/** Most Gifted sums confirmed cents; Most Helped counts distinct recipients. */
+export type RankingCategory = 'gifted' | 'helped';
+/** Matches the backend's `month` and `all_time` periods. */
+export type RankingPeriod = 'monthly' | 'overall';
+
+export type AvatarIcon =
+  | 'sun' | 'moon' | 'star' | 'leaf' | 'flower' | 'coffee' | 'heart' | 'cloud'
+  | 'sparkles' | 'gift' | 'feather' | 'cherry' | 'bird' | 'sprout' | 'music' | 'cookie';
+
+/** Public avatars are illustrations unless the person chose a photo. */
+export type AliasAvatarSpec =
+  | { kind: 'photo'; uri: string }
+  | { kind: 'icon'; icon: AvatarIcon; background: string; foreground: string };
+
+export type LeaderboardUser = {
   id: string;
-  username: string;
-  giftedCents: number;
+  /** Public alias; real names are never shown on the board. */
+  alias: string;
+  avatar: AliasAvatarSpec;
+  /** The member's own opt-out (`on_gifted_board` in the backend). */
+  isLeaderboardVisible: boolean;
+  /** Set by moderators (`leaderboard_excluded`). */
+  leaderboardExcluded: boolean;
+};
+
+/** Mirrors the backend `gift_status` enum. */
+export type GiftStatus = 'pending' | 'confirmed' | 'disputed' | 'cancelled';
+
+export type GiftTransaction = {
+  id: string;
+  gifterId: string;
+  recipientId: string;
+  /** Money is always integer cents. */
+  amountCents: number;
+  status: GiftStatus;
+  /** ISO time the receiver confirmed it; null unless confirmed. */
+  confirmedAt: string | null;
+  /** Seeded or test data that must never count. */
+  isTest: boolean;
+};
+
+export type LeaderboardRow = {
+  user: LeaderboardUser;
+  /** Ties share a rank, as in the backend's get_leaderboard. */
+  rank: number;
+  /** Cents for Most Gifted, a head count for Most Helped. */
+  value: number;
 };
 
 export type MyRank = {
