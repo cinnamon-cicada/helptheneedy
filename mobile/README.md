@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, the Leaderboard, and the Create Post flow, all running on local mock data. It doesn't call Supabase and doesn't process payments. A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, the Leaderboard, and the Create Post flow, all running on local mock data. It doesn't call Supabase and doesn't process payments. A demo mode saves a play-money balance and your profile on the device; see [Demo mode](#demo-mode). A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
 
 ## Run it
 
@@ -56,7 +56,7 @@ Accounts are kept in memory by `createMockAuthService` and reset when the app re
 | --- | --- |
 | Drag left past the threshold | Skips the card, and the next one moves forward |
 | Drag right past the threshold | Parks the card and opens the gift sheet. Dismissing the sheet returns the card; finishing the flow advances the deck |
-| Drag down | Expands the card to show the category, description, reactions and comments |
+| Drag down, or tap the image, title or amount | Expands the card to show the category, description, reactions and comments |
 | Drag up on the expanded header | Collapses the card |
 | Tap the bookmark | Saves or unsaves the request without advancing the deck |
 | Tap the avatar | Opens that person's profile card |
@@ -67,11 +67,26 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 
 | Control | Result |
 | --- | --- |
-| Avatar pencil | Opens the Edit Profile sheet; saves to local state only and resets on reload |
-| Settings gear | Opens a placeholder screen |
+| Avatar pencil | Opens the Edit Profile sheet; saves on this device and survives a reload |
+| Settings gear | Opens Settings, which can reset the demo |
 | Your Rank card | Shows your Most Gifted rank this month; opens the Leaderboard |
 | Shortcut tiles | Expand into a window with a simple mock list; tap the X or outside it to close |
+| A list or activity row | Opens the full request card, grown out of the row; tap outside it to close |
 | View All | Opens a longer mock activity list |
+
+## Demo mode
+
+For demos, the app keeps a little state on the device under the `htn.demo.v1` key. On web that's the browser's `localStorage`. On iOS and Android, `expo-sqlite` provides the same API. None of it reaches Supabase.
+
+| What | Behavior |
+| --- | --- |
+| Balance | Everyone starts with $1,000 of play money, shown as plain text in the top left of Discover |
+| Gifting | A gift comes out of the balance. The sheet won't let you give more than the request asks for or more than you have left |
+| Profile | Username and photo edits are saved, and new comments use them |
+| Totals and activity | Demo gifts are added to the mock Total Gifted, People Helped, Activity and Gifts Sent |
+| Reset | Settings > Reset demo clears the saved state and sets the balance back to $1,000 |
+
+Reactions, saves, comments, follows and posts still reset on reload.
 
 ## Friends screen
 
@@ -79,7 +94,7 @@ The People tab lists everyone you follow or who follows you. Search filters by n
 
 ## Public profile card
 
-`/user/[id]` shows a person's name, photo, stats, and wishlist. A dash means they keep their total private. The wishlist is a simplified Discover deck: swipe either way to see the next wish. It has no gifting, saving, or expanding.
+`/user/[id]` shows a person's name, photo, stats, and wishlist. A dash means they keep their total private. The wishlist is a simplified Discover deck: swipe either way to see the next wish. Tapping the front wish opens its full card, and tapping outside shrinks it back onto the pile. It has no gifting or saving.
 
 ## Leaderboard
 

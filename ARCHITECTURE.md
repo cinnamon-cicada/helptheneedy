@@ -2,7 +2,7 @@
 
 helptheneedy is a dating-style mobile app that matches gifters with receivers. The client is React Native with Expo, and the backend is Supabase with TypeScript.
 
-**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` has Discover and Profile screen prototypes that run on mock data, and a Supabase client in `src/lib/supabase.ts` that no screen uses yet; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
+**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` has Discover and Profile screen prototypes that run on mock data, and a Supabase client in `src/lib/supabase.ts` that no screen uses yet. For demos it saves a $1,000 play-money balance, gifts and profile edits on the device only; that balance is never real money and never reaches the backend; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
 
 See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order, and testing requirements.
 
@@ -10,7 +10,7 @@ See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order
 
 - The app never does not handle or move money, for now.
 - Only a receiver's confirmation counts a gift toward post progress and leaderboards.
-- Store money as integer cents, and label totals as reported by members, not verified.
+- Store money as integer cents. Gift totals are reported by members, so never describe them as verified payments.
 - Enable Row Level Security (RLS) on every table. Clients read through RLS and write through RPCs.
 - RPCs derive the user from `auth.uid()`, never from an argument.
 - Blocks apply in both directions across every feed, search, request, and friend list.

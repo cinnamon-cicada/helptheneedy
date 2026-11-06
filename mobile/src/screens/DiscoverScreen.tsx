@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BalanceText } from '../components/BalanceText';
 import { BottomNavigation, useBottomNavSpace } from '../components/BottomNavigation';
 import { FilterBottomSheet } from '../components/FilterBottomSheet';
 import { GiftAmountBottomSheet } from '../components/GiftAmountBottomSheet';
@@ -79,6 +80,7 @@ export function DiscoverScreen() {
   return (
     <View style={[styles.screen, { paddingTop: insets.top }]}>
       <View style={styles.header}>
+        <BalanceText />
         <Pressable
           onPress={() => setFilterOpen(true)}
           hitSlop={8}
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   filterButton: {
     width: 42,

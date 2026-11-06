@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ME, mockRequests } from '../data/mockRequests';
+import { mockRequests } from '../data/mockRequests';
+import { useDemo } from '../demo/DemoProvider';
 import { useMyPosts } from '../post/MyPostsContext';
 import { toGiftRequest } from '../post/toGiftRequest';
 import type { Comment, Filters, GiftRequest } from '../types';
@@ -14,6 +15,7 @@ type ReactionKind = 'hearts' | 'sparkles';
  * no network, no payments. Animation state stays in the card components.
  */
 export function useDiscoverState() {
+  const { profile: me } = useDemo();
   const [others, setOthers] = useState<GiftRequest[]>(mockRequests);
   // Wishes you posted go to the front of the deck. Reactions and comments on
   // them are kept here, keyed by id, since the posts themselves live elsewhere.
@@ -101,8 +103,8 @@ export function useDiscoverState() {
       if (!trimmed) return;
       const comment: Comment = {
         id: `local-${Date.now()}`,
-        username: ME.username,
-        avatarUrl: ME.avatarUrl,
+        username: me.username,
+        avatarUrl: me.avatarUrl,
         text: trimmed,
         minutesAgo: 0,
         likes: 0,
@@ -110,7 +112,7 @@ export function useDiscoverState() {
       };
       updateRequest(requestId, (r) => ({ ...r, comments: [comment, ...r.comments] }));
     },
-    [updateRequest],
+    [me, updateRequest],
   );
 
   const startOver = useCallback(() => setHandledIds([]), []);

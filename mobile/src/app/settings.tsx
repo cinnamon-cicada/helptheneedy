@@ -1,1 +1,1 @@
-export { SettingsPlaceholder as default } from '../components/SettingsPlaceholder';
+export { SettingsScreen as default } from '../screens/SettingsScreen';

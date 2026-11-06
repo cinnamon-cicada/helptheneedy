@@ -2,7 +2,7 @@ import { SendHorizontal } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { ME } from '../data/mockRequests';
+import { useDemo } from '../demo/DemoProvider';
 import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import { Avatar } from './Avatar';
 
@@ -16,12 +16,13 @@ type Props = {
 };
 
 export function CommentInput({ value, onChangeText, onSubmit, inputRef }: Props) {
+  const { profile: me } = useDemo();
   const [focused, setFocused] = useState(false);
   const canSend = value.trim().length > 0;
 
   return (
     <View style={styles.row}>
-      <Avatar uri={ME.avatarUrl} size={30} />
+      <Avatar uri={me.avatarUrl} size={30} />
       <View style={[styles.field, focused && styles.fieldFocused]}>
         <TextInput
           ref={inputRef}

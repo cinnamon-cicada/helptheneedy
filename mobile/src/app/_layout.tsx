@@ -11,6 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthProvider, useAuth } from '../auth/AuthContext';
+import { DemoProvider } from '../demo/DemoProvider';
 import { MyPostsProvider } from '../post/MyPostsContext';
 import { colors } from '../theme';
 
@@ -32,10 +33,12 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <AuthProvider>
-          <MyPostsProvider>
-            <StatusBar style="dark" />
-            <RootStack />
-          </MyPostsProvider>
+          <DemoProvider>
+            <MyPostsProvider>
+              <StatusBar style="dark" />
+              <RootStack />
+            </MyPostsProvider>
+          </DemoProvider>
         </AuthProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

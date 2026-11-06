@@ -45,7 +45,6 @@ export function UserProfileScreen() {
             </View>
             <View style={styles.stats}>
               <ProfileStats profile={person} />
-              <Text style={styles.disclaimer}>Reported by members, not verified.</Text>
             </View>
             <Text style={styles.wishlistTitle}>Wishlist</Text>
             <WishlistDeck requests={wishlist} />
@@ -88,7 +87,6 @@ const styles = StyleSheet.create({
   },
   image: { width: '100%', aspectRatio: 1 },
   stats: { paddingHorizontal: 4, paddingTop: 18 },
-  disclaimer: { marginTop: 10, fontSize: 12, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
   wishlistTitle: {
     paddingHorizontal: 18,
     paddingTop: 20,
