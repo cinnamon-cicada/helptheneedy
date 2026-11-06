@@ -1,8 +1,9 @@
-import { Check, EyeOff } from 'lucide-react-native';
+import { Check, EyeOff, Wallet } from 'lucide-react-native';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
-import { colors, ICON_STROKE, radius } from '../theme';
+import { STARTING_BALANCE_CENTS, useDemo } from '../demo/DemoProvider';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { Avatar } from './Avatar';
@@ -22,11 +23,11 @@ type Step = 'amount' | 'done';
 
 const MIN_CENTS = 100;
 
-/** Rounds to whole dollars, never below $1. */
-function suggestions(amountCents: number): number[] {
+/** Rounds to whole dollars, never below $1, and drops any above the balance. */
+function suggestions(amountCents: number, balanceCents: number): number[] {
   const round = (cents: number) => Math.max(MIN_CENTS, Math.round(cents / 100) * 100);
   const values = [round(amountCents * 0.25), round(amountCents * 0.5), amountCents];
-  return [...new Set(values)].filter((v) => v <= amountCents);
+  return [...new Set(values)].filter((v) => v <= amountCents && v <= balanceCents);
 }
 
 function parseDollarsToCents(text: string): number | null {
@@ -37,16 +38,20 @@ function parseDollarsToCents(text: string): number | null {
 }
 
 /**
- * Frontend-only gifting flow. Nothing here charges, moves, or records money
- * anywhere outside local component state.
+ * Gifting flow for the demo. Gifts come out of the demo balance, which is play
+ * money saved on this device only. Nothing here charges or moves real money.
  */
 export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete }: Props) {
+  const { balanceCents, sendGift, resetDemo } = useDemo();
   const [step, setStep] = useState<Step>('amount');
   const [selected, setSelected] = useState<number | 'custom'>(0);
   const [customText, setCustomText] = useState('');
   const [anonymous, setAnonymous] = useState(false);
 
-  const options = useMemo(() => (request ? suggestions(request.amountCents) : []), [request]);
+  const options = useMemo(
+    () => (request ? suggestions(request.amountCents, balanceCents) : []),
+    [request, balanceCents],
+  );
 
   const [openedFor, setOpenedFor] = useState<GiftRequest | null>(null);
 
@@ -55,8 +60,9 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
   if (openKey !== openedFor) {
     setOpenedFor(openKey);
     if (openKey) {
+      const fits = suggestions(openKey.amountCents, balanceCents);
       setStep('amount');
-      setSelected(openKey.amountCents);
+      setSelected(fits.includes(openKey.amountCents) ? openKey.amountCents : (fits.at(-1) ?? 'custom'));
       setCustomText('');
       setAnonymous(false);
     }
@@ -65,6 +71,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
   if (!request) return null;
 
   const name = request.recipient.displayName;
+  const maxCents = Math.min(request.amountCents, balanceCents);
   const customCents = parseDollarsToCents(customText);
   const amountCents = selected === 'custom' ? customCents : selected;
   const customError =
@@ -73,11 +80,40 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
         ? 'Enter at least $1.00'
         : customCents > request.amountCents
           ? `Up to ${formatCents(request.amountCents)}, the amount ${name} asked for`
-          : null
+          : customCents > balanceCents
+            ? `You have ${formatCents(balanceCents)} left`
+            : null
       : null;
-  const valid = amountCents !== null && amountCents >= MIN_CENTS && amountCents <= request.amountCents;
+  const valid = amountCents !== null && amountCents >= MIN_CENTS && amountCents <= maxCents;
+
+  const send = () => {
+    if (amountCents !== null && sendGift(request, amountCents, anonymous)) setStep('done');
+  };
 
   const close = step === 'done' ? onComplete : onDismiss;
+
+  if (step === 'amount' && balanceCents < MIN_CENTS) {
+    return (
+      <BottomSheet visible={visible} onClose={onDismiss} accessibilityLabel={`Gift ${name}`}>
+        <View style={styles.done}>
+          <View style={styles.doneBadge}>
+            <Wallet size={28} color={colors.orangeText} strokeWidth={ICON_STROKE} />
+          </View>
+          <Text style={styles.doneTitle}>{"You've used your demo balance"}</Text>
+          <Text style={styles.doneBody}>Reset the demo to start again with $1,000.</Text>
+          <View style={styles.doneButton}>
+            <PrimaryButton
+              label="Reset demo"
+              onPress={() => {
+                resetDemo();
+                setSelected(request.amountCents <= STARTING_BALANCE_CENTS ? request.amountCents : 'custom');
+              }}
+            />
+          </View>
+        </View>
+      </BottomSheet>
+    );
+  }
 
   return (
     <BottomSheet visible={visible} onClose={close} accessibilityLabel={`Gift ${name}`}>
@@ -155,9 +191,11 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           <PrimaryButton
             label={valid && amountCents !== null ? `Continue · ${formatCents(amountCents)}` : 'Continue'}
             disabled={!valid}
-            onPress={() => setStep('done')}
+            onPress={send}
           />
-          <Text style={styles.footnote}>Prototype only. No payment is processed and no money moves.</Text>
+          <Text style={styles.footnote}>
+            {`Demo balance ${formatCents(balanceCents)}. No real payment is processed.`}
+          </Text>
         </View>
       ) : (
         <View style={styles.done}>
@@ -166,9 +204,9 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           </View>
           <Text style={styles.doneTitle}>Thank you for your kindness</Text>
           <Text style={styles.doneBody}>
-            {`Your ${amountCents !== null ? formatCents(amountCents) : ''} gift for ${name}'s "${request.title}" is saved in this prototype${anonymous ? ', anonymously' : ''}.`}
+            {`Your ${amountCents !== null ? formatCents(amountCents) : ''} gift for ${name}'s "${request.title}" is saved${anonymous ? ', anonymously' : ''}. You have ${formatCents(balanceCents)} left.`}
           </Text>
-          <Text style={styles.footnote}>No payment was processed.</Text>
+          <Text style={styles.footnote}>Demo only. No real payment was processed.</Text>
           <View style={styles.doneButton}>
             <PrimaryButton label="Done" onPress={onComplete} />
           </View>
@@ -181,8 +219,8 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   headerText: { flex: 1, gap: 2 },
-  title: { fontSize: 19, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
-  subtitle: { fontSize: 14, color: colors.textMuted },
+  title: { fontSize: 19, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
+  subtitle: { fontSize: 14, fontFamily: fonts.regular, color: colors.textMuted },
   askPill: {
     alignItems: 'flex-end',
     paddingHorizontal: 12,
@@ -190,9 +228,9 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: colors.orangeSoft,
   },
-  askLabel: { fontSize: 11, fontWeight: '600', color: colors.textMuted },
-  askAmount: { fontSize: 15, fontWeight: '700', color: colors.orangeText, fontVariant: ['tabular-nums'] },
-  sectionLabel: { marginTop: 22, marginBottom: 10, fontSize: 13, fontWeight: '600', color: colors.textMuted },
+  askLabel: { fontSize: 11, fontFamily: fonts.semibold, color: colors.textMuted },
+  askAmount: { fontSize: 15, fontFamily: fonts.bold, color: colors.orangeText, fontVariant: ['tabular-nums'] },
+  sectionLabel: { marginTop: 22, marginBottom: 10, fontSize: 13, fontFamily: fonts.semibold, color: colors.textMuted },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   customField: {
     marginTop: 12,
@@ -206,9 +244,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   customFieldError: { borderColor: colors.skip },
-  currency: { fontSize: 20, fontWeight: '600', color: colors.textMuted, marginRight: 4 },
-  customInput: { flex: 1, fontSize: 20, fontWeight: '600', color: colors.text, paddingVertical: 0, outlineWidth: 0 },
-  error: { marginTop: 6, fontSize: 12.5, color: colors.skip },
+  currency: { fontSize: 20, fontFamily: fonts.semibold, color: colors.textMuted, marginRight: 4 },
+  customInput: { flex: 1, fontSize: 20, fontFamily: fonts.semibold, color: colors.text, paddingVertical: 0, outlineWidth: 0 },
+  error: { marginTop: 6, fontSize: 12.5, fontFamily: fonts.regular, color: colors.skip },
   anonRow: {
     marginTop: 20,
     marginBottom: 20,
@@ -230,9 +268,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   anonText: { flex: 1, gap: 2 },
-  anonTitle: { fontSize: 15, fontWeight: '600', color: colors.text },
-  anonBody: { fontSize: 12.5, lineHeight: 17, color: colors.textMuted },
-  footnote: { marginTop: 12, fontSize: 12, color: colors.textFaint, textAlign: 'center' },
+  anonTitle: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },
+  anonBody: { fontSize: 12.5, fontFamily: fonts.regular, lineHeight: 17, color: colors.textMuted },
+  footnote: { marginTop: 12, fontSize: 12, fontFamily: fonts.regular, color: colors.textFaint, textAlign: 'center' },
   done: { alignItems: 'center', paddingTop: 8 },
   doneBadge: {
     width: 68,
@@ -243,10 +281,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  doneTitle: { fontSize: 20, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
+  doneTitle: { fontSize: 20, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
   doneBody: {
     marginTop: 8,
-    fontSize: 14.5,
+    fontSize: 14.5, fontFamily: fonts.regular,
     lineHeight: 21,
     color: colors.textMuted,
     textAlign: 'center',

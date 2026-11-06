@@ -1,15 +1,17 @@
+import { router } from 'expo-router';
 import { Gift, SlidersHorizontal } from 'lucide-react-native';
 import { useCallback, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { BalanceText } from '../components/BalanceText';
 import { BottomNavigation, useBottomNavSpace } from '../components/BottomNavigation';
 import { FilterBottomSheet } from '../components/FilterBottomSheet';
 import { GiftAmountBottomSheet } from '../components/GiftAmountBottomSheet';
 import { SwipeCardDeck, type SwipeCardDeckHandle } from '../components/SwipeCardDeck';
 import { PrimaryButton, TextButton } from '../components/ui';
 import { DEFAULT_FILTERS, useDiscoverState } from '../state/useDiscoverState';
-import { colors, ICON_STROKE } from '../theme';
+import { colors, fonts, ICON_STROKE } from '../theme';
 import type { GiftRequest } from '../types';
 
 export function DiscoverScreen() {
@@ -40,8 +42,9 @@ export function DiscoverScreen() {
     deckRef.current?.completeGift();
   }, []);
 
-  // Tapping the avatar is reserved for profile navigation, which isn't built yet.
-  const openProfile = useCallback((_request: GiftRequest) => {}, []);
+  const openProfile = useCallback((request: GiftRequest) => {
+    router.push(`/user/${request.recipient.id}`);
+  }, []);
 
   const emptyState = (
     <View style={styles.empty}>
@@ -71,6 +74,7 @@ export function DiscoverScreen() {
   return (
     <View style={[styles.screen, { paddingTop: insets.top }]}>
       <View style={styles.header}>
+        <BalanceText />
         <Pressable
           onPress={() => setFilterOpen(true)}
           hitSlop={8}
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   filterButton: {
     width: 42,
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 16,
   },
-  emptyTitle: { fontSize: 19, fontWeight: '700', color: colors.text, textAlign: 'center', letterSpacing: -0.3 },
-  emptyBody: { marginTop: 6, fontSize: 14.5, color: colors.textMuted, textAlign: 'center' },
+  emptyTitle: { fontSize: 19, fontFamily: fonts.display, color: colors.text, textAlign: 'center', letterSpacing: -0.3 },
+  emptyBody: { marginTop: 6, fontSize: 14.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
   emptyAction: { marginTop: 18, alignSelf: 'stretch' },
 });

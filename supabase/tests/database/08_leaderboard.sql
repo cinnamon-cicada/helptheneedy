@@ -28,13 +28,13 @@ select is((select count(*)::int from public.get_my_rank('gifted')), 0, 'no rank 
 select is((select count(*)::int from public.get_leaderboard('gifted', 'month')), 2, 'monthly view includes this month');
 select is((select count(*)::int from public.get_leaderboard('gifted', 'all_time', 'friends')), 0, 'friends scope excludes strangers');
 select throws_ok($$select * from public.get_leaderboard('bad')$$, 'invalid_board', 'unknown board is rejected');
-select public.request_friend((select top from u));
+select public.follow_user((select top from u));
 
 select tests.login((select top from u));
-select public.request_friend((select friend from u));
+select public.follow_user((select friend from u));
 select is((select user_rank from public.get_my_rank('gifted')), 1::bigint, 'your own rank');
 select tests.login((select friend from u));
-select is((select array_agg(username) from public.get_leaderboard('gifted', 'all_time', 'friends')), array['top'], 'friends scope includes friends');
+select is((select array_agg(username) from public.get_leaderboard('gifted', 'all_time', 'friends')), array['top'], 'friends scope includes mutual follows');
 
 select tests.login((select need from u));
 select public.update_privacy(p_on_received_board := true);

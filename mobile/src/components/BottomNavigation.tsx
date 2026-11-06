@@ -1,8 +1,9 @@
+import { type Href, router } from 'expo-router';
 import { CirclePlus, type LucideIcon, Search, Trophy, User, Users } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 
 export type TabKey = 'discover' | 'people' | 'post' | 'ranks' | 'profile';
 
@@ -14,6 +15,14 @@ const TABS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
   { key: 'profile', label: 'Profile', Icon: User },
 ];
 
+// Post isn't built yet, so that tab does nothing.
+const ROUTES: Partial<Record<TabKey, Href>> = {
+  discover: '/',
+  people: '/friends',
+  ranks: '/ranks',
+  profile: '/profile',
+};
+
 export const NAV_HEIGHT = 66;
 export const NAV_MARGIN = 12;
 
@@ -23,13 +32,7 @@ export function useBottomNavSpace() {
   return NAV_HEIGHT + Math.max(insets.bottom, NAV_MARGIN) + 6;
 }
 
-type Props = {
-  active: TabKey;
-  onPress?: (key: TabKey) => void;
-};
-
-/** Visual-only for now: only Discover is built. */
-export function BottomNavigation({ active, onPress }: Props) {
+export function BottomNavigation({ active }: { active: TabKey }) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -44,13 +47,16 @@ export function BottomNavigation({ active, onPress }: Props) {
           return (
             <Pressable
               key={key}
-              onPress={() => onPress?.(key)}
+              onPress={() => {
+                const route = ROUTES[key];
+                if (route) router.navigate(route);
+              }}
               accessibilityRole="tab"
               accessibilityLabel={label}
               accessibilityState={{ selected: isActive }}
               style={({ pressed }) => [styles.item, pressed && { transform: [{ scale: 0.94 }] }]}
             >
-              <Icon size={23} color={color} strokeWidth={isActive ? ICON_STROKE + 0.35 : ICON_STROKE} />
+              <Icon size={20} color={color} strokeWidth={isActive ? ICON_STROKE + 0.35 : ICON_STROKE} />
               <Text style={[styles.label, { color }, isActive && styles.labelActive]}>{label}</Text>
             </Pressable>
           );
@@ -87,6 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 4,
   },
-  label: { fontSize: 11, fontWeight: '500' },
-  labelActive: { fontWeight: '700' },
+  label: { fontSize: 11, fontFamily: fonts.medium },
+  labelActive: { fontFamily: fonts.bold },
 });

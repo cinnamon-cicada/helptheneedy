@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 import type { GiftRequest } from '../types';
 import { CommentInput, type TextInputHandle } from './CommentInput';
 import { CommentList } from './CommentList';
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { paddingBottom: 4 },
   description: {
-    fontSize: 14.5,
+    fontSize: 14.5, fontFamily: fonts.regular,
     lineHeight: 21,
     color: colors.textMuted,
   },
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 12.5,
-    fontWeight: '600',
+    fontFamily: fonts.semibold,
     color: colors.textMuted,
     marginBottom: 10,
   },

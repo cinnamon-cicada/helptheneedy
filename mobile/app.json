@@ -23,8 +23,11 @@
     },
     "plugins": [
       "expo-image",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-router",
+      "expo-font"
     ],
-    "backgroundColor": "#FFFAF4"
+    "backgroundColor": "#FFFAF4",
+    "scheme": "helptheneedy"
   }
 }

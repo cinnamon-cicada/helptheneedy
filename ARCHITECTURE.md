@@ -2,7 +2,7 @@
 
 helptheneedy is a dating-style mobile app that matches gifters with receivers. The client is React Native with Expo, and the backend is Supabase with TypeScript.
 
-**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` has a Discover screen prototype that runs on mock data, and a Supabase client in `src/lib/supabase.ts` that no screen uses yet; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
+**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` has Discover and Profile screen prototypes that run on mock data, and a Supabase client in `src/lib/supabase.ts` that no screen uses yet. For demos it saves a $1,000 play-money balance, gifts and profile edits on the device only; that balance is never real money and never reaches the backend; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
 
 See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order, and testing requirements.
 
@@ -10,7 +10,7 @@ See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order
 
 - The app never does not handle or move money, for now.
 - Only a receiver's confirmation counts a gift toward post progress and leaderboards.
-- Store money as integer cents, and label totals as reported by members, not verified.
+- Store money as integer cents. Gift totals are reported by members, so never describe them as verified payments.
 - Enable Row Level Security (RLS) on every table. Clients read through RLS and write through RPCs.
 - RPCs derive the user from `auth.uid()`, never from an argument.
 - Blocks apply in both directions across every feed, search, request, and friend list.
@@ -146,14 +146,12 @@ Blocking someone or deleting an account also cancels pending gifts between the t
 
 ### Social and safety
 
-**`friendships`**: one row per pair, with `user_low < user_high`.
+**`follows`**: one row per follow, with no approval step. The primary key is (`follower_id`, `followed_id`), so this table has no `id`. Two people who follow each other are friends: `get_friend_activity` and the `friends` leaderboard scope include only mutual follows, so following a stranger never reveals their gifts.
 
 | Column | Type | Notes |
 | --- | --- | --- |
-| `user_low` | `uuid` | References `profiles` |
-| `user_high` | `uuid` | References `profiles` |
-| `requested_by` | `uuid` | References `profiles` |
-| `status` | `friendship_status` | `pending`, `accepted` |
+| `follower_id` | `uuid` | References `profiles` |
+| `followed_id` | `uuid` | References `profiles`; must differ from `follower_id` |
 
 **`blocks`**: unique on (`blocker_id`, `blocked_id`).
 
@@ -216,7 +214,7 @@ Rate limits per user:
 | `create_post` | 10 per day |
 | `record_swipe` | 600 per hour |
 | `record_gift` | 50 per day |
-| `request_friend` | 50 per day |
+| `follow_user` | 50 per day |
 | `report` | 20 per day |
 
 ### Accounts
@@ -266,13 +264,13 @@ Rate limits per user:
 | RPC | Arguments | Behavior |
 | --- | --- | --- |
 | `search_users` | `query`, `cursor?`, `limit?` | Excludes blocked users; `cursor` is the last username |
-| `request_friend` | `user_id` | Creates a pending friendship, or accepts if they already requested you |
-| `respond_friend` | `friendship_id`, `accept` | Recipient only; declining removes the request |
-| `remove_friend` | `user_id` | Removes the friendship or cancels a request |
-| `get_friends` | None | Your accepted friends |
-| `block_user` | `user_id` | Also removes any friendship, cancels pending requests and gifts, and closes matches |
+| `follow_user` | `user_id` | Follows them and notifies them; repeating it has no extra effect |
+| `unfollow_user` | `user_id` | Stops you following them |
+| `remove_follower` | `user_id` | Stops them following you |
+| `get_follows` | None | Everyone you follow or who follows you, with `is_following` and `follows_me` flags |
+| `block_user` | `user_id` | Also removes follows in both directions, cancels pending requests and gifts, and closes matches |
 | `unblock_user` | `user_id` | Removes your block |
-| `get_friend_activity` | `cursor_at?`, `cursor_id?`, `limit?` | Friends' confirmed gifts, honoring `share_activity`; omits anonymous gifts and receivers |
+| `get_friend_activity` | `cursor_at?`, `cursor_id?`, `limit?` | Confirmed gifts from mutual follows, honoring `share_activity`; omits anonymous gifts and receivers |
 | `report` | `target_user_id?`, `target_post_id?`, `reason` | Requires one target |
 
 ### Moderation

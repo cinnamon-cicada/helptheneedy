@@ -9,6 +9,8 @@ export const colors = {
   peach: '#F29B65',
   text: '#35251D',
   textMuted: '#8C7B70',
+  // Muted text dark enough to stay readable on the Profile gradient.
+  textOnPeach: '#6F5C50',
   textFaint: '#B5A69B',
   border: '#F1E6D8',
   borderStrong: '#E8D8C4',
@@ -19,7 +21,20 @@ export const colors = {
   // Rear deck layers.
   layerPeach: '#F9D3B6',
   layerYellow: '#FAE3B0',
+  rankCard: '#FDEDD6',
+  rankCardBorder: '#F3CE97',
   scrim: 'rgba(53, 37, 29, 0.38)',
+} as const;
+
+// Custom fonts carry their weight in the family name, so use these instead of
+// fontWeight. Young Serif has one weight; use it for titles only,
+// because its old-style numerals make $8.00 read like $8.oo.
+export const fonts = {
+  display: 'YoungSerif_400Regular',
+  regular: 'Onest_400Regular',
+  medium: 'Onest_500Medium',
+  semibold: 'Onest_600SemiBold',
+  bold: 'Onest_700Bold',
 } as const;
 
 export const radius = {

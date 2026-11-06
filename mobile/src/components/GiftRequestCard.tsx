@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useCardGestures } from '../animation/useCardGestures';
-import { colors, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
 import { LAYER_POSES, type Rect } from './CardStackLayer';
@@ -80,15 +80,16 @@ export function GiftRequestCard({
   onToggleCommentLike,
   onAddComment,
 }: Props) {
-  const { pan, translateX, translateY, enter, returnToCenter, flyOutRight, collapse } = useCardGestures({
-    screenWidth,
-    expandDistance: geometry.expandDistance,
-    expand,
-    isExpanded,
-    onSkip,
-    onGiftIntent,
-    onExpandedChange,
-  });
+  const { pan, expandCard, translateX, translateY, enter, returnToCenter, flyOutRight, collapse } =
+    useCardGestures({
+      screenWidth,
+      expandDistance: geometry.expandDistance,
+      expand,
+      isExpanded,
+      onSkip,
+      onGiftIntent,
+      onExpandedChange,
+    });
 
   useImperativeHandle(ref, () => ({ returnToCenter, flyOutRight, collapse }), [
     returnToCenter,
@@ -158,24 +159,32 @@ export function GiftRequestCard({
       <View style={styles.card}>
         <GestureDetector gesture={pan}>
           <View collapsable={false}>
-            <Animated.View style={[styles.imageWrap, imageStyle]}>
-              <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                <Image
-                  source={{ uri: request.imageUrl }}
-                  style={StyleSheet.absoluteFill}
-                  contentFit="cover"
-                  transition={200}
-                  accessibilityLabel={request.title}
-                />
-              </View>
-              <Animated.View pointerEvents="none" style={[styles.grabber, revealStyle]} />
-              <Animated.View pointerEvents="none" style={[styles.indicator, styles.skipIndicator, skipIndicatorStyle]}>
-                <X size={30} color={colors.skip} strokeWidth={2.25} />
+            {/* Tapping the image, title or amount expands a collapsed card. */}
+            <Pressable
+              onPress={expandCard}
+              disabled={expanded}
+              accessibilityRole="button"
+              accessibilityLabel={`Open ${request.title}`}
+            >
+              <Animated.View style={[styles.imageWrap, imageStyle]}>
+                <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                  <Image
+                    source={{ uri: request.imageUrl }}
+                    style={StyleSheet.absoluteFill}
+                    contentFit="cover"
+                    transition={200}
+                    accessibilityLabel={request.title}
+                  />
+                </View>
+                <Animated.View pointerEvents="none" style={[styles.grabber, revealStyle]} />
+                <Animated.View pointerEvents="none" style={[styles.indicator, styles.skipIndicator, skipIndicatorStyle]}>
+                  <X size={30} color={colors.skip} strokeWidth={2.25} />
+                </Animated.View>
+                <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
+                  <Gift size={28} color={colors.orange} strokeWidth={2} />
+                </Animated.View>
               </Animated.View>
-              <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
-                <Gift size={28} color={colors.orange} strokeWidth={2} />
-              </Animated.View>
-            </Animated.View>
+            </Pressable>
 
             <View style={[styles.info, !expanded && styles.infoCollapsed]}>
               <View style={styles.recipientRow}>
@@ -207,12 +216,14 @@ export function GiftRequestCard({
                 </Animated.View>
               </View>
 
-              <Text style={styles.title} numberOfLines={expanded ? 2 : 1}>
+              <Text style={styles.title} numberOfLines={expanded ? 2 : 1} onPress={expanded ? undefined : expandCard}>
                 {request.title}
               </Text>
 
               <View style={styles.amountRow}>
-                <Text style={styles.amount}>{formatCents(request.amountCents)}</Text>
+                <Text style={styles.amount} onPress={expanded ? undefined : expandCard}>
+                  {formatCents(request.amountCents)}
+                </Text>
                 <Pressable
                   onPress={onToggleSave}
                   hitSlop={12}
@@ -328,8 +339,8 @@ const styles = StyleSheet.create({
     outlineWidth: 1,
     outlineOffset: -1,
   },
-  name: { fontSize: 15, fontWeight: '600', color: colors.text },
-  age: { fontWeight: '400', color: colors.textMuted },
+  name: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },
+  age: { fontFamily: fonts.regular, color: colors.textMuted },
   badge: {
     paddingHorizontal: 10,
     height: 24,
@@ -337,12 +348,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
     justifyContent: 'center',
   },
-  badgeText: { fontSize: 12, fontWeight: '600', color: colors.orangeText },
+  badgeText: { fontSize: 12, fontFamily: fonts.semibold, color: colors.orangeText },
   title: {
     marginTop: 10,
     fontSize: 22,
     lineHeight: 27,
-    fontWeight: '700',
+    fontFamily: fonts.display,
     letterSpacing: -0.4,
     color: colors.text,
   },
@@ -355,7 +366,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     fontSize: 19,
-    fontWeight: '700',
+    fontFamily: fonts.bold,
     color: colors.orangeText,
     fontVariant: ['tabular-nums'],
   },

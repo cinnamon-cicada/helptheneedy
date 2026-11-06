@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { DEFAULT_FILTERS } from '../state/useDiscoverState';
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 import type { Category, Filters } from '../types';
 import { BottomSheet } from './BottomSheet';
 import { Chip, PrimaryButton, TextButton } from './ui';
@@ -87,8 +87,8 @@ export function FilterBottomSheet({ visible, filters, availableCategories, count
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  title: { fontSize: 19, fontWeight: '700', color: colors.text, letterSpacing: -0.3 },
-  sectionLabel: { marginTop: 18, marginBottom: 10, fontSize: 13, fontWeight: '600', color: colors.textMuted },
+  title: { fontSize: 19, fontFamily: fonts.display, color: colors.text, letterSpacing: -0.3 },
+  sectionLabel: { marginTop: 18, marginBottom: 10, fontSize: 13, fontFamily: fonts.semibold, color: colors.textMuted },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   footer: { marginTop: 26 },
 });

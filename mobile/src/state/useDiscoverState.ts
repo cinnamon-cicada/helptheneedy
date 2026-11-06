@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { ME, mockRequests } from '../data/mockRequests';
+import { mockRequests } from '../data/mockRequests';
+import { useDemo } from '../demo/DemoProvider';
 import type { Comment, Filters, GiftRequest } from '../types';
 
 export const DEFAULT_FILTERS: Filters = { category: 'All', maxAmountCents: null };
@@ -12,6 +13,7 @@ type ReactionKind = 'hearts' | 'sparkles';
  * no network, no payments. Animation state stays in the card components.
  */
 export function useDiscoverState() {
+  const { profile: me } = useDemo();
   const [requests, setRequests] = useState<GiftRequest[]>(mockRequests);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   // IDs the user has swiped past or gifted, in order.
@@ -81,8 +83,8 @@ export function useDiscoverState() {
       if (!trimmed) return;
       const comment: Comment = {
         id: `local-${Date.now()}`,
-        username: ME.username,
-        avatarUrl: ME.avatarUrl,
+        username: me.username,
+        avatarUrl: me.avatarUrl,
         text: trimmed,
         minutesAgo: 0,
         likes: 0,
@@ -90,7 +92,7 @@ export function useDiscoverState() {
       };
       updateRequest(requestId, (r) => ({ ...r, comments: [comment, ...r.comments] }));
     },
-    [updateRequest],
+    [me, updateRequest],
   );
 
   const startOver = useCallback(() => setHandledIds([]), []);
