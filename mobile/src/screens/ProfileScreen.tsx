@@ -12,7 +12,7 @@ import { ProfileStats } from '../components/ProfileStats';
 import { RecentActivityCard } from '../components/RecentActivityCard';
 import { RequestCardWindow } from '../components/RequestCardWindow';
 import { YourRankCard } from '../components/YourRankCard';
-import { getMyRank } from '../data/mockLeaderboard';
+import { useBoard } from '../leaderboard/useBoard';
 import { RECENT_ACTIVITY_COUNT } from '../data/mockProfile';
 import { useDemo } from '../demo/DemoProvider';
 import { useFindRequest, useMyActivity, useMyProfile, useProfileLists } from '../demo/selectors';
@@ -21,6 +21,8 @@ import { colors } from '../theme';
 export function ProfileScreen() {
   const navSpace = useBottomNavSpace();
   const profile = useMyProfile();
+  const board = useBoard('gifted', 'monthly');
+  const myRank = { rank: board.me?.rank ?? null, category: 'Most Gifted', period: 'Monthly' };
   const activity = useMyActivity();
   const findRequest = useFindRequest();
   const lists = useProfileLists();
@@ -40,7 +42,7 @@ export function ProfileScreen() {
         />
         <View style={styles.upper}>
           <ProfileStats profile={profile} />
-          <YourRankCard myRank={getMyRank()} onPress={() => router.navigate('/ranks')} />
+          <YourRankCard myRank={myRank} onPress={() => router.navigate('/ranks')} />
         </View>
 
         <View style={styles.lower}>
@@ -73,7 +75,8 @@ export function ProfileScreen() {
         visible={editOpen}
         profile={profile}
         onSave={(edits) => {
-          updateProfile(edits);
+          // Shown right away; saving to Supabase happens in the background.
+          updateProfile(edits).catch(() => undefined);
           setEditOpen(false);
         }}
         onClose={() => setEditOpen(false)}

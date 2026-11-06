@@ -10,7 +10,7 @@ type Props = {
   category: RankingCategory;
 };
 
-/** "Your Rank" strip under the podium; shown even when you're already in the top 3. */
+/** "Your Rank" strip above the list; shown even when you're near the top. */
 export function YourRankSummary({ row, category }: Props) {
   if (!row) {
     return (

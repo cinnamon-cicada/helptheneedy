@@ -67,7 +67,11 @@ export function FriendsScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: navSpace + 8 }}
-        ListEmptyComponent={<Text style={styles.empty}>No one found</Text>}
+        ListEmptyComponent={
+          <Text style={styles.empty}>
+            {query.trim() ? 'No one found' : "You're not following anyone yet, and no one follows you."}
+          </Text>
+        }
         renderItem={({ item }) => (
           <View style={styles.row}>
             <Pressable

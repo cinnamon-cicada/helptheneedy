@@ -1,6 +1,6 @@
 # Mobile app
 
-The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, the Leaderboard, and the Create Post flow, all running on local mock data. It doesn't call Supabase and doesn't process payments. A demo mode saves a play-money balance and your profile on the device; see [Demo mode](#demo-mode). A Supabase client is ready in `src/lib/supabase.ts`, but no screen uses it yet.
+The React Native client, built with Expo (SDK 58) and TypeScript. It holds the login and signup screens, prototypes of the Discover, Friends, Profile, and public profile screens, the Leaderboard, and the Create Post flow. With Supabase configured, the app makes an account automatically and Discover, Profile and the Leaderboard use real data; without it, everything runs on local mock data. It doesn't process payments: the $1,000 demo balance is play money on the device. See [Demo mode](#demo-mode).
 
 ## Run it
 
@@ -10,7 +10,9 @@ npm install
 npx expo start
 ```
 
-Before importing the Supabase client, copy `.env.example` to `.env.local` and fill it in.
+To use Supabase, copy `.env.example` to `.env.local` and fill it in. Without those two variables, the app runs on mock data and shows the sign-in screen.
+
+For local Supabase, run `npm run db:start` and `npm run db:reset` from the repo root, then load the demo data with `npx supabase db query --local -f supabase/demo/seed.sql`. The database tests expect an empty database, so run `npm run db:reset` again before `npm test`. `.env.local` must point at an address this device can reach; a LAN IP goes stale when your network changes.
 
 Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go doesn't support one of the native libraries, build a development client with `npx expo run:ios` or `npx expo run:android`.
 
@@ -48,7 +50,7 @@ The mascot glances at the form when a field is focused, deflates when a login or
 
 The scene is drawn with `three` and `@react-three/fiber` on `expo-gl`, from procedural geometry with no model files. It stops rendering while the app is in the background. If WebGL is unavailable or the GL context doesn't start, a 2D vector version of the opened gift is shown instead.
 
-Accounts are kept in memory by `createMockAuthService` and reset when the app reloads. To connect Supabase Auth, implement `AuthService` in `src/auth/types.ts` and export it from `src/auth/authService.ts`; the screens don't need to change.
+With Supabase configured, the sign-in screen never shows: the app creates an account on first load instead (see [Demo mode](#demo-mode)). Without it, accounts are kept in memory by `createMockAuthService` and reset when the app reloads. `src/auth/supabaseAuthService.ts` implements the same `AuthService` with Supabase email accounts, ready for when real sign-in is wanted; export it from `src/auth/authService.ts` and the screens don't need to change.
 
 ## Discover screen
 
@@ -76,17 +78,23 @@ A drag locks to one axis after about 6 points of movement, so a diagonal drag ca
 
 ## Demo mode
 
-For demos, the app keeps a little state on the device under the `htn.demo.v1` key. On web that's the browser's `localStorage`. On iOS and Android, `expo-sqlite` provides the same API. None of it reaches Supabase.
+Everyone starts with $1,000 of play money, shown as plain text in the top left of Discover. The balance lives on the device only, under the `htn.demo.v2` key: the browser's `localStorage` on web, and an `expo-sqlite` store with the same API on iOS and Android. It never reaches Supabase.
+
+With Supabase configured:
 
 | What | Behavior |
 | --- | --- |
-| Balance | Everyone starts with $1,000 of play money, shown as plain text in the top left of Discover |
-| Gifting | A gift comes out of the balance. The sheet won't let you give more than the request asks for or more than you have left |
-| Profile | Username and photo edits are saved, and new comments use them |
-| Totals and activity | Demo gifts are added to the mock Total Gifted, People Helped, Activity and Gifts Sent |
-| Reset | Settings > Reset demo clears the saved state and sets the balance back to $1,000 |
+| Account | On first load the app signs in anonymously and finishes onboarding with a generated alias, such as SunnyOtter. The session is saved, so the same account comes back on every visit. A new account starts with a fresh $1,000 |
+| Discover | Shows the open posts in Supabase. The seeded ones are demo receivers, and keep the mock comments and reactions |
+| Gifting | `demo_send_gift` logs the gift in `gifts`, tagged with giver and receiver, and it counts right away. The balance goes down only once that succeeds; if it fails, the sheet says why and nothing changes. The sheet won't let you give more than is still needed or more than you have left |
+| After each gift | The profile, gift history and boards are fetched again, and the profile and gifts are kept on the device too |
+| Profile | The name you type becomes your public alias (`display_name`, with a username made from it). A chosen photo is copied into the `avatars` bucket |
+| Totals and activity | Come from your gifts in Supabase only, with no mock history |
+| Reset | Settings > Reset demo sets the balance back to $1,000. Your account and gifts stay on the leaderboards |
 
-Reactions, saves, comments, follows and posts still reset on reload.
+Without Supabase, everything above stays on the device: demo gifts are added to the mock totals, and Reset clears it all. Reactions, saves, comments, follows and posts reset on reload either way.
+
+To load the demo data into the hosted project, run `npx supabase db query --linked -f supabase/demo/seed.sql` from the repo root. Running it again changes nothing.
 
 ## Friends screen
 
@@ -98,16 +106,16 @@ The People tab lists everyone you follow or who follows you. Search filters by n
 
 ## Leaderboard
 
-The Ranks tab ranks members under public aliases by **Most Gifted** (total confirmed gifts) or **Most Helped** (different people gifted), **Monthly** (since the 1st, UTC) or **Overall**. All four combinations update the podium, Your Rank and the list. The info button explains the rules, and tapping a person opens a short preview.
+The Ranks tab ranks members under public aliases by **Most Gifted** (total confirmed gifts) or **Most Helped** (different people gifted), **Monthly** (since the 1st, UTC) or **Overall**. All four combinations update Your Rank and the list. The info button explains the rules, and tapping a person opens a short preview.
 
-Rankings are computed from mock transactions in `src/data/mockLeaderboard.ts`, following the backend rules:
+With Supabase configured, boards come from `get_leaderboard` and `get_my_rank` (`gifted` or `helped`, `month` or `all_time`) and refresh after each of your gifts, so other people's gifts show the next time a board loads. People without a photo get an illustrated avatar chosen from their id. Without Supabase, rankings are computed from mock transactions in `src/data/mockLeaderboard.ts`, following the same rules:
 
 - Only `confirmed` gifts count; `pending`, `disputed`, `cancelled` and test gifts don't.
 - Members who opted out, or that moderators excluded, don't appear.
 - Gifting the same person twice counts once for Most Helped.
 - Ties share a rank and are ordered by alias, so the order never jumps.
 
-Your Overall totals match the Profile screen: $210 and 12 people helped.
+On mock data, your Overall totals match the Profile screen: $210 and 12 people helped.
 
 ## Create Post
 
@@ -143,7 +151,9 @@ Posts are stored in memory on the device (`MyPostsProvider`) and reset when the 
 | `index.ts` | Custom entry: loads `src/polyfills.ts` before `expo-router/entry` so three.js can start under Hermes |
 | `src/screens/` | `AuthScreen`, `DiscoverScreen`, `FriendsScreen`, `UserProfileScreen`, `ProfileScreen`, `LeaderboardScreen`, `ActivityScreen`; the Create Post steps are in `src/screens/post/` |
 | `src/components/auth/` | `LoginForm`, `SignupForm`, `PaymentPlaceholders`, and shared fields |
-| `src/auth/` | `AuthService` interface, the mock service, the session context, and validation rules |
+| `src/auth/` | `AuthService` interface, the mock and Supabase services, the session context (which creates the demo account), and validation rules |
+| `src/api/` | Supabase calls: `account` (demo account, profile edits, avatar upload), `posts` (Discover cards), `gifts` (`demo_send_gift`, gift history), `leaderboard`, `images` (signed URLs) |
+| `src/demo/` | `DemoProvider` (local balance, cached profile and gifts), `selectors` (Profile totals, Activity, lists) and `storage` (`localStorage` helpers) |
 | `src/components/poki/` | `AuthScene` (canvas and fallback), `MascotAnimationController`, `PokiMascot`, `GiftBox`, `GiftExplosion` |
 | `src/animation/poki/` | Intro timeline and phases, intro choreography, idle behaviour scheduler, reactions, confetti physics |
 | `src/state/useDiscoverState.ts` | Business state: queue, filters, saves, reactions, comments |
@@ -152,11 +162,11 @@ Posts are stored in memory on the device (`MyPostsProvider`) and reset when the 
 | `src/data/mockRequests.ts` | Eight mock requests; Jamie's matcha request is first |
 | `src/data/mockProfile.ts` | The mock user and activity |
 | `src/data/mockLeaderboard.ts` | Mock members and gift transactions that the Leaderboard and the Your Rank card both rank |
-| `src/leaderboard/` | Ranking rules (`computeLeaderboard`) and the board's labels, separate from the UI |
+| `src/leaderboard/` | Ranking rules (`computeLeaderboard`), `useBoard` (Supabase or mock), and the board's labels, separate from the UI |
 | `src/app/post/` | Create Post routes: `index` (camera and editor), `details`, `published`; the layout holds the shared draft |
 | `src/post/` | Draft and my-posts state, photo crop and filter helpers, details validation, and hashtag and mention parsing |
 | `src/components/post/` | `PhotoStage` (draws a photo with its edits), the edit sheets, `MentionInput` |
-| `src/components/leaderboard/` | `LeaderboardHeader`, `SegmentedControl` (`RankingTypeSelector`, `TimePeriodSelector`), `TopThreePodium`, `YourRankSummary`, `RankingList`, the info and profile preview sheets, `AliasAvatar` |
+| `src/components/leaderboard/` | `LeaderboardHeader`, `SegmentedControl` (`RankingTypeSelector`, `TimePeriodSelector`), `YourRankSummary`, `RankingList`, the info and profile preview sheets, `AliasAvatar` |
 | `src/data/mockPeople.ts` | Mock friends, their follow state and wishlists |
 | `src/theme.ts` | Colors, radii, shadows and spring settings |
 
@@ -166,7 +176,8 @@ Amounts are stored as integer cents, as `ARCHITECTURE.md` requires.
 
 This prototype follows the design spec. In these places the spec differs from `ARCHITECTURE.md`, so settle each one before the app is connected to Supabase:
 
-- **Right swipe:** In the prototype, a right swipe opens a gift amount sheet. In the backend, a right swipe calls `record_swipe` to send a match request, and the gifter records a gift only after the receiver accepts.
+- **Right swipe:** A right swipe opens a gift amount sheet and, for demo receivers, `demo_send_gift` runs the whole flow at once. For real receivers the backend expects `record_swipe` to send a match request, and the gifter records a gift only after the receiver accepts; the app doesn't support that yet.
+- **Left swipe:** Skipping a card isn't sent to `record_swipe`, so Start over can show the cards again.
 - **Comments, reactions and saves:** These have no tables or RPCs in the backend yet.
 - **Recipient age:** `profiles` has no age or birth date column.
 - **Login by username:** Supabase Auth signs in by email. Username login needs a lookup the backend doesn't have yet.
@@ -178,7 +189,6 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Photo edits:** Text, stickers and filters are kept as data next to the photo. The backend stores only photo paths, so before connecting it either flatten them into the uploaded image or add a column for them.
 - **Gift instructions:** `publish_post` requires gift instructions, but the app lets you post without them. Settle this before connecting the backend: either make the field required for posting, or relax the rule in the backend.
 - **Hashtags and mentions:** Parsed and shown on the card, but the backend has no tags or mentions, and mentions don't notify anyone.
-- **Most Helped:** The Leaderboard ranks people by how many different people they gifted. The backend's boards are `gifted` and `received`, so this needs a new board in `get_leaderboard` and `get_my_rank`.
 - **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Leaderboard keeps it. Settle this before connecting Supabase.
 - **Wishlist:** The backend has no wishlist. The mock maps it to a person's requests, which would be their `open` posts once connected. The mock also shares some requests across people.
 - **Friend stats:** `get_public_profile` returns gift totals only if the person shares them, and has no People Helped or Requests Posted counts.

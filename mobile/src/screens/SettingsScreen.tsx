@@ -8,7 +8,7 @@ import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import { formatDollars } from '../utils/format';
 
 export function SettingsScreen() {
-  const { resetDemo } = useDemo();
+  const { resetDemo, online } = useDemo();
   const [didReset, setDidReset] = useState(false);
 
   return (
@@ -30,7 +30,9 @@ export function SettingsScreen() {
             <Text style={styles.rowBody}>
               {didReset
                 ? `Done. Your balance is back to ${formatDollars(STARTING_BALANCE_CENTS)}.`
-                : `Clears your gifts and profile edits and sets your balance back to ${formatDollars(STARTING_BALANCE_CENTS)}.`}
+                : online
+                  ? `Sets your balance back to ${formatDollars(STARTING_BALANCE_CENTS)}. Your gifts stay on the leaderboards.`
+                  : `Clears your gifts and profile edits and sets your balance back to ${formatDollars(STARTING_BALANCE_CENTS)}.`}
             </Text>
           </View>
         </Pressable>

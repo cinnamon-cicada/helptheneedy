@@ -2,11 +2,21 @@ import type { ProfileSection } from '../components/ProfileShortcutGrid';
 import type { ActivityRecord, GiftRequest, ProfileListItem, UserProfile } from '../types';
 import { mockRequests } from './mockRequests';
 
-const portrait = (path: string) => `https://randomuser.me/api/portraits/${path}.jpg`;
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop`;
 
-/** Cycled through by the photo placeholder in the Edit Profile sheet. */
-export const SAMPLE_AVATARS = [portrait('women/65'), portrait('women/33'), portrait('men/52')];
+const avatar = (id: string) => `https://images.unsplash.com/photo-${id}?w=400&q=80&fm=jpg&fit=crop&crop=faces`;
+
+/**
+ * Cycled through by the photo placeholder in the Edit Profile sheet. Unsplash
+ * allows cross-origin downloads, so the web app can copy one into Supabase
+ * Storage when it's chosen.
+ */
+export const SAMPLE_AVATARS = [
+  avatar('1534528741775-53994a69daeb'),
+  avatar('1524504388940-b1c1722653e1'),
+  avatar('1506277886164-e25aa3f4ef7f'),
+  avatar('1531123897727-8f129e1688ce'),
+];
 
 export const MOCK_PROFILE: UserProfile = {
   username: 'SunsetGifter',

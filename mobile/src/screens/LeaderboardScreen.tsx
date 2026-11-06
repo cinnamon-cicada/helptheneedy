@@ -1,5 +1,5 @@
 import { Info } from 'lucide-react-native';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,11 +9,9 @@ import { LeaderboardHeader } from '../components/leaderboard/LeaderboardHeader';
 import { LeaderboardInfoSheet, ProfilePreviewSheet } from '../components/leaderboard/LeaderboardSheets';
 import { RankingList } from '../components/leaderboard/RankingList';
 import { RankingTypeSelector, TimePeriodSelector } from '../components/leaderboard/SegmentedControl';
-import { TopThreePodium } from '../components/leaderboard/TopThreePodium';
 import { YourRankSummary } from '../components/leaderboard/YourRankSummary';
-import { LEADERBOARD_USERS, MOCK_TRANSACTIONS, MY_LEADERBOARD_ID } from '../data/mockLeaderboard';
 import { describeBoard } from '../leaderboard/copy';
-import { computeLeaderboard, findRow } from '../leaderboard/ranking';
+import { useBoard } from '../leaderboard/useBoard';
 import { colors, fonts, ICON_STROKE } from '../theme';
 import type { LeaderboardRow, RankingCategory, RankingPeriod } from '../types';
 
@@ -29,11 +27,15 @@ export function LeaderboardScreen() {
   const [preview, setPreview] = useState<LeaderboardRow | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  const rows = useMemo(
-    () => computeLeaderboard({ users: LEADERBOARD_USERS, transactions: MOCK_TRANSACTIONS, category, period }),
-    [category, period],
-  );
-  const me = findRow(rows, MY_LEADERBOARD_ID);
+  const { rows, me, myId, loading } = useBoard(category, period);
+  const emptyMessage =
+    category === 'gifted'
+      ? period === 'monthly'
+        ? 'No one has gifted this month yet.'
+        : 'No one has gifted yet.'
+      : period === 'monthly'
+        ? 'No one has helped anyone this month yet.'
+        : 'No one has helped anyone yet.';
   const boardKey = `${category}-${period}`;
 
   const openPreview = (row: LeaderboardRow) => {
@@ -68,14 +70,17 @@ export function LeaderboardScreen() {
             </Pressable>
           </View>
 
-          <TopThreePodium rows={rows} category={category} animationKey={boardKey} onPress={openPreview} />
-
           <Animated.View key={`me-${boardKey}`} entering={FadeIn.duration(220)}>
             <YourRankSummary row={me} category={category} />
           </Animated.View>
 
           <Animated.View key={`list-${boardKey}`} entering={FadeIn.duration(260).delay(60)}>
-            <RankingList rows={rows.slice(3)} category={category} myId={MY_LEADERBOARD_ID} onPress={openPreview} />
+            <RankingList rows={rows}
+              category={category}
+              myId={myId}
+              onPress={openPreview}
+              emptyMessage={loading ? undefined : emptyMessage}
+            />
           </Animated.View>
 
           <Text style={styles.footnote}>Totals are reported by members, not verified.</Text>
@@ -90,7 +95,7 @@ export function LeaderboardScreen() {
         visible={previewOpen}
         category={category}
         period={period}
-        isMe={preview?.user.id === MY_LEADERBOARD_ID}
+        isMe={preview?.user.id === myId}
         onClose={() => setPreviewOpen(false)}
       />
     </View>
