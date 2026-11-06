@@ -35,6 +35,7 @@ type Options = {
  * The axis locks on activation from whichever direction dominates, so a
  * diagonal drag only ever drives one action: horizontal = skip or gift,
  * vertical = expand or collapse. Horizontal drags are ignored while expanded.
+ * `expandCard` lets a tap on a collapsed card expand it too.
  */
 export function useCardGestures({
   screenWidth,
@@ -152,6 +153,13 @@ export function useCardGestures({
     },
   });
 
+  const expandCard = useCallback(() => {
+    if (locked.value || isExpanded.value) return;
+    expand.set(withSpring(1, spring.expand));
+    isExpanded.set(true);
+    onExpandedChange(true);
+  }, [expand, isExpanded, locked, onExpandedChange]);
+
   const returnToCenter = useCallback(() => {
     translateX.set(withSpring(0, spring.settle, (finished) => {
       if (finished) locked.set(false);
@@ -177,5 +185,5 @@ export function useCardGestures({
     }
   }, [expand, isExpanded, onExpandedChange]);
 
-  return { pan, translateX, translateY, enter, returnToCenter, flyOutRight, collapse };
+  return { pan, expandCard, translateX, translateY, enter, returnToCenter, flyOutRight, collapse };
 }

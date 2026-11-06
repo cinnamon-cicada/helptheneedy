@@ -1,19 +1,35 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { ActivityRow } from '../components/ActivityRow';
+import type { TileRect } from '../components/ProfileShortcutCard';
+import { RequestCardWindow } from '../components/RequestCardWindow';
 import { SubScreen } from '../components/SubScreen';
-import { MOCK_ACTIVITY } from '../data/mockProfile';
-import { colors, fonts, radius, shadow } from '../theme';
+import { useFindRequest, useMyActivity } from '../demo/selectors';
+import { colors, radius, shadow } from '../theme';
 
 export function ActivityScreen() {
+  const activity = useMyActivity();
+  const findRequest = useFindRequest();
+  const [open, setOpen] = useState<{ requestId: string; origin: TileRect } | null>(null);
+
   return (
     <SubScreen title="Activity">
       <View style={styles.card}>
-        {MOCK_ACTIVITY.map((item, i) => (
-          <ActivityRow key={item.id} activity={item} divider={i > 0} />
+        {activity.map((item, i) => (
+          <ActivityRow
+            key={item.id}
+            activity={item}
+            divider={i > 0}
+            onOpen={(requestId, origin) => setOpen({ requestId, origin })}
+          />
         ))}
       </View>
-      <Text style={styles.note}>Sample data for this prototype.</Text>
+      <RequestCardWindow
+        request={open ? (findRequest(open.requestId) ?? null) : null}
+        origin={open?.origin ?? null}
+        onClose={() => setOpen(null)}
+      />
     </SubScreen>
   );
 }
@@ -28,5 +44,4 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     boxShadow: shadow.layer,
   },
-  note: { marginTop: 14, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
 });

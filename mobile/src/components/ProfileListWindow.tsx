@@ -1,31 +1,33 @@
 import { X } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { type ComponentRef, useEffect, useRef, useState } from 'react';
 import { BackHandler, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { PROFILE_LISTS } from '../data/mockProfile';
-import { useMyPosts } from '../post/MyPostsContext';
-import { colors, fonts, ICON_STROKE, shadow } from '../theme';
-import { formatCents } from '../utils/format';
+import type { PROFILE_LISTS } from '../data/mockProfile';
+import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import type { ProfileListItem } from '../types';
 import type { TileRect } from './ProfileShortcutCard';
 import type { ProfileSection } from './ProfileShortcutGrid';
 
 const MARGIN = 20;
-// Estimates for sizing the window: one row, and the header plus the sample note.
+// Estimates for sizing the window: one row, and the header plus bottom padding.
 const ROW_HEIGHT = 46;
-const CHROME_HEIGHT = 112;
+const CHROME_HEIGHT = 72;
 const TIMING = { duration: 260, easing: Easing.out(Easing.cubic) };
 
 type Props = {
+  lists: typeof PROFILE_LISTS;
   section: ProfileSection | null;
   origin: TileRect | null;
   onClose: () => void;
+  /** Opens the full card for a row, growing out of the row. */
+  onOpenItem: (requestId: string, origin: TileRect) => void;
 };
 
 /** Grows out of the tapped shortcut tile and shrinks back into it when closed. */
-export function ProfileListWindow({ section, origin, onClose }: Props) {
+export function ProfileListWindow({ lists, section, origin, onClose, onOpenItem }: Props) {
   const insets = useSafeAreaInsets();
   const screen = useWindowDimensions();
   const visible = section !== null;
@@ -57,25 +59,7 @@ export function ProfileListWindow({ section, origin, onClose }: Props) {
   }, [visible, onClose]);
 
   const from = shown.origin ?? { x: 0, y: 0, width: 0, height: 0 };
-  const { posts } = useMyPosts();
-  const base = shown.section ? PROFILE_LISTS[shown.section] : null;
-  // Posts made on this device go first in My Posts.
-  const list =
-    base && shown.section === 'my-posts'
-      ? {
-          ...base,
-          items: [
-            ...posts.map((p) => ({
-              id: p.id,
-              title: p.title,
-              detail: [p.amountCents !== null ? formatCents(p.amountCents) : null, p.status === 'draft' ? 'Draft' : 'In Discover']
-                .filter(Boolean)
-                .join(' · '),
-            })),
-            ...base.items,
-          ],
-        }
-      : base;
+  const list = shown.section ? lists[shown.section] : null;
   const width = screen.width - MARGIN * 2;
   // Fit the rows, centered; longer lists scroll inside the largest window that fits.
   const maxHeight = screen.height - insets.top - Math.max(insets.bottom, MARGIN) - MARGIN;
@@ -118,16 +102,36 @@ export function ProfileListWindow({ section, origin, onClose }: Props) {
           </View>
           <ScrollView contentContainerStyle={styles.list}>
             {items.map((item, i) => (
-              <View key={item.id} style={[styles.row, i > 0 && styles.divider]}>
-                <Text style={styles.rowTitle}>{item.title}</Text>
-                <Text style={styles.rowDetail}>{item.detail}</Text>
-              </View>
+              <ListRow key={item.id} item={item} divider={i > 0} onOpen={onOpenItem} />
             ))}
-            <Text style={styles.note}>Sample data for this prototype.</Text>
           </ScrollView>
         </Animated.View>
       </Animated.View>
     </View>
+  );
+}
+
+function ListRow({
+  item,
+  divider,
+  onOpen,
+}: {
+  item: ProfileListItem;
+  divider: boolean;
+  onOpen: (requestId: string, origin: TileRect) => void;
+}) {
+  const ref = useRef<ComponentRef<typeof Pressable>>(null);
+
+  return (
+    <Pressable
+      ref={ref}
+      onPress={() => ref.current?.measureInWindow((x, y, width, height) => onOpen(item.requestId, { x, y, width, height }))}
+      accessibilityRole="button"
+      style={({ pressed }) => [styles.row, divider && styles.divider, pressed && { opacity: 0.6 }]}
+    >
+      <Text style={styles.rowTitle}>{item.title}</Text>
+      <Text style={styles.rowDetail}>{item.detail}</Text>
+    </Pressable>
   );
 }
 
@@ -136,6 +140,7 @@ const styles = StyleSheet.create({
   window: {
     position: 'absolute',
     overflow: 'hidden',
+    borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
     borderColor: colors.border,
@@ -155,5 +160,4 @@ const styles = StyleSheet.create({
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   rowTitle: { flex: 1, fontSize: 14.5, fontFamily: fonts.medium, color: colors.text },
   rowDetail: { fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted },
-  note: { marginTop: 14, fontSize: 12.5, fontFamily: fonts.regular, color: colors.textMuted, textAlign: 'center' },
 });

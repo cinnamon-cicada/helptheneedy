@@ -4,13 +4,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { ActivityRecord } from '../types';
 import { ActivityRow } from './ActivityRow';
+import type { TileRect } from './ProfileShortcutCard';
 
 export function RecentActivityCard({
   activity,
   onViewAll,
+  onOpen,
 }: {
   activity: ActivityRecord[];
   onViewAll: () => void;
+  onOpen: (requestId: string, origin: TileRect) => void;
 }) {
   return (
     <View style={styles.card}>
@@ -27,7 +30,7 @@ export function RecentActivityCard({
         </Pressable>
       </View>
       {activity.map((item, i) => (
-        <ActivityRow key={item.id} activity={item} divider={i > 0} />
+        <ActivityRow key={item.id} activity={item} divider={i > 0} onOpen={onOpen} />
       ))}
     </View>
   );

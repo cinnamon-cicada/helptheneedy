@@ -140,7 +140,7 @@ Create a materialized view that aggregates each user's confirmed gift cents by b
 
 Totals are self-reported, and two colluding accounts can confirm gifts that never happened. Add these from the start:
 
-- Label totals as reported by members, not verified.
+- Never describe totals as verified payments.
 - Flag accounts with repeated back-and-forth gifts or unusually large confirmed amounts for review.
 - Add a `leaderboard_excluded` flag on profiles for moderators.
 

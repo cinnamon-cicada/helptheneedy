@@ -81,15 +81,16 @@ export function GiftRequestCard({
   onToggleCommentLike,
   onAddComment,
 }: Props) {
-  const { pan, translateX, translateY, enter, returnToCenter, flyOutRight, collapse } = useCardGestures({
-    screenWidth,
-    expandDistance: geometry.expandDistance,
-    expand,
-    isExpanded,
-    onSkip,
-    onGiftIntent,
-    onExpandedChange,
-  });
+  const { pan, expandCard, translateX, translateY, enter, returnToCenter, flyOutRight, collapse } =
+    useCardGestures({
+      screenWidth,
+      expandDistance: geometry.expandDistance,
+      expand,
+      isExpanded,
+      onSkip,
+      onGiftIntent,
+      onExpandedChange,
+    });
 
   useImperativeHandle(ref, () => ({ returnToCenter, flyOutRight, collapse }), [
     returnToCenter,
@@ -159,41 +160,49 @@ export function GiftRequestCard({
       <View style={styles.card}>
         <GestureDetector gesture={pan}>
           <View collapsable={false}>
-            <Animated.View style={[styles.imageWrap, imageStyle]}>
-              <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                {request.postPhoto ? (
-                  <PhotoStage
-                    {...request.postPhoto}
-                    fit="cover"
-                    style={StyleSheet.absoluteFill}
-                    accessibilityLabel={request.title}
-                  />
-                ) : (
-                  <Image
-                    source={{ uri: request.imageUrl }}
-                    style={StyleSheet.absoluteFill}
-                    contentFit="cover"
-                    transition={200}
-                    accessibilityLabel={request.title}
-                  />
-                )}
-              </View>
-              {request.isMine ? (
-                <View pointerEvents="none" style={styles.mine}>
-                  <Text style={styles.mineText}>Your wish</Text>
+            {/* Tapping the image, title or amount expands a collapsed card. */}
+            <Pressable
+              onPress={expandCard}
+              disabled={expanded}
+              accessibilityRole="button"
+              accessibilityLabel={`Open ${request.title}`}
+            >
+              <Animated.View style={[styles.imageWrap, imageStyle]}>
+                <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                  {request.postPhoto ? (
+                    <PhotoStage
+                      {...request.postPhoto}
+                      fit="cover"
+                      style={StyleSheet.absoluteFill}
+                      accessibilityLabel={request.title}
+                    />
+                  ) : (
+                    <Image
+                      source={{ uri: request.imageUrl }}
+                      style={StyleSheet.absoluteFill}
+                      contentFit="cover"
+                      transition={200}
+                      accessibilityLabel={request.title}
+                    />
+                  )}
                 </View>
-              ) : null}
-              <Animated.View pointerEvents="none" style={[styles.grabber, revealStyle]} />
-              <Animated.View pointerEvents="none" style={[styles.indicator, styles.skipIndicator, skipIndicatorStyle]}>
-                <X size={30} color={colors.skip} strokeWidth={2.25} />
-              </Animated.View>
-              {/* Your own wish can't be gifted, so a right swipe just moves past it. */}
-              {request.isMine ? null : (
-                <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
-                  <Gift size={28} color={colors.orange} strokeWidth={2} />
+                {request.isMine ? (
+                  <View pointerEvents="none" style={styles.mine}>
+                    <Text style={styles.mineText}>Your wish</Text>
+                  </View>
+                ) : null}
+                <Animated.View pointerEvents="none" style={[styles.grabber, revealStyle]} />
+                <Animated.View pointerEvents="none" style={[styles.indicator, styles.skipIndicator, skipIndicatorStyle]}>
+                  <X size={30} color={colors.skip} strokeWidth={2.25} />
                 </Animated.View>
-              )}
-            </Animated.View>
+                {/* Your own wish can't be gifted, so a right swipe just moves past it. */}
+                {request.isMine ? null : (
+                  <Animated.View pointerEvents="none" style={[styles.indicator, styles.giftIndicator, giftIndicatorStyle]}>
+                    <Gift size={28} color={colors.orange} strokeWidth={2} />
+                  </Animated.View>
+                )}
+              </Animated.View>
+            </Pressable>
 
             <View style={[styles.info, !expanded && styles.infoCollapsed]}>
               <View style={styles.recipientRow}>
@@ -225,12 +234,14 @@ export function GiftRequestCard({
                 </Animated.View>
               </View>
 
-              <Text style={styles.title} numberOfLines={expanded ? 2 : 1}>
+              <Text style={styles.title} numberOfLines={expanded ? 2 : 1} onPress={expanded ? undefined : expandCard}>
                 {request.title}
               </Text>
 
               <View style={styles.amountRow}>
-                <Text style={styles.amount}>{formatCents(request.amountCents)}</Text>
+                <Text style={styles.amount} onPress={expanded ? undefined : expandCard}>
+                  {formatCents(request.amountCents)}
+                </Text>
                 {request.isMine ? null : (
                 <Pressable
                   onPress={onToggleSave}

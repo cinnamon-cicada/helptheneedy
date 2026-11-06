@@ -58,7 +58,12 @@ export type UserProfile = {
   requestsPosted: number;
 };
 
-export type ActivityRecord = { id: string; minutesAgo: number } & (
+export type ActivityRecord = {
+  id: string;
+  minutesAgo: number;
+  /** The request this activity is about, opened as a full card on tap. */
+  requestId: string;
+} & (
   | { kind: 'gift_sent'; amountCents: number; recipientName: string }
   | { kind: 'request_posted' }
 );
@@ -67,6 +72,8 @@ export type ProfileListItem = {
   id: string;
   title: string;
   detail: string;
+  /** The request this row is about, opened as a full card on tap. */
+  requestId: string;
 };
 
 /** Most Gifted sums confirmed cents; Most Helped counts distinct recipients. */
