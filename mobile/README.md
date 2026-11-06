@@ -24,14 +24,14 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 
 The web version is hosted on EAS Hosting at https://helptheneedy.expo.app, under the `cinnamoncicada` Expo account. It's a single-page app (`web.output` is `single` in `app.json`) running on the same mock data as the native app. Anyone with the link can open it.
 
-To redeploy, export the web build and deploy it. Without `--prod`, you get a preview URL instead of updating the production one.
+To redeploy, export the web build with the `production` EAS environment, then deploy it. Without `--prod`, you get a preview URL instead of updating the production one.
 
 ```bash
-npx expo export --platform web
-npx eas-cli@latest deploy --prod
+npx eas-cli@latest env:exec production 'npx expo export --platform web'
+npx eas-cli@latest deploy --prod --environment production
 ```
 
-Any `EXPO_PUBLIC_` variable a bundled module reads is baked into the public site, so never deploy while `.env.local` holds anything other than a publishable key.
+The `production` and `preview` EAS environments hold `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` for the hosted Supabase project, and `env:exec` makes them override `.env.local`. A plain `npx expo export` uses `.env.local` instead, which points at your own machine. Any `EXPO_PUBLIC_` variable a bundled module reads is baked into the public site, so store only the publishable key there, never a secret or service role key.
 
 ## Login and signup
 
