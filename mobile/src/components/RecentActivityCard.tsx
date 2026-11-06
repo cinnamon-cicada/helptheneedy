@@ -5,6 +5,7 @@ import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { ActivityRecord } from '../types';
 import { ActivityRow } from './ActivityRow';
 import type { TileRect } from './ProfileShortcutCard';
+import { EmptyNote } from './ui';
 
 export function RecentActivityCard({
   activity,
@@ -29,9 +30,11 @@ export function RecentActivityCard({
           <ChevronRight size={15} color={colors.orangeText} strokeWidth={ICON_STROKE} />
         </Pressable>
       </View>
-      {activity.map((item, i) => (
-        <ActivityRow key={item.id} activity={item} divider={i > 0} onOpen={onOpen} />
-      ))}
+      {activity.length === 0 ? (
+        <EmptyNote>No activity yet. Gifts you send will show up here.</EmptyNote>
+      ) : (
+        activity.map((item, i) => <ActivityRow key={item.id} activity={item} divider={i > 0} onOpen={onOpen} />)
+      )}
     </View>
   );
 }

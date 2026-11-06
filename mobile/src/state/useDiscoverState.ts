@@ -1,5 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { fetchOpenRequests } from '../api/posts';
+import { useAuth } from '../auth/AuthContext';
 import { mockRequests } from '../data/mockRequests';
 import { useDemo } from '../demo/DemoProvider';
 import { useMyPosts } from '../post/MyPostsContext';
@@ -11,12 +13,33 @@ export const DEFAULT_FILTERS: Filters = { category: 'All', maxAmountCents: null 
 type ReactionKind = 'hearts' | 'sparkles';
 
 /**
- * Business state for the Discover prototype. Everything lives in local state:
- * no network, no payments. Animation state stays in the card components.
+ * Business state for Discover. With Supabase configured, other people's
+ * requests are the open posts there; otherwise they're mock data. Skips,
+ * saves, reactions and comments stay in local state. Animation state stays
+ * in the card components.
  */
 export function useDiscoverState() {
-  const { profile: me } = useDemo();
-  const [others, setOthers] = useState<GiftRequest[]>(mockRequests);
+  const { profile: me, online } = useDemo();
+  const { account } = useAuth();
+  const myId = account?.user.id ?? null;
+  const [others, setOthers] = useState<GiftRequest[]>(online ? [] : mockRequests);
+  // Bumped by Start over, which fetches the posts again with their new amounts.
+  const [loadKey, setLoadKey] = useState(0);
+  const fetchKey = `${myId}:${loadKey}`;
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  const loading = online && loadedKey !== fetchKey;
+
+  useEffect(() => {
+    if (!online || !myId) return;
+    let cancelled = false;
+    fetchOpenRequests(myId)
+      .then((cards) => !cancelled && setOthers(cards))
+      .catch(() => undefined)
+      .finally(() => !cancelled && setLoadedKey(fetchKey));
+    return () => {
+      cancelled = true;
+    };
+  }, [online, myId, fetchKey]);
   // Wishes you posted go to the front of the deck. Reactions and comments on
   // them are kept here, keyed by id, since the posts themselves live elsewhere.
   const { posts } = useMyPosts();
@@ -115,7 +138,10 @@ export function useDiscoverState() {
     [me, updateRequest],
   );
 
-  const startOver = useCallback(() => setHandledIds([]), []);
+  const startOver = useCallback(() => {
+    setHandledIds([]);
+    setLoadKey((n) => n + 1);
+  }, []);
 
   return {
     queue,
@@ -131,6 +157,7 @@ export function useDiscoverState() {
     toggleCommentLike,
     addComment,
     startOver,
+    loading,
   };
 }
 

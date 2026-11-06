@@ -2,14 +2,14 @@
 
 helptheneedy is a dating-style mobile app that matches gifters with receivers. The client is React Native with Expo, and the backend is Supabase with TypeScript.
 
-**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` has Discover and Profile screen prototypes that run on mock data, and a Supabase client in `src/lib/supabase.ts` that no screen uses yet. For demos it saves a $1,000 play-money balance, gifts and profile edits on the device only; that balance is never real money and never reaches the backend; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
+**Status:** The backend is implemented in `supabase/`. The mobile client in `mobile/` runs a demo against it: each device signs in anonymously, gifts to seeded demo receivers are logged in `gifts`, and Discover, Profile and the Leaderboard read from Supabase. Friends, posting, comments and reactions still use mock data. A $1,000 play-money balance stays on the device and never reaches the backend; see [mobile/README.md](mobile/README.md). Keep this file in sync with migrations in the same PR. The migrations win if the two disagree.
 
 See [docs/backend-plan.md](docs/backend-plan.md) for the milestones, build order, and testing requirements.
 
 ## Rules
 
 - The app never does not handle or move money, for now.
-- Only a receiver's confirmation counts a gift toward post progress and leaderboards.
+- Only a receiver's confirmation counts a gift toward post progress and leaderboards. The one exception is demo receivers (`profiles.is_demo`): they can't confirm anything, so `demo_send_gift` confirms gifts to them right away.
 - Store money as integer cents. Gift totals are reported by members, so never describe them as verified payments.
 - Enable Row Level Security (RLS) on every table. Clients read through RLS and write through RPCs.
 - RPCs derive the user from `auth.uid()`, never from an argument.
@@ -37,6 +37,9 @@ Unless noted, tables have an `id uuid` primary key and `created_at timestamptz`.
 | `general_location` | `text` | Nullable |
 | `leaderboard_excluded` | `boolean` | Default false; set by moderators |
 | `onboarded_at` | `timestamptz` | Null until onboarding finishes; most RPCs require it |
+| `is_demo` | `boolean` | Default false; true only for accounts seeded by `supabase/demo/seed.sql`. No RPC sets it, and clients can't read it |
+
+Anonymous sign-in is on, so a demo device gets an account without signing up. It still finishes onboarding with `complete_onboarding`.
 
 Other users can read only `id`, `username`, `display_name`, `bio`, and `avatar_path`. `username`, `display_name`, and `intent` are null until onboarding finishes. Deleting an account removes the row.
 
@@ -196,7 +199,7 @@ Blocking someone or deleting an account also cancels pending gifts between the t
 
 ### Private schema
 
-- **`private.leaderboard_monthly`:** A materialized view of confirmed gift cents per user, by board and UTC month. `pg_cron` refreshes it every 5 minutes. RPCs apply opt-outs, `leaderboard_excluded`, and blocks when read, so those take effect immediately.
+- **`private.leaderboard_monthly`:** A materialized view of confirmed gift cents per user, by board and UTC month. `pg_cron` refreshes it every 5 minutes, and `demo_send_gift` refreshes it after each gift. The `helped` board is counted live from `gifts` instead, because distinct people can't be added up month by month. RPCs apply opt-outs, `leaderboard_excluded`, and blocks when read, so those take effect immediately.
 - **`private.rate_events`:** Backs rate limits, and `pg_cron` purges old rows.
 
 ## API
@@ -258,6 +261,7 @@ Rate limits per user:
 | `record_gift` | `match_id`, `amount_cents`, `is_anonymous?` | Gifter only; requires an active match, allows $1 up to the remaining amount, creates a `pending` gift, and notifies the receiver |
 | `cancel_gift` | `gift_id` | Gifter only; pending gifts only |
 | `respond_to_gift` | `gift_id`, `confirm` | Receiver only; pending gifts only |
+| `demo_send_gift` | `post_id`, `amount_cents`, `is_anonymous?` | Demo receivers only (`receiver_not_demo` otherwise). In one transaction: records the right swipe, an accepted request and the match, inserts a `confirmed` gift, adds it to `raised_cents` (closing the post at goal), and refreshes the leaderboard. Allows $1 up to the remaining amount; 100 per day |
 
 ### Friends and safety
 
@@ -288,7 +292,7 @@ Moderators only. Each action is written to `moderation_log`, and the report queu
 
 | RPC | Arguments | Behavior |
 | --- | --- | --- |
-| `get_leaderboard` | `board` (`gifted`, `received`), `period?` (`all_time`, `month`), `scope?` (`global`, `friends`), `offset?`, `limit?` | Ranked entries; ties share a rank |
+| `get_leaderboard` | `board` (`gifted`, `received`, `helped`), `period?` (`all_time`, `month`), `scope?` (`global`, `friends`), `offset?`, `limit?` | Ranked entries; ties share a rank. On `helped`, `total_cents` holds the number of different people helped; it follows the gifted board's opt-out |
 | `get_my_rank` | `board`, `period?`, `scope?` | Your rank and total; no row if you aren't on the board |
 
 ### Edge Functions

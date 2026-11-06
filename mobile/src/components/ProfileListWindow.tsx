@@ -10,12 +10,22 @@ import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { ProfileListItem } from '../types';
 import type { TileRect } from './ProfileShortcutCard';
 import type { ProfileSection } from './ProfileShortcutGrid';
+import { EmptyNote } from './ui';
 
 const MARGIN = 20;
 // Estimates for sizing the window: one row, and the header plus bottom padding.
 const ROW_HEIGHT = 46;
 const CHROME_HEIGHT = 72;
 const TIMING = { duration: 260, easing: Easing.out(Easing.cubic) };
+// Room for the empty message, in rows.
+const EMPTY_ROWS = 1.6;
+
+const EMPTY_MESSAGES: Record<ProfileSection, string> = {
+  'gifts-sent': "You haven't sent any gifts yet.",
+  'gifts-received': "You haven't received any gifts yet.",
+  'saved-requests': 'Nothing saved yet. Tap the bookmark on a request to save it.',
+  'my-posts': "You haven't posted a request yet.",
+};
 
 type Props = {
   lists: typeof PROFILE_LISTS;
@@ -63,7 +73,8 @@ export function ProfileListWindow({ lists, section, origin, onClose, onOpenItem 
   const width = screen.width - MARGIN * 2;
   // Fit the rows, centered; longer lists scroll inside the largest window that fits.
   const maxHeight = screen.height - insets.top - Math.max(insets.bottom, MARGIN) - MARGIN;
-  const height = Math.min((list?.items.length ?? 0) * ROW_HEIGHT + CHROME_HEIGHT, maxHeight);
+  const rowCount = list ? list.items.length || EMPTY_ROWS : 0;
+  const height = Math.min(rowCount * ROW_HEIGHT + CHROME_HEIGHT, maxHeight);
   const top = insets.top + (maxHeight - height) / 2;
 
   const scrimStyle = useAnimatedStyle(() => ({ opacity: progress.value }));
@@ -101,9 +112,11 @@ export function ProfileListWindow({ lists, section, origin, onClose, onOpenItem 
             </Pressable>
           </View>
           <ScrollView contentContainerStyle={styles.list}>
-            {items.map((item, i) => (
-              <ListRow key={item.id} item={item} divider={i > 0} onOpen={onOpenItem} />
-            ))}
+            {items.length === 0 && shown.section ? (
+              <EmptyNote>{EMPTY_MESSAGES[shown.section]}</EmptyNote>
+            ) : (
+              items.map((item, i) => <ListRow key={item.id} item={item} divider={i > 0} onOpen={onOpenItem} />)
+            )}
           </ScrollView>
         </Animated.View>
       </Animated.View>

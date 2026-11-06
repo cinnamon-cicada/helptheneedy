@@ -52,6 +52,11 @@ export function PrimaryButton({
   );
 }
 
+/** A short line in place of a list that has nothing in it. */
+export function EmptyNote({ children }: { children: string }) {
+  return <Text style={styles.emptyNote}>{children}</Text>;
+}
+
 export function TextButton({ label, onPress }: { label: string; onPress: () => void }) {
   return (
     <Pressable
@@ -95,5 +100,14 @@ const styles = StyleSheet.create({
   // Dark text: white on this orange is below 3:1 contrast.
   primaryText: { fontSize: 16.5, fontFamily: fonts.bold, color: colors.text, letterSpacing: 0.1 },
   textButton: { paddingVertical: 8, paddingHorizontal: 4 },
+  emptyNote: {
+    paddingVertical: 20,
+    paddingHorizontal: 12,
+    fontSize: 14,
+    lineHeight: 20,
+    fontFamily: fonts.regular,
+    color: colors.textMuted,
+    textAlign: 'center',
+  },
   textButtonText: { fontSize: 15, fontFamily: fonts.semibold, color: colors.textMuted },
 });

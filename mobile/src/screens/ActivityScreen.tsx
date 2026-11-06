@@ -7,6 +7,7 @@ import { RequestCardWindow } from '../components/RequestCardWindow';
 import { SubScreen } from '../components/SubScreen';
 import { useFindRequest, useMyActivity } from '../demo/selectors';
 import { colors, radius, shadow } from '../theme';
+import { EmptyNote } from '../components/ui';
 
 export function ActivityScreen() {
   const activity = useMyActivity();
@@ -16,14 +17,18 @@ export function ActivityScreen() {
   return (
     <SubScreen title="Activity">
       <View style={styles.card}>
-        {activity.map((item, i) => (
-          <ActivityRow
-            key={item.id}
-            activity={item}
-            divider={i > 0}
-            onOpen={(requestId, origin) => setOpen({ requestId, origin })}
-          />
-        ))}
+        {activity.length === 0 ? (
+          <EmptyNote>No activity yet. Gifts you send will show up here.</EmptyNote>
+        ) : (
+          activity.map((item, i) => (
+            <ActivityRow
+              key={item.id}
+              activity={item}
+              divider={i > 0}
+              onOpen={(requestId, origin) => setOpen({ requestId, origin })}
+            />
+          ))
+        )}
       </View>
       <RequestCardWindow
         request={open ? (findRequest(open.requestId) ?? null) : null}

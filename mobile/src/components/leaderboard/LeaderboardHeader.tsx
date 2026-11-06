@@ -31,24 +31,27 @@ function Laurel({ flip }: { flip?: boolean }) {
 export function LeaderboardHeader() {
   return (
     <View style={styles.wrap}>
-      <Svg width={120} height={88} viewBox="0 0 120 88" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        <Defs>
-          <LinearGradient id="cup" x1="0" y1="0" x2="1" y2="1">
-            <Stop offset="0" stopColor="#FBD879" />
-            <Stop offset="1" stopColor="#E3A33A" />
-          </LinearGradient>
-        </Defs>
-        <Laurel />
-        <Laurel flip />
-        {/* Handles */}
-        <Path d="M44 22 C 32 22, 32 40, 47 42" stroke={GOLD_DEEP} strokeWidth={3.2} fill="none" strokeLinecap="round" />
-        <Path d="M76 22 C 88 22, 88 40, 73 42" stroke={GOLD_DEEP} strokeWidth={3.2} fill="none" strokeLinecap="round" />
-        {/* Cup, stem and base */}
-        <Path d="M43 16 H77 C77 38, 70 50, 60 52 C50 50, 43 38, 43 16 Z" fill="url(#cup)" stroke={GOLD_DEEP} strokeWidth={1.6} />
-        <Path d="M50 21 C50 32, 53 40, 57 44" stroke="#FFF3D0" strokeWidth={2.4} fill="none" strokeLinecap="round" opacity={0.8} />
-        <Rect x={56} y={52} width={8} height={10} fill={GOLD_DEEP} />
-        <Rect x={47} y={62} width={26} height={8} rx={3} fill="url(#cup)" stroke={GOLD_DEEP} strokeWidth={1.4} />
-      </Svg>
+      {/* Decorative. Hidden on a View, because react-native-svg passes accessibility props straight to the DOM on web. */}
+      <View aria-hidden>
+        <Svg width={120} height={88} viewBox="0 0 120 88">
+          <Defs>
+            <LinearGradient id="cup" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0" stopColor="#FBD879" />
+              <Stop offset="1" stopColor="#E3A33A" />
+            </LinearGradient>
+          </Defs>
+          <Laurel />
+          <Laurel flip />
+          {/* Handles */}
+          <Path d="M44 22 C 32 22, 32 40, 47 42" stroke={GOLD_DEEP} strokeWidth={3.2} fill="none" strokeLinecap="round" />
+          <Path d="M76 22 C 88 22, 88 40, 73 42" stroke={GOLD_DEEP} strokeWidth={3.2} fill="none" strokeLinecap="round" />
+          {/* Cup, stem and base */}
+          <Path d="M43 16 H77 C77 38, 70 50, 60 52 C50 50, 43 38, 43 16 Z" fill="url(#cup)" stroke={GOLD_DEEP} strokeWidth={1.6} />
+          <Path d="M50 21 C50 32, 53 40, 57 44" stroke="#FFF3D0" strokeWidth={2.4} fill="none" strokeLinecap="round" opacity={0.8} />
+          <Rect x={56} y={52} width={8} height={10} fill={GOLD_DEEP} />
+          <Rect x={47} y={62} width={26} height={8} rx={3} fill="url(#cup)" stroke={GOLD_DEEP} strokeWidth={1.4} />
+        </Svg>
+      </View>
       <Text style={styles.title} accessibilityRole="header">
         Leaderboard
       </Text>

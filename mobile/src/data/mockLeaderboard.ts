@@ -5,7 +5,7 @@ import { MOCK_PROFILE } from './mockProfile';
 export const MY_LEADERBOARD_ID = 'me';
 
 /** Warm pairs, with a little muted contrast, for illustrated avatars. */
-const PALETTES: [string, string][] = [
+export const PALETTES: [string, string][] = [
   ['#FDE7C2', '#C9852B'],
   ['#FCE0CF', '#C8623A'],
   ['#FBEFC5', '#B88A16'],

@@ -52,7 +52,7 @@ export function DiscoverScreen() {
     else router.push(`/user/${request.recipient.id}`);
   }, []);
 
-  const emptyState = (
+  const emptyState = state.loading ? null : (
     <View style={styles.empty}>
       <View style={styles.emptyIcon}>
         <Gift size={28} color={colors.orangeText} strokeWidth={ICON_STROKE} />

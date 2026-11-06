@@ -37,6 +37,22 @@ function parseDollarsToCents(text: string): number | null {
   return Number(whole || '0') * 100 + Number(frac.padEnd(2, '0'));
 }
 
+/** What to tell the gifter when a gift isn't saved. Nothing comes off the balance in that case. */
+function giftErrorMessage(code: string, name: string): string {
+  switch (code) {
+    case 'insufficient_balance':
+      return 'That is more than your demo balance.';
+    case 'invalid_amount':
+      return `${name}'s request changed. Pick a smaller amount.`;
+    case 'post_not_open':
+      return `${name}'s request is already fully gifted.`;
+    case 'rate_limited':
+      return "You've sent a lot of gifts today. Try again tomorrow.";
+    default:
+      return "Your gift wasn't sent. Check your connection and try again.";
+  }
+}
+
 /**
  * Gifting flow for the demo. Gifts come out of the demo balance, which is play
  * money saved on this device only. Nothing here charges or moves real money.
@@ -47,6 +63,8 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
   const [selected, setSelected] = useState<number | 'custom'>(0);
   const [customText, setCustomText] = useState('');
   const [anonymous, setAnonymous] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const options = useMemo(
     () => (request ? suggestions(request.amountCents, balanceCents) : []),
@@ -65,6 +83,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
       setSelected(fits.includes(openKey.amountCents) ? openKey.amountCents : (fits.at(-1) ?? 'custom'));
       setCustomText('');
       setAnonymous(false);
+      setSendError(null);
     }
   }
 
@@ -86,8 +105,14 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
       : null;
   const valid = amountCents !== null && amountCents >= MIN_CENTS && amountCents <= maxCents;
 
-  const send = () => {
-    if (amountCents !== null && sendGift(request, amountCents, anonymous)) setStep('done');
+  const send = async () => {
+    if (amountCents === null || sending) return;
+    setSending(true);
+    setSendError(null);
+    const result = await sendGift(request, amountCents, anonymous);
+    setSending(false);
+    if (result.ok) setStep('done');
+    else setSendError(giftErrorMessage(result.error, name));
   };
 
   const close = step === 'done' ? onComplete : onDismiss;
@@ -189,10 +214,11 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           </View>
 
           <PrimaryButton
-            label={valid && amountCents !== null ? `Continue · ${formatCents(amountCents)}` : 'Continue'}
-            disabled={!valid}
+            label={sending ? 'Sending…' : valid && amountCents !== null ? `Continue · ${formatCents(amountCents)}` : 'Continue'}
+            disabled={!valid || sending}
             onPress={send}
           />
+          {sendError ? <Text style={[styles.error, styles.sendError]}>{sendError}</Text> : null}
           <Text style={styles.footnote}>
             {`Demo balance ${formatCents(balanceCents)}. No real payment is processed.`}
           </Text>
@@ -246,6 +272,7 @@ const styles = StyleSheet.create({
   customFieldError: { borderColor: colors.skip },
   currency: { fontSize: 20, fontFamily: fonts.semibold, color: colors.textMuted, marginRight: 4 },
   customInput: { flex: 1, fontSize: 20, fontFamily: fonts.semibold, color: colors.text, paddingVertical: 0, outlineWidth: 0 },
+  sendError: { marginTop: 10, textAlign: 'center' },
   error: { marginTop: 6, fontSize: 12.5, fontFamily: fonts.regular, color: colors.skip },
   anonRow: {
     marginTop: 20,

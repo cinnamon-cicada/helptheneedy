@@ -5,6 +5,7 @@ import { formatMetric } from '../../leaderboard/copy';
 import { colors, fonts, ICON_STROKE, radius, shadow } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
+import { EmptyNote } from '../ui';
 
 type RowProps = {
   row: LeaderboardRow;
@@ -44,12 +45,20 @@ type Props = {
   category: RankingCategory;
   myId: string;
   onPress: (row: LeaderboardRow) => void;
+  /** Shown in place of the list when nobody is ranked; omit to show nothing, such as while loading. */
+  emptyMessage?: string;
 };
 
-/** Everyone after the podium, in one rounded list with thin dividers. */
-export function RankingList({ rows, category, myId, onPress }: Props) {
+/** Everyone on the board, in one rounded list with thin dividers. */
+export function RankingList({ rows, category, myId, onPress, emptyMessage }: Props) {
   const compact = useWindowDimensions().width < 370;
-  if (rows.length === 0) return null;
+  if (rows.length === 0) {
+    return emptyMessage ? (
+      <View style={styles.list}>
+        <EmptyNote>{emptyMessage}</EmptyNote>
+      </View>
+    ) : null;
+  }
   return (
     <View style={styles.list}>
       {rows.map((row, i) => (

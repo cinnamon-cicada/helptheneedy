@@ -6,14 +6,15 @@ import { YoungSerif_400Regular } from '@expo-google-fonts/young-serif/400Regular
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthProvider, useAuth } from '../auth/AuthContext';
 import { DemoProvider } from '../demo/DemoProvider';
 import { MyPostsProvider } from '../post/MyPostsContext';
-import { colors } from '../theme';
+import { TextButton } from '../components/ui';
+import { colors, fonts } from '../theme';
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -45,9 +46,24 @@ export default function RootLayout() {
   );
 }
 
-/** Signed-out users only see sign-in; signing in swaps to the app. */
+/**
+ * Signed-out users only see sign-in; signing in swaps to the app. With
+ * Supabase configured the account is created automatically, so sign-in never
+ * shows: the app waits for the account instead.
+ */
 function RootStack() {
-  const { user } = useAuth();
+  const { user, status, retry } = useAuth();
+  if (status === 'connecting') return <View style={styles.root} />;
+  if (status === 'failed') {
+    return (
+      <View style={[styles.root, styles.center]}>
+        <Text style={styles.message}>{"Couldn't connect"}</Text>
+        <View style={styles.retry}>
+          <TextButton label="Try again" onPress={retry} />
+        </View>
+      </View>
+    );
+  }
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: styles.root }}>
       <Stack.Protected guard={!!user}>
@@ -67,4 +83,7 @@ function RootStack() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
   auth: { flex: 1, backgroundColor: colors.white },
+  center: { alignItems: 'center', justifyContent: 'center', padding: 24 },
+  message: { fontSize: 17, fontFamily: fonts.display, color: colors.text },
+  retry: { marginTop: 12 },
 });
