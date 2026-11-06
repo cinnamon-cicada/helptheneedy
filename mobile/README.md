@@ -20,6 +20,19 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 | `npm run typecheck` | Runs the TypeScript compiler without emitting files |
 | `npm run lint` | Runs ESLint with the Expo config |
 
+## Web hosting
+
+The web version is hosted on EAS Hosting at https://helptheneedy.expo.app, under the `cinnamoncicada` Expo account. It's a single-page app (`web.output` is `single` in `app.json`) running on the same mock data as the native app. Anyone with the link can open it.
+
+To redeploy, export the web build and deploy it. Without `--prod`, you get a preview URL instead of updating the production one.
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy --prod
+```
+
+Any `EXPO_PUBLIC_` variable a bundled module reads is baked into the public site, so never deploy while `.env.local` holds anything other than a publishable key.
+
 ## Login and signup
 
 The app opens on the sign-in route, and the tabs appear after logging in or signing up. On first load the mascot drags the gift to the centre of the screen, the gift bursts open, and the gift rises as the login form springs up. Afterward the mascot explores the gift: it wanders, peeks over the side, climbs onto the rim and slides off, hides behind the box, and pokes the loose ribbon.
