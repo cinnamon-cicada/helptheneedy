@@ -19,7 +19,8 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "single"
     },
     "plugins": [
       "expo-image",
@@ -45,6 +46,12 @@
       ]
     ],
     "backgroundColor": "#FFFAF4",
-    "scheme": "helptheneedy"
+    "scheme": "helptheneedy",
+    "extra": {
+      "eas": {
+        "projectId": "9075ebb7-0213-4da7-a238-13d0e09a350e"
+      }
+    },
+    "owner": "cinnamoncicada"
   }
 }
