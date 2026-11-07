@@ -12,6 +12,8 @@ export type Recipient = {
 
 export type Comment = {
   id: string;
+  /** Stable author identity; older comments can still use their saved avatar as fallback. */
+  authorId?: string;
   username: string;
   avatarUrl: string;
   text: string;

@@ -59,7 +59,7 @@ function giftErrorMessage(code: string, name: string): string {
  * money saved on this device only. Nothing here charges or moves real money.
  */
 export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete }: Props) {
-  const { balanceCents, sendGift, resetDemo } = useDemo();
+  const { balanceCents, sendGift, resetDemo, avatarForUser } = useDemo();
   const successBadgeRef = useRef<ComponentRef<typeof View>>(null);
   const [step, setStep] = useState<Step>('amount');
   const [selected, setSelected] = useState<number | 'custom'>(0);
@@ -152,7 +152,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
       {step === 'amount' ? (
         <View>
           <View style={styles.header}>
-            <Avatar uri={request.recipient.avatarUrl} size={46} />
+            <Avatar uri={avatarForUser(request.recipient.id, request.recipient.avatarUrl)} size={46} />
             <View style={styles.headerText}>
               <Text style={styles.title}>Gift {name}</Text>
               <Text style={styles.subtitle} numberOfLines={1}>

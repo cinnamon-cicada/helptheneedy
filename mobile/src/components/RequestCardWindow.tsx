@@ -105,7 +105,7 @@ export function RequestCardWindow({ request, origin, onClose, onClosed }: Props)
 
 /** Info and details, with reactions and comments kept locally for this prototype. */
 function CardBody({ initial }: { initial: GiftRequest }) {
-  const { profile: me } = useDemo();
+  const { profile: me, currentUserId, avatarForUser } = useDemo();
   const [request, setRequest] = useState(initial);
   const [mine, setMine] = useState({ hearts: false, sparkles: false });
 
@@ -127,7 +127,8 @@ function CardBody({ initial }: { initial: GiftRequest }) {
     const comment: Comment = {
       id: `local-${Date.now()}`,
       username: me.username,
-      avatarUrl: me.avatarUrl,
+      authorId: currentUserId,
+      avatarUrl: '',
       text: text.trim(),
       minutesAgo: 0,
       likes: 0,
@@ -143,7 +144,7 @@ function CardBody({ initial }: { initial: GiftRequest }) {
       <View style={styles.info}>
         <View style={styles.recipientRow}>
           <View style={styles.recipient}>
-            <Image source={{ uri: recipient.avatarUrl }} style={styles.avatar} contentFit="cover" transition={150} />
+            <Image source={{ uri: avatarForUser(recipient.id, recipient.avatarUrl) }} style={styles.avatar} contentFit="cover" transition={150} />
             <Text style={styles.name} numberOfLines={1}>
               {recipient.displayName}
               {recipient.age ? <Text style={styles.age}>, {recipient.age}</Text> : null}

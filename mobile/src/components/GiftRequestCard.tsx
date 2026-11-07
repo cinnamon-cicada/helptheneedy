@@ -10,6 +10,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
+import { useDemo } from '../demo/DemoProvider';
 import { useCardGestures } from '../animation/useCardGestures';
 import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
 import type { GiftRequest } from '../types';
@@ -81,6 +82,7 @@ export function GiftRequestCard({
   onToggleCommentLike,
   onAddComment,
 }: Props) {
+  const { avatarForUser } = useDemo();
   const { pan, expandCard, translateX, translateY, enter, returnToCenter, flyOutRight, collapse } =
     useCardGestures({
       screenWidth,
@@ -214,7 +216,7 @@ export function GiftRequestCard({
                   style={styles.recipient}
                 >
                   <Image
-                    source={{ uri: recipient.avatarUrl }}
+                    source={{ uri: avatarForUser(recipient.id, recipient.avatarUrl) }}
                     style={styles.avatar}
                     contentFit="cover"
                     transition={150}

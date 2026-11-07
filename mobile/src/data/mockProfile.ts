@@ -1,21 +1,16 @@
 import type { ProfileSection } from '../components/ProfileShortcutGrid';
 import type { ActivityRecord, GiftRequest, ProfileListItem, UserProfile } from '../types';
 import { mockRequests } from './mockRequests';
-import { demoPortraits } from './demoPhotos';
+import { LOCAL_USER_ID, PROFILE_AVATAR_CHOICES, requiredDemoAvatar } from './userAvatars';
 
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop`;
 
 /** Non-identifying demo photos also used by the Edit Profile sample picker. */
-export const SAMPLE_AVATARS = [
-  demoPortraits.jamie,
-  demoPortraits.alex,
-  demoPortraits.taylor,
-  demoPortraits.riley,
-];
+export const SAMPLE_AVATARS = PROFILE_AVATAR_CHOICES;
 
 export const MOCK_PROFILE: UserProfile = {
   username: 'robin_24',
-  avatarUrl: SAMPLE_AVATARS[0],
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
   totalGiftedCents: 21000,
   peopleHelped: 12,
   requestsPosted: 5,
@@ -28,7 +23,7 @@ const ME_AS_RECIPIENT = {
   id: 'u-me',
   displayName: MOCK_PROFILE.username,
   username: 'robin_24',
-  avatarUrl: SAMPLE_AVATARS[0],
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
 };
 
 /** Requests the signed-in user has posted. */

@@ -5,6 +5,7 @@ import { ApiError, isOnline } from '../api/client';
 import { fetchMyGifts, sendDemoGift, type SentGift } from '../api/gifts';
 import { useAuth } from '../auth/AuthContext';
 import { MOCK_PROFILE } from '../data/mockProfile';
+import { demoAvatarFor, LOCAL_USER_ID, restoreAvatarUri } from '../data/userAvatars';
 import type { GiftRequest } from '../types';
 import { readJson, removeKey, writeJson } from './storage';
 
@@ -62,7 +63,7 @@ function load(): Saved {
   const saved = readJson<Saved>(STORAGE_KEY);
   // Drop data saved in an older shape instead of guessing at it.
   if (!saved || saved.version !== VERSION || !Number.isInteger(saved.balanceCents)) return defaults();
-  return saved;
+  return { ...saved, profile: { ...saved.profile, avatarUrl: restoreAvatarUri(saved.profile.avatarUrl) } };
 }
 
 const toDemoGift = (g: SentGift): DemoGift => ({
@@ -77,6 +78,8 @@ const toDemoGift = (g: SentGift): DemoGift => ({
 
 type DemoContextValue = Saved & {
   online: boolean;
+  currentUserId: string;
+  avatarForUser: (userId: string | undefined, fallback?: string) => string;
   /** Goes up after every gift, so screens that show backend totals know to fetch again. */
   revision: number;
   updateProfile: (edits: DemoProfile) => Promise<void>;
@@ -193,9 +196,16 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setState((s) => ({ ...s, balanceCents: STARTING_BALANCE_CENTS }));
   }, []);
 
+  const currentUserId = accountId ?? LOCAL_USER_ID;
+  const avatarForUser = useCallback((userId: string | undefined, fallback = '') => {
+    if (!userId) return fallback;
+    if (userId === currentUserId || userId === LOCAL_USER_ID || userId === 'local-user') return state.profile.avatarUrl;
+    return demoAvatarFor(userId) ?? fallback;
+  }, [currentUserId, state.profile.avatarUrl]);
+
   const value = useMemo(
-    () => ({ ...state, online: isOnline, revision, updateProfile, sendGift, resetDemo }),
-    [state, revision, updateProfile, sendGift, resetDemo],
+    () => ({ ...state, online: isOnline, currentUserId, avatarForUser, revision, updateProfile, sendGift, resetDemo }),
+    [state, currentUserId, avatarForUser, revision, updateProfile, sendGift, resetDemo],
   );
 
   return <DemoContext.Provider value={value}>{children}</DemoContext.Provider>;

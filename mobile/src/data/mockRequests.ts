@@ -1,17 +1,17 @@
 import type { Comment, GiftRequest } from '../types';
-import { headshots } from './mockPeople';
-import { demoPortraits, demoRequestPhotos } from './demoPhotos';
+import { demoRequestPhotos } from './demoPhotos';
+import { LOCAL_USER_ID, requiredDemoAvatar } from './userAvatars';
 
 
 const commenters = {
-  alex: { username: 'alex.k', avatarUrl: demoPortraits.alex },
-  maya: { username: 'maya.t', avatarUrl: demoPortraits.taylor },
-  lily: { username: 'lily.c', avatarUrl: demoPortraits.morgan },
-  ryan: { username: 'ryan.p', avatarUrl: demoPortraits.riley },
-  noor: { username: 'noor.s', avatarUrl: demoPortraits.jordan },
-  ben: { username: 'ben.w', avatarUrl: demoPortraits.sam },
-  ivy: { username: 'ivy.r', avatarUrl: demoPortraits.jamie },
-  dev: { username: 'dev.m', avatarUrl: demoPortraits.casey },
+  alex: { username: 'alex.k', authorId: 'comment-alex', avatarUrl: requiredDemoAvatar('comment-alex') },
+  maya: { username: 'maya.t', authorId: 'comment-maya', avatarUrl: requiredDemoAvatar('comment-maya') },
+  lily: { username: 'lily.c', authorId: 'comment-lily', avatarUrl: requiredDemoAvatar('comment-lily') },
+  ryan: { username: 'ryan.p', authorId: 'comment-ryan', avatarUrl: requiredDemoAvatar('comment-ryan') },
+  noor: { username: 'noor.s', authorId: 'comment-noor', avatarUrl: requiredDemoAvatar('comment-noor') },
+  ben: { username: 'ben.w', authorId: 'k11', avatarUrl: requiredDemoAvatar('k11') },
+  ivy: { username: 'ivy.r', authorId: 'comment-ivy', avatarUrl: requiredDemoAvatar('comment-ivy') },
+  dev: { username: 'dev.m', authorId: 'k4', avatarUrl: requiredDemoAvatar('k4') },
 };
 
 type Commenter = keyof typeof commenters;
@@ -37,7 +37,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Jamie',
       username: 'jamie.lo',
       age: 20,
-      avatarUrl: headshots.jamie,
+      avatarUrl: requiredDemoAvatar('u-jamie'),
     },
     imageUrl: demoRequestPhotos.matcha,
     title: 'Matcha after midterms',
@@ -59,7 +59,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Alex',
       username: 'alex.rv',
       age: 22,
-      avatarUrl: headshots.alex,
+      avatarUrl: requiredDemoAvatar('u-alex'),
     },
     imageUrl: demoRequestPhotos.pizza,
     title: 'Friday night pizza',
@@ -80,7 +80,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Taylor',
       username: 'taylor.bk',
       age: 24,
-      avatarUrl: headshots.taylor,
+      avatarUrl: requiredDemoAvatar('u-taylor'),
     },
     imageUrl: demoRequestPhotos.headphones,
     title: 'New headphones',
@@ -103,7 +103,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Riley',
       username: 'riley.jn',
       age: 27,
-      avatarUrl: headshots.riley,
+      avatarUrl: requiredDemoAvatar('u-riley'),
     },
     imageUrl: demoRequestPhotos.dinner,
     title: 'Dinner after work',
@@ -124,7 +124,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Morgan',
       username: 'morgan.art',
       age: 19,
-      avatarUrl: headshots.morgan,
+      avatarUrl: requiredDemoAvatar('u-morgan'),
     },
     imageUrl: demoRequestPhotos.sketchbook,
     title: 'New sketchbook',
@@ -146,7 +146,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Casey',
       username: 'casey.md',
       age: 23,
-      avatarUrl: headshots.casey,
+      avatarUrl: requiredDemoAvatar('u-casey'),
     },
     imageUrl: demoRequestPhotos.flowers,
     title: 'Birthday flowers',
@@ -167,7 +167,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Sam',
       username: 'sam.oh',
       age: 21,
-      avatarUrl: headshots.sam,
+      avatarUrl: requiredDemoAvatar('u-sam'),
     },
     imageUrl: demoRequestPhotos.coffee,
     title: 'Coffee before finals',
@@ -186,7 +186,7 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Jordan',
       username: 'jordan.ek',
       age: 20,
-      avatarUrl: headshots.jordan,
+      avatarUrl: requiredDemoAvatar('u-jordan'),
     },
     imageUrl: demoRequestPhotos.textbook,
     title: 'Textbook for class',
@@ -205,5 +205,5 @@ export const mockRequests: GiftRequest[] = [
 
 export const ME = {
   username: 'you',
-  avatarUrl: demoPortraits.jamie,
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
 };

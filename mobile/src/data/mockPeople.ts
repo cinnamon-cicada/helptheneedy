@@ -1,14 +1,11 @@
 import type { Person } from '../types';
-import { demoPortraits as headshots } from './demoPhotos';
-
-/** Non-identifying photos represent fictional demo identities, not real members. */
-export { demoPortraits as headshots } from './demoPhotos';
+import { requiredDemoAvatar } from './userAvatars';
 
 export const mockPeople: Person[] = [
   {
     id: 'u-alex',
     displayName: 'Alex',
-    avatarUrl: headshots.alex,
+    avatarUrl: requiredDemoAvatar('u-alex'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 14500,
@@ -19,7 +16,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-casey',
     displayName: 'Casey',
-    avatarUrl: headshots.casey,
+    avatarUrl: requiredDemoAvatar('u-casey'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 32000,
@@ -30,7 +27,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-jamie',
     displayName: 'Jamie',
-    avatarUrl: headshots.jamie,
+    avatarUrl: requiredDemoAvatar('u-jamie'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 6500,
@@ -41,7 +38,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-jordan',
     displayName: 'Jordan',
-    avatarUrl: headshots.jordan,
+    avatarUrl: requiredDemoAvatar('u-jordan'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 9000,
@@ -52,7 +49,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-morgan',
     displayName: 'Morgan',
-    avatarUrl: headshots.morgan,
+    avatarUrl: requiredDemoAvatar('u-morgan'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 2500,
@@ -63,7 +60,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-riley',
     displayName: 'Riley',
-    avatarUrl: headshots.riley,
+    avatarUrl: requiredDemoAvatar('u-riley'),
     isFollowing: true,
     followsMe: false,
     totalGiftedCents: 18000,
@@ -74,7 +71,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-sam',
     displayName: 'Sam',
-    avatarUrl: headshots.sam,
+    avatarUrl: requiredDemoAvatar('u-sam'),
     isFollowing: false,
     followsMe: true,
     totalGiftedCents: null,
@@ -85,7 +82,7 @@ export const mockPeople: Person[] = [
   {
     id: 'u-taylor',
     displayName: 'Taylor',
-    avatarUrl: headshots.taylor,
+    avatarUrl: requiredDemoAvatar('u-taylor'),
     isFollowing: true,
     followsMe: true,
     totalGiftedCents: 41000,

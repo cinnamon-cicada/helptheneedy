@@ -9,66 +9,12 @@
     "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
   },
   {
-    "file": "person-alex.jpg",
-    "source": "https://www.pexels.com/photo/man-wearing-hoodie-2127762/",
-    "download": "https://images.pexels.com/photos/2127762/pexels-photo-2127762.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "8906fd2c027a361bfe007f315f687f4d05b747dada131b05c3fa434ab3c398f3",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
-    "file": "person-taylor.jpg",
-    "source": "https://www.pexels.com/photo/back-view-of-a-woman-with-brown-curly-hair-9947818/",
-    "download": "https://images.pexels.com/photos/9947818/pexels-photo-9947818.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "fae42df06ba9b92de490e6ea75d92e50bac536b670011846db12c93007c698e3",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
-    "file": "person-riley.jpg",
-    "source": "https://www.pexels.com/photo/person-walking-with-a-bag-12467736/",
-    "download": "https://images.pexels.com/photos/12467736/pexels-photo-12467736.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "2bb370e88868b7c474d79eeb62e37f4ae61431ac771a8b1e62a5d291c2bfca53",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
-    "file": "person-morgan.jpg",
-    "source": "https://www.pexels.com/photo/a-woman-in-a-museum-12268355/",
-    "download": "https://images.pexels.com/photos/12268355/pexels-photo-12268355.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "cab552b097323b327420e01514e195b769d6ba8cfde737faf910f27d03663ef0",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
     "file": "person-casey.jpg",
     "source": "https://www.pexels.com/photo/woman-in-a-museum-looking-at-paintings-16960921/",
     "download": "https://images.pexels.com/photos/16960921/pexels-photo-16960921.jpeg?auto=compress&cs=tinysrgb&w=1000",
     "license": "https://www.pexels.com/license/",
     "retrieved": "2026-11-06",
     "sha256": "2eb38bbddcd9e659a4507a84f45b7f8cf790320b1a8e55540eb692ff4e457967",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
-    "file": "person-sam.jpg",
-    "source": "https://www.pexels.com/photo/back-view-of-a-man-wearing-a-cap-and-a-backpack-17086337/",
-    "download": "https://images.pexels.com/photos/17086337/pexels-photo-17086337.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "a559565639a4080d59496413ecafe1b4a4d4e9ebbc8d7fe5b296dc7bb7e07da0",
-    "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
-  },
-  {
-    "file": "person-jordan.jpg",
-    "source": "https://www.pexels.com/photo/a-man-walking-on-the-road-9561081/",
-    "download": "https://images.pexels.com/photos/9561081/pexels-photo-9561081.jpeg?auto=compress&cs=tinysrgb&w=1000",
-    "license": "https://www.pexels.com/license/",
-    "retrieved": "2026-11-06",
-    "sha256": "54fc8f4242a6a86bbb37727415e51c1479dfda8bb5be08b9cc5b1737c23396bd",
     "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
   },
   {
@@ -142,5 +88,60 @@
     "retrieved": "2026-11-06",
     "sha256": "219df25cfb409355316b614d9dbfcd1086abbf7c73bbbb732ddbbec0a747acf4",
     "use": "Fictional demo illustration; no affiliation, endorsement, or real gift request is implied."
+  },
+  {
+    "file": "avatar-cat.jpg",
+    "source": "https://www.pexels.com/photo/a-cat-sleeping-on-a-window-sill-14600795/",
+    "download": "https://images.pexels.com/photos/14600795/pexels-photo-14600795.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "f9aa76865fa0d2383e2557e2c6cc07f41a98e79b5eacb680eb1690ae18ae3e44",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied.",
+    "modifications": "Cropped to a 600x600 square around the cat so it remains visible in circular avatars; no filters or generative edits."
+  },
+  {
+    "file": "avatar-dog.jpg",
+    "source": "https://www.pexels.com/photo/a-dog-indoors-19329545/",
+    "download": "https://images.pexels.com/photos/19329545/pexels-photo-19329545.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "b4dbf8dd563bd725f6b92829e86811560d2f97c10933835515568d79112316c8",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
+  },
+  {
+    "file": "avatar-daisies.jpg",
+    "source": "https://www.pexels.com/photo/a-close-up-of-white-and-yellow-daisies-28302038/",
+    "download": "https://images.pexels.com/photos/28302038/pexels-photo-28302038.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "c8e73e3598418163d5dfbbbdadb12b67038e794f409489cb3aaf806fea453e51",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
+  },
+  {
+    "file": "avatar-sea.jpg",
+    "source": "https://www.pexels.com/photo/sea-waves-on-the-shore-25799005/",
+    "download": "https://images.pexels.com/photos/25799005/pexels-photo-25799005.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "6c89e0e6e51e72eedb333ea35f08d89efd65248c046a53f7fa1db3b3e7685f52",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
+  },
+  {
+    "file": "avatar-mountains.jpg",
+    "source": "https://www.pexels.com/photo/view-of-a-lake-in-mountains-12365971/",
+    "download": "https://images.pexels.com/photos/12365971/pexels-photo-12365971.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "959f7790faa5336ecc0a7282addf10992e665722c6a963c1ca6802fadfeccaae",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
+  },
+  {
+    "file": "avatar-night.jpg",
+    "source": "https://www.pexels.com/photo/blurry-picture-of-a-city-street-at-night-14829626/",
+    "download": "https://images.pexels.com/photos/14829626/pexels-photo-14829626.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "9041c4969f2e0cacd9e661856b4d56e225e9e2185a84c48ee099cf5c0a80c2bf",
+    "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
   }
 ]
