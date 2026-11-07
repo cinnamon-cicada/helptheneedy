@@ -69,16 +69,16 @@ export function AuthSceneFallback({ stage, signals, reducedMotion }: Props) {
           <Ellipse cx={152} cy={172} rx={86} ry={8} fill={PALETTE.shadow} opacity={0.14} />
           {/* Lid leaning on the left, bow facing out. */}
           <G transform="rotate(-72 86 120)">
-            <Rect x={36} y={110} width={104} height={18} rx={5} fill={PALETTE.ivory} stroke={PALETTE.ink} strokeWidth={2} />
+            <Rect x={36} y={110} width={104} height={18} rx={1} fill={PALETTE.ivory} stroke={PALETTE.ink} strokeWidth={2} />
             <Rect x={88} y={110} width={14} height={18} fill={PALETTE.ribbon} />
             <Ellipse cx={86} cy={103} rx={12} ry={7} fill={PALETTE.ribbon} stroke={PALETTE.ink} strokeWidth={1.6} />
             <Ellipse cx={102} cy={104} rx={10} ry={6} fill={PALETTE.ribbon} stroke={PALETTE.ink} strokeWidth={1.6} />
           </G>
           {/* Open box in three-quarter view. */}
-          <Path d="M206 96 L221 83 L221 156 L206 170 Z" fill="#F1E4CC" stroke={PALETTE.ink} strokeWidth={2} strokeLinejoin="round" />
-          <Path d="M96 96 L111 83 L221 83 L206 96 Z" fill={PALETTE.inside} stroke={PALETTE.ink} strokeWidth={2} strokeLinejoin="round" />
+          <Path d="M206 96 L221 83 L221 156 L206 170 Z" fill="#F1E4CC" stroke={PALETTE.ink} strokeWidth={2} strokeLinejoin="miter" />
+          <Path d="M96 96 L111 83 L221 83 L206 96 Z" fill={PALETTE.inside} stroke={PALETTE.ink} strokeWidth={2} strokeLinejoin="miter" />
           <Path d="M104 93 L113 86 L214 86 L205 93 Z" fill={PALETTE.insideDeep} />
-          <Rect x={96} y={96} width={110} height={74} rx={6} fill={PALETTE.ivory} stroke={PALETTE.ink} strokeWidth={2} />
+          <Rect x={96} y={96} width={110} height={74} rx={1.5} fill={PALETTE.ivory} stroke={PALETTE.ink} strokeWidth={2} />
           <Rect x={150} y={97} width={15} height={72} fill={PALETTE.ribbon} />
           <Path d="M210 92 L216 87 L216 160 L210 166 Z" fill={PALETTE.ribbonDeep} />
           {/* Loose ribbon draped over the front. */}

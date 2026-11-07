@@ -2,8 +2,8 @@
 // the whole closed gift is ~3.4x the mascot's height, which is what makes
 // the dragging read as comedy.
 
-export const BOX = { w: 1.3, h: 1.05, d: 1.1, radius: 0.09 } as const;
-export const LID = { w: 1.42, h: 0.22, d: 1.22, radius: 0.08 } as const;
+export const BOX = { w: 1.3, h: 1.05, d: 1.1, radius: 0.018 } as const;
+export const LID = { w: 1.42, h: 0.22, d: 1.22, radius: 0.012 } as const;
 /** Lid centre height while the gift is closed. */
 export const LID_CLOSED_Y = BOX.h + LID.h / 2 - 0.05;
 /** Where the lid ends up: on its edge, leaning against the box's left side. */

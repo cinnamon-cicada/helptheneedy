@@ -51,7 +51,7 @@ function createResources() {
   const bodyInk = outlineOf(body, INK, 4);
   deform(body, boxShape);
   deform(bodyInk, boxShape);
-  wobble(body, 0.006, 3, 2.1);
+  wobble(body, 0.001, 3, 2.1);
 
   const bandFront = new THREE.BoxGeometry(BAND, BOX.h - 0.006, BOX.d + 0.016, 1, 6, 1);
   bandFront.translate(BAND_X, BOX.h / 2 - 0.003, 0);
@@ -78,11 +78,11 @@ function createResources() {
 
   const lid = new RoundedBoxGeometry(LID.w, LID.h, LID.d, 4, LID.radius);
   deform(lid, (v) => {
-    // A slightly uneven lid: one corner sits a touch higher.
-    v.y += 0.012 * (v.x / LID.w) * (v.z / LID.d) * 4;
+    // A slightly uneven lid: one corner sits just above the others.
+    v.y += 0.002 * (v.x / LID.w) * (v.z / LID.d) * 4;
   });
   const lidInk = outlineOf(lid, INK, 6);
-  wobble(lid, 0.005, 3, 4.2);
+  wobble(lid, 0.001, 3, 4.2);
   const lidBandA = new THREE.BoxGeometry(BAND, LID.h + 0.014, LID.d + 0.014);
   lidBandA.translate(BAND_X, 0, 0);
   const lidBandB = new THREE.BoxGeometry(LID.w + 0.014, LID.h + 0.014, BAND);
