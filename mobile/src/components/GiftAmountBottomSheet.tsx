@@ -1,5 +1,5 @@
 import { Check, EyeOff, Wallet } from 'lucide-react-native';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState, type ComponentRef } from 'react';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 import { STARTING_BALANCE_CENTS, useDemo } from '../demo/DemoProvider';
@@ -60,6 +60,7 @@ function giftErrorMessage(code: string, name: string): string {
  */
 export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete }: Props) {
   const { balanceCents, sendGift, resetDemo } = useDemo();
+  const successBadgeRef = useRef<ComponentRef<typeof View>>(null);
   const [step, setStep] = useState<Step>('amount');
   const [selected, setSelected] = useState<number | 'custom'>(0);
   const [customText, setCustomText] = useState('');
@@ -146,7 +147,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
       visible={visible}
       onClose={close}
       accessibilityLabel={`Gift ${name}`}
-      overlay={visible && step === 'done' ? <GiftConfetti /> : undefined}
+      overlay={visible && step === 'done' ? <GiftConfetti targetRef={successBadgeRef} /> : undefined}
     >
       {step === 'amount' ? (
         <View>
@@ -231,7 +232,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
         </View>
       ) : (
         <View style={styles.done}>
-          <View style={styles.doneBadge}>
+          <View ref={successBadgeRef} collapsable={false} style={styles.doneBadge}>
             <Check size={30} color={colors.orangeText} strokeWidth={2.25} />
           </View>
           <Text accessibilityRole="header" accessibilityLiveRegion="polite" style={styles.doneTitle}>Demo gift recorded</Text>
