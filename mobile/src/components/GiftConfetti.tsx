@@ -15,15 +15,21 @@ import { colors } from '../theme';
 
 const DURATION = 2700;
 const PALETTE = [colors.orange, colors.peach, colors.yellow, colors.orangeSoft];
-// Fixed variation avoids allocating random particles on rerenders.
-const PARTICLES = Array.from({ length: 36 }, (_, index) => ({
-  side: index % 2 === 0 ? 1 : -1,
-  spread: 0.22 + ((index * 17) % 29) / 100,
-  lift: 100 + ((index * 31) % 140),
-  delay: ((index * 7) % 13) / 100,
-  spin: (index % 2 === 0 ? 1 : -1) * (140 + ((index * 23) % 200)),
-  width: 4 + (index % 3),
-  height: 7 + (index % 5),
+// Fixed, independent variation keeps trajectories natural without per-frame allocation.
+function variation(index: number, salt: number) {
+  const value = Math.sin((index + 1) * 127.1 + salt * 311.7) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+const PARTICLES = Array.from({ length: 112 }, (_, index) => ({
+  origin: 0.28 + variation(index, 1) * 0.44,
+  destination: 0.04 + variation(index, 2) * 0.92,
+  launchSpeed: 2.2 + variation(index, 3) * 1.2,
+  delay: variation(index, 4) * 0.1,
+  spin: (index % 2 === 0 ? 1 : -1) * (100 + variation(index, 5) * 260),
+  phase: variation(index, 6) * Math.PI * 2,
+  width: 3 + variation(index, 7) * 4,
+  height: 6 + variation(index, 8) * 7,
   color: PALETTE[index % PALETTE.length],
 }));
 
@@ -37,14 +43,17 @@ function ConfettiPiece({ particle: p, clock, width, height }: {
 }) {
   const motion = useAnimatedStyle(() => {
     const t = Math.max(0, Math.min(1, (clock.value - p.delay) / (1 - p.delay)));
-    const drift = 1 - Math.exp(-4 * t);
+    const drift = (1 - Math.exp(-2.4 * t)) / (1 - Math.exp(-2.4));
+    // Ballistic ascent slows into an apex, then accelerates back below the screen.
+    const vertical = -p.launchSpeed * t + (p.launchSpeed + 0.18) * t * t;
+    const flutter = Math.sin(t * Math.PI * 3 + p.phase) * 7 * t;
     return {
       opacity: t === 0 ? 0 : Math.min(1, t * 18) * Math.min(1, (1 - t) * 5),
       transform: [
-        { translateX: (p.side === 1 ? -8 : width + 8) + p.side * width * p.spread * drift },
-        { translateY: height * 0.56 - 4 * p.lift * t * (1 - t) + height * 0.58 * t * t },
-        { rotate: `${p.spin * t}deg` },
-        { scaleX: 0.55 + Math.abs(Math.cos(t * Math.PI * 3 + p.spin)) * 0.45 },
+        { translateX: width * (p.origin + (p.destination - p.origin) * drift) + flutter },
+        { translateY: height + 12 + height * vertical },
+        { rotate: `${p.phase * 180 / Math.PI + p.spin * t}deg` },
+        { scaleX: 0.55 + Math.abs(Math.cos(t * Math.PI * 2 + p.phase)) * 0.45 },
       ],
     };
   });
