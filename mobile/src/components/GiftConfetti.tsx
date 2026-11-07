@@ -26,7 +26,7 @@ const PARTICLES = Array.from({ length: 144 }, (_, index) => ({
   destination: 0.04 + variation(index, 2) * 0.92,
   apex: 0.03 + variation(index, 3) * 0.84,
   delay: variation(index, 4) * 0.08,
-  gatherAt: 0.4 + variation(index, 9) * 0.12,
+  apexAt: 0.4 + variation(index, 9) * 0.12,
   spin: (index % 2 === 0 ? 1 : -1) * (100 + variation(index, 5) * 260),
   phase: variation(index, 6) * Math.PI * 2,
   width: 3 + variation(index, 7) * 4,
@@ -47,18 +47,25 @@ function ConfettiPiece({ particle: p, clock, width, height, target }: {
 }) {
   const motion = useAnimatedStyle(() => {
     const t = Math.max(0, Math.min(1, (clock.value - p.delay) / (1 - p.delay)));
-    const rise = Math.min(1, t / p.gatherAt);
+    const rise = Math.min(1, t / p.apexAt);
     const launch = 1 - (1 - rise) * (1 - rise);
-    const gather = Math.max(0, (t - p.gatherAt) / (1 - p.gatherAt));
-    const attraction = gather * gather * (3 - 2 * gather);
-    const flutter = Math.sin(t * Math.PI * 3 + p.phase) * 7 * (1 - attraction);
+    const fall = Math.max(0, (t - p.apexAt) / (1 - p.apexAt));
+    const flutter = Math.sin(t * Math.PI * 3 + p.phase) * 7;
     const spreadX = width * (p.origin + (p.destination - p.origin) * launch);
-    const spreadY = height + 12 - (height + 12 - height * p.apex) * launch;
+    const apexY = height * p.apex;
+    const spreadY = height + 12 - (height + 12 - apexY) * launch;
+    // Continue falling under gravity; the badge's height only controls opacity.
+    const y = spreadY + (height + 12 - apexY) * fall * fall;
+    const fadeDistance = Math.max(80, height * 0.16);
+    const fadeStart = Math.max(apexY, target.y - fadeDistance);
+    const fadeEnd = Math.max(target.y, fadeStart + fadeDistance);
+    const fade = fall > 0 ? Math.max(0, Math.min(1, (y - fadeStart) / (fadeEnd - fadeStart))) : 0;
+    const opacity = 1 - fade * fade * (3 - 2 * fade);
     return {
-      opacity: t === 0 ? 0 : Math.min(1, t * 18) * (1 - Math.pow(gather, 1.35)),
+      opacity: t === 0 ? 0 : Math.min(1, t * 18) * opacity,
       transform: [
-        { translateX: spreadX + (target.x - p.width / 2 - spreadX) * attraction + flutter },
-        { translateY: spreadY + (target.y - p.height / 2 - spreadY) * attraction },
+        { translateX: spreadX + flutter },
+        { translateY: y },
         { rotate: `${p.phase * 180 / Math.PI + p.spin * t}deg` },
         { scaleX: 0.55 + Math.abs(Math.cos(t * Math.PI * 2 + p.phase)) * 0.45 },
       ],
