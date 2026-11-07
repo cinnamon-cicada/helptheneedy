@@ -84,7 +84,7 @@ With Supabase configured:
 
 | What | Behavior |
 | --- | --- |
-| Account | On first load the app signs in anonymously and finishes onboarding with a generated alias, such as SunnyOtter. The session is saved, so the same account comes back on every visit. A new account starts with a fresh $1,000 |
+| Account | On first load the app signs in anonymously and finishes onboarding with a generated alias, such as Member 482193. The session is saved, so the same account comes back on every visit. A new account starts with a fresh $1,000 |
 | Discover | Shows the open posts in Supabase. The seeded ones are demo receivers, and keep the mock comments and reactions |
 | Gifting | `demo_send_gift` logs the gift in `gifts`, tagged with giver and receiver, and it counts right away. The balance goes down only once that succeeds; if it fails, the sheet says why and nothing changes. The sheet won't let you give more than is still needed or more than you have left |
 | After each gift | The profile, gift history and boards are fetched again, and the profile and gifts are kept on the device too |
@@ -94,7 +94,7 @@ With Supabase configured:
 
 Without Supabase, everything above stays on the device: demo gifts are added to the mock totals, and Reset clears it all. Reactions, saves, comments, follows and posts reset on reload either way.
 
-To load the demo data into the hosted project, run `npx supabase db query --linked -f supabase/demo/seed.sql` from the repo root. Running it again changes nothing.
+To load the demo data into the hosted project, run `npx supabase db query --linked -f supabase/demo/seed.sql` from the repo root. Rerunning refreshes seeded profile names and request wording without resetting gifts, amounts, or post progress. Existing visitor aliases are not renamed.
 
 ## Friends screen
 

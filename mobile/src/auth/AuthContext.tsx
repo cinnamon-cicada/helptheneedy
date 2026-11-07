@@ -47,7 +47,7 @@ function createLocalUser(): AuthUser {
   return {
     id: 'local-user',
     email: '',
-    username: alias.toLowerCase(),
+    username: alias.toLowerCase().replace(/ /g, '_'),
     displayName: alias,
     intent: 'gifter',
   };

@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { PlaceholderCard, SubScreen } from '../components/SubScreen';
 import { STARTING_BALANCE_CENTS, useDemo } from '../demo/DemoProvider';
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import { formatDollars } from '../utils/format';
 
 export function SettingsScreen() {
@@ -54,8 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14 },
   icon: {

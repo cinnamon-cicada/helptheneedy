@@ -19,7 +19,7 @@ export const SAMPLE_AVATARS = [
 ];
 
 export const MOCK_PROFILE: UserProfile = {
-  username: 'SunsetGifter',
+  username: 'robin_24',
   avatarUrl: SAMPLE_AVATARS[0],
   totalGiftedCents: 21000,
   peopleHelped: 12,
@@ -32,7 +32,7 @@ const DAY = 24 * HOUR;
 const ME_AS_RECIPIENT = {
   id: 'u-me',
   displayName: MOCK_PROFILE.username,
-  username: 'sunsetgifter',
+  username: 'robin_24',
   avatarUrl: SAMPLE_AVATARS[0],
 };
 
@@ -55,7 +55,7 @@ const MY_REQUESTS: GiftRequest[] = [
     recipient: ME_AS_RECIPIENT,
     imageUrl: photo('1414235077428-338989a2e8c0'),
     title: 'Birthday dinner',
-    description: 'Turning 21 and hoping to take my two closest friends out for a simple dinner to celebrate.',
+    description: 'Dinner with two friends for my birthday. Looking for $45 toward the bill.',
     category: 'Celebration',
     amountCents: 4500,
     reactions: { hearts: 96, sparkles: 31 },

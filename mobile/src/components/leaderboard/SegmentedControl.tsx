@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     backgroundColor: colors.orangeSoft,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
   },
   pill: {
     position: 'absolute',
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     left: PAD,
     borderRadius: radius.pill,
     backgroundColor: colors.orange,
-    boxShadow: '0px 3px 10px rgba(234, 166, 71, 0.35)',
   },
   option: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
   label: { fontSize: 15, fontFamily: fonts.semibold, color: colors.text },

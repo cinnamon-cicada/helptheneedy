@@ -1,5 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 
+import { colors } from '../../theme';
+
 import type { Canvas3DProps } from './Canvas3D';
 
 export { useFrame, useThree } from '@react-three/fiber';
@@ -18,13 +20,19 @@ export function Canvas3D({ children, frameloop, onCreated }: Canvas3DProps) {
   if (!hasWebGL()) throw new Error('WebGL is not available');
   return (
     <Canvas
-      style={{ position: 'absolute', inset: 0 }}
+      style={{ position: 'absolute', inset: 0, background: colors.white }}
       orthographic
       flat
-      dpr={[1, 2]}
+      gl={{ alpha: false, antialias: true, precision: 'highp' }}
+      dpr={[1, 3]}
       frameloop={frameloop}
       camera={{ zoom: 100, position: [0, 0, 30], near: 0.1, far: 100 }}
-      onCreated={() => onCreated()}
+      onCreated={({ gl, scene, camera }) => {
+        // Present a white frame immediately instead of an uninitialized GL surface.
+        gl.setClearColor(colors.white, 1);
+        gl.render(scene, camera);
+        onCreated();
+      }}
     >
       {children}
     </Canvas>

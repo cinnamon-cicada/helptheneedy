@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import type { PROFILE_LISTS } from '../data/mockProfile';
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { ProfileListItem } from '../types';
 import type { TileRect } from './ProfileShortcutCard';
 import type { ProfileSection } from './ProfileShortcutGrid';
@@ -156,8 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.sheet,
+    borderColor: 'transparent',
   },
   header: {
     flexDirection: 'row',

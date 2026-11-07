@@ -228,9 +228,9 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           <View style={styles.doneBadge}>
             <Check size={30} color={colors.orangeText} strokeWidth={2.25} />
           </View>
-          <Text style={styles.doneTitle}>Thank you for your kindness</Text>
+          <Text style={styles.doneTitle}>Demo gift recorded</Text>
           <Text style={styles.doneBody}>
-            {`Your ${amountCents !== null ? formatCents(amountCents) : ''} gift for ${name}'s "${request.title}" is saved${anonymous ? ', anonymously' : ''}. You have ${formatCents(balanceCents)} left.`}
+            {`${amountCents !== null ? formatCents(amountCents) : ''} to ${name} for "${request.title}"${anonymous ? ', anonymously' : ''}. Demo balance: ${formatCents(balanceCents)}.`}
           </Text>
           <Text style={styles.footnote}>Demo only. No real payment was processed.</Text>
           <View style={styles.doneButton}>

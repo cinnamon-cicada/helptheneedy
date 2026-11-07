@@ -8,7 +8,7 @@ import { ProfileStats } from '../components/ProfileStats';
 import { WishlistDeck } from '../components/WishlistDeck';
 import { mockPeople } from '../data/mockPeople';
 import { mockRequests } from '../data/mockRequests';
-import { colors, fonts, radius, shadow } from '../theme';
+import { colors, fonts, radius } from '../theme';
 
 const IMAGE_INSET = 8;
 
@@ -65,8 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.card,
+    borderColor: 'transparent',
   },
   name: {
     paddingHorizontal: 18,
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     marginHorizontal: IMAGE_INSET,
     borderRadius: radius.card - IMAGE_INSET,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
     overflow: 'hidden',
     backgroundColor: colors.orangeSoft,
   },

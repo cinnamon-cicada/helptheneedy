@@ -43,17 +43,14 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1515823064-d6e0c04616a7'),
     title: 'Matcha after midterms',
     description:
-      'Just finished three midterms in two days and I am running on fumes. An iced matcha from the café by the library would honestly make my whole week.',
+      'I have two exams left this week. Asking for $8 for an iced matcha at the library cafe.',
     category: 'Food',
     amountCents: 800,
-    reactions: { hearts: 128, sparkles: 34 },
+    reactions: { hearts: 8, sparkles: 1 },
     saved: false,
     comments: [
-      c('alex', 'need this fr', 12, 24),
-      c('maya', 'girl same 😭', 38, 17),
-      c('lily', 'hope you get it 🧡', 65, 9),
-      c('ryan', 'midterms are brutal', 140, 6),
-      c('noor', 'the library café matcha is elite', 260, 3),
+      c('alex', 'Is that the cafe on the ground floor?', 12, 2),
+      c('noor', 'It closes at 4 on Fridays.', 260, 0),
     ],
   },
   {
@@ -68,15 +65,13 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1513104890138-7c749659a591'),
     title: 'Friday night pizza',
     description:
-      'My roommates and I do pizza night every Friday and it is my turn to buy. Rent hit harder than expected this month, so any help keeps the tradition alive.',
+      'Ordering pizza with my roommates on Friday. My share is $19, including delivery.',
     category: 'Food',
     amountCents: 1900,
-    reactions: { hearts: 86, sparkles: 12 },
+    reactions: { hearts: 3, sparkles: 0 },
     saved: false,
     comments: [
-      c('ben', 'pizza night is sacred', 22, 14),
-      c('ivy', 'pineapple or no pineapple', 54, 8),
-      c('dev', 'protect the tradition 🍕', 180, 5),
+      c('ivy', 'Which place are you ordering from?', 54, 1),
     ],
   },
   {
@@ -91,15 +86,15 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1505740420928-5e560c06d30e'),
     title: 'New headphones',
     description:
-      'My old pair finally died after four years. I commute an hour each way and edit podcasts on the side, so a decent pair of headphones would help a lot.',
+      'The left side of my headphones stopped working. This pair is $89; I use them on the train and for editing audio.',
     category: 'Product',
     amountCents: 8900,
-    reactions: { hearts: 203, sparkles: 41 },
+    reactions: { hearts: 17, sparkles: 2 },
     saved: false,
     comments: [
-      c('maya', 'an hour commute with no music?? 😭', 15, 31),
-      c('ryan', 'what podcasts do you edit', 90, 7),
-      c('lily', 'rooting for you', 300, 4),
+      c('ryan', 'Do you need a mic on these?', 90, 2),
+      c('maya', 'I have the wired version. The cable is quite short.', 180, 0),
+      c('lily', 'Worth checking the refurbished ones too.', 300, 1),
     ],
   },
   {
@@ -114,14 +109,13 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1504674900247-0877df9cc836'),
     title: 'Dinner after work',
     description:
-      'Double shift today and nothing in the fridge. A warm dinner from the Thai place down the street would be the best end to a very long day.',
+      'I finish work at 9 tonight. Asking for $22 for takeout on the way home.',
     category: 'Food',
     amountCents: 2200,
-    reactions: { hearts: 64, sparkles: 9 },
+    reactions: { hearts: 2, sparkles: 0 },
     saved: false,
     comments: [
-      c('noor', 'double shifts are no joke', 30, 11),
-      c('alex', 'get the green curry', 75, 6),
+      c('alex', 'The green curry there is good.', 75, 1),
     ],
   },
   {
@@ -136,15 +130,14 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1513364776144-60967b0f800f'),
     title: 'New sketchbook',
     description:
-      'I filled my last sketchbook cover to cover this semester. I am putting together a portfolio for an illustration program and need fresh pages.',
+      'My sketchbook is full. The A5 one I use costs $15 at the art supply shop.',
     category: 'Product',
     amountCents: 1500,
-    reactions: { hearts: 152, sparkles: 58 },
+    reactions: { hearts: 6, sparkles: 1 },
     saved: false,
     comments: [
-      c('ivy', 'post your portfolio when it is done!!', 18, 22),
-      c('ben', 'artists deserve the good paper', 120, 9),
-      c('maya', '🎨🧡', 400, 3),
+      c('ben', 'What paper weight do you use?', 120, 0),
+      c('ivy', 'The student discount worked for me last month.', 220, 3),
     ],
   },
   {
@@ -159,15 +152,13 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1487070183336-b863922373d4'),
     title: 'Birthday flowers',
     description:
-      'My grandma turns 85 on Sunday and she has always loved fresh flowers. I want to surprise her with a bouquet from the market near her place.',
+      'Picking up flowers for my grandma on Sunday. The market has a $25 bouquet.',
     category: 'Celebration',
     amountCents: 2500,
-    reactions: { hearts: 311, sparkles: 77 },
+    reactions: { hearts: 4, sparkles: 0 },
     saved: false,
     comments: [
-      c('lily', 'this is so sweet', 8, 40),
-      c('dev', 'happy birthday to grandma 🎉', 44, 19),
-      c('noor', 'tulips! she will love tulips', 95, 7),
+      c('noor', 'Are you picking them up or getting delivery?', 95, 0),
     ],
   },
   {
@@ -182,15 +173,12 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1509042239860-f550ce710b93'),
     title: 'Coffee before finals',
     description:
-      'First final is at 8am tomorrow. A flat white is the only thing standing between me and falling asleep on the exam.',
+      'Coffee before my 8am exam tomorrow. A flat white at the place near campus is $6.',
     category: 'Food',
     amountCents: 600,
-    reactions: { hearts: 97, sparkles: 15 },
+    reactions: { hearts: 0, sparkles: 0 },
     saved: false,
-    comments: [
-      c('ryan', '8am finals should be illegal', 25, 28),
-      c('ivy', 'good luck!!', 70, 5),
-    ],
+    comments: [],
   },
   {
     id: 'req-jordan-textbook',
@@ -204,14 +192,14 @@ export const mockRequests: GiftRequest[] = [
     imageUrl: photo('1497633762265-9d179a990aa6'),
     title: 'Textbook for class',
     description:
-      'My organic chemistry class requires a textbook access code and the used copies do not include one. Homework is due through the code every week.',
+      'I need a $45 access code for chemistry homework. The used textbook did not come with one.',
     category: 'School',
     amountCents: 4500,
-    reactions: { hearts: 74, sparkles: 11 },
+    reactions: { hearts: 11, sparkles: 0 },
     saved: false,
     comments: [
-      c('ben', 'access codes are a scam honestly', 33, 36),
-      c('maya', 'orgo survivor here, you got this', 160, 12),
+      c('ben', 'Does the department have a spare code?', 33, 1),
+      c('maya', 'The library has the book, but not the online access.', 160, 0),
     ],
   },
 ];

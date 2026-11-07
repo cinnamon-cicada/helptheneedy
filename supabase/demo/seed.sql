@@ -1,7 +1,8 @@
 -- Demo data for the hosted demo project: the Discover receivers, their open
 -- posts, and gifters with confirmed gift history for the leaderboards.
 -- Built from the requests in mobile/src/data/mockRequests.ts. Every row has a fixed id, so
--- running it again changes nothing. Run with the CLI, never from the app:
+-- rerunning refreshes sample names and post wording without resetting gifts or post progress.
+-- Run with the CLI, never from the app:
 --   npx supabase db query --linked -f supabase/demo/seed.sql
 -- Seeded accounts have no password, so nobody can sign in as them, and
 -- profiles.is_demo lets demo_send_gift count gifts to them right away.
@@ -51,34 +52,34 @@ from (values
   (md5('htn-demo:casey')::uuid, 'casey_md', 'Casey', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
   (md5('htn-demo:sam')::uuid, 'sam_oh', 'Sam', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
   (md5('htn-demo:jordan')::uuid, 'jordan_ek', 'Jordan', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:kindsoul')::uuid, 'kindsoul', 'KindSoul', null, 'gifter'),
-  (md5('htn-demo:mysterystar')::uuid, 'mysterystar', 'MysteryStar', null, 'gifter'),
-  (md5('htn-demo:giftninja')::uuid, 'giftninja', 'GiftNinja', null, 'gifter'),
-  (md5('htn-demo:coffeeangel')::uuid, 'coffeeangel', 'CoffeeAngel', null, 'gifter'),
-  (md5('htn-demo:moongiver')::uuid, 'moongiver', 'MoonGiver', null, 'gifter'),
-  (md5('htn-demo:sunnysoul')::uuid, 'sunnysoul', 'SunnySoul', null, 'gifter'),
-  (md5('htn-demo:kindbyte')::uuid, 'kindbyte', 'KindByte', null, 'gifter'),
-  (md5('htn-demo:peachhelper')::uuid, 'peachhelper', 'PeachHelper', null, 'gifter'),
-  (md5('htn-demo:goodvibes')::uuid, 'goodvibes', 'GoodVibes', null, 'gifter'),
-  (md5('htn-demo:givingtree')::uuid, 'givingtree', 'GivingTree', null, 'gifter'),
-  (md5('htn-demo:luckypenny')::uuid, 'luckypenny', 'LuckyPenny', null, 'gifter'),
-  (md5('htn-demo:quietcomet')::uuid, 'quietcomet', 'QuietComet', null, 'gifter'),
-  (md5('htn-demo:honeyharbor')::uuid, 'honeyharbor', 'HoneyHarbor', null, 'gifter'),
-  (md5('htn-demo:paperlantern')::uuid, 'paperlantern', 'PaperLantern', null, 'gifter')
+  (md5('htn-demo:kindsoul')::uuid, 'demo_alex_r', 'alex_r', null, 'gifter'),
+  (md5('htn-demo:mysterystar')::uuid, 'demo_mika72', 'mika72', null, 'gifter'),
+  (md5('htn-demo:giftninja')::uuid, 'demo_jules', 'jules', null, 'gifter'),
+  (md5('htn-demo:coffeeangel')::uuid, 'demo_dev_m', 'dev.m', null, 'gifter'),
+  (md5('htn-demo:moongiver')::uuid, 'demo_rpatel', 'rpatel', null, 'gifter'),
+  (md5('htn-demo:sunnysoul')::uuid, 'demo_noor_s', 'noor_s', null, 'gifter'),
+  (md5('htn-demo:kindbyte')::uuid, 'demo_lee_204', 'lee_204', null, 'gifter'),
+  (md5('htn-demo:peachhelper')::uuid, 'demo_casey_m', 'casey.m', null, 'gifter'),
+  (md5('htn-demo:goodvibes')::uuid, 'demo_daniel8', 'daniel8', null, 'gifter'),
+  (md5('htn-demo:givingtree')::uuid, 'demo_tess', 'tess', null, 'gifter'),
+  (md5('htn-demo:luckypenny')::uuid, 'demo_anika_9', 'anika_9', null, 'gifter'),
+  (md5('htn-demo:quietcomet')::uuid, 'demo_chris_p', 'chris.p', null, 'gifter'),
+  (md5('htn-demo:honeyharbor')::uuid, 'demo_jo_lee', 'jo_lee', null, 'gifter'),
+  (md5('htn-demo:paperlantern')::uuid, 'demo_nina_k', 'nina.k', null, 'gifter')
 ) as v (id, username, display_name, avatar_path, intent)
 where pr.id = v.id;
 
 insert into public.posts (id, receiver_id, title, story, category, goal_cents, status)
 values
-  (md5('htn-demo:post:jamie')::uuid, md5('htn-demo:jamie')::uuid, 'Matcha after midterms', 'Just finished three midterms in two days and I am running on fumes. An iced matcha from the café by the library would honestly make my whole week.', 'Food', 800, 'open'),
-  (md5('htn-demo:post:alex')::uuid, md5('htn-demo:alex')::uuid, 'Friday night pizza', 'My roommates and I do pizza night every Friday and it is my turn to buy. Rent hit harder than expected this month, so any help keeps the tradition alive.', 'Food', 1900, 'open'),
-  (md5('htn-demo:post:taylor')::uuid, md5('htn-demo:taylor')::uuid, 'New headphones', 'My old pair finally died after four years. I commute an hour each way and edit podcasts on the side, so a decent pair of headphones would help a lot.', 'Product', 8900, 'open'),
-  (md5('htn-demo:post:riley')::uuid, md5('htn-demo:riley')::uuid, 'Dinner after work', 'Double shift today and nothing in the fridge. A warm dinner from the Thai place down the street would be the best end to a very long day.', 'Food', 2200, 'open'),
-  (md5('htn-demo:post:morgan')::uuid, md5('htn-demo:morgan')::uuid, 'New sketchbook', 'I filled my last sketchbook cover to cover this semester. I am putting together a portfolio for an illustration program and need fresh pages.', 'Product', 1500, 'open'),
-  (md5('htn-demo:post:casey')::uuid, md5('htn-demo:casey')::uuid, 'Birthday flowers', 'My grandma turns 85 on Sunday and she has always loved fresh flowers. I want to surprise her with a bouquet from the market near her place.', 'Celebration', 2500, 'open'),
-  (md5('htn-demo:post:sam')::uuid, md5('htn-demo:sam')::uuid, 'Coffee before finals', 'First final is at 8am tomorrow. A flat white is the only thing standing between me and falling asleep on the exam.', 'Food', 600, 'open'),
-  (md5('htn-demo:post:jordan')::uuid, md5('htn-demo:jordan')::uuid, 'Textbook for class', 'My organic chemistry class requires a textbook access code and the used copies do not include one. Homework is due through the code every week.', 'School', 4500, 'open')
-on conflict (id) do nothing;
+  (md5('htn-demo:post:jamie')::uuid, md5('htn-demo:jamie')::uuid, 'Matcha after midterms', 'I have two exams left this week. Asking for $8 for an iced matcha at the library cafe.', 'Food', 800, 'open'),
+  (md5('htn-demo:post:alex')::uuid, md5('htn-demo:alex')::uuid, 'Friday night pizza', 'Ordering pizza with my roommates on Friday. My share is $19, including delivery.', 'Food', 1900, 'open'),
+  (md5('htn-demo:post:taylor')::uuid, md5('htn-demo:taylor')::uuid, 'New headphones', 'The left side of my headphones stopped working. This pair is $89; I use them on the train and for editing audio.', 'Product', 8900, 'open'),
+  (md5('htn-demo:post:riley')::uuid, md5('htn-demo:riley')::uuid, 'Dinner after work', 'I finish work at 9 tonight. Asking for $22 for takeout on the way home.', 'Food', 2200, 'open'),
+  (md5('htn-demo:post:morgan')::uuid, md5('htn-demo:morgan')::uuid, 'New sketchbook', 'My sketchbook is full. The A5 one I use costs $15 at the art supply shop.', 'Product', 1500, 'open'),
+  (md5('htn-demo:post:casey')::uuid, md5('htn-demo:casey')::uuid, 'Birthday flowers', 'Picking up flowers for my grandma on Sunday. The market has a $25 bouquet.', 'Celebration', 2500, 'open'),
+  (md5('htn-demo:post:sam')::uuid, md5('htn-demo:sam')::uuid, 'Coffee before finals', 'Coffee before my 8am exam tomorrow. A flat white at the place near campus is $6.', 'Food', 600, 'open'),
+  (md5('htn-demo:post:jordan')::uuid, md5('htn-demo:jordan')::uuid, 'Textbook for class', 'I need a $45 access code for chemistry homework. The used textbook did not come with one.', 'School', 4500, 'open')
+on conflict (id) do update set title = excluded.title, story = excluded.story;
 
 insert into public.post_photos (post_id, storage_path, position)
 values

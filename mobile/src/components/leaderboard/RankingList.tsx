@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { formatMetric } from '../../leaderboard/copy';
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
 import { EmptyNote } from '../ui';
@@ -81,8 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
     overflow: 'hidden',
   },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 11, paddingLeft: 14, paddingRight: 10 },

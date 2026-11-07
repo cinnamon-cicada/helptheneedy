@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { formatMetric } from '../../leaderboard/copy';
-import { colors, fonts, radius, shadow } from '../../theme';
+import { colors, fonts, radius } from '../../theme';
 import type { LeaderboardRow, RankingCategory } from '../../types';
 import { AliasAvatar } from './AliasAvatar';
 
@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card - 4,
     backgroundColor: colors.rankCard,
     borderWidth: 1,
-    borderColor: colors.rankCardBorder,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
   rankBlock: { marginRight: 2 },
   label: { fontSize: 12, fontFamily: fonts.semibold, color: colors.textOnPeach },

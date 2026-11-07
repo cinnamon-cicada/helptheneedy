@@ -9,7 +9,7 @@ import { RichText } from '../../components/post/RichText';
 import { PrimaryButton, TextButton } from '../../components/ui';
 import { useMyPosts } from '../../post/MyPostsContext';
 import { usePostDraft } from '../../post/PostDraftContext';
-import { colors, fonts, radius, shadow } from '../../theme';
+import { colors, fonts, radius } from '../../theme';
 import { formatCents } from '../../utils/format';
 
 /** The wish card as others will see it, right after posting. */
@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.card,
+    borderColor: 'transparent',
     overflow: 'hidden',
   },
   photo: { aspectRatio: 4 / 5, maxHeight: 420, backgroundColor: colors.orangeSoft },

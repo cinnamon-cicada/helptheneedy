@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { ActivityRecord } from '../types';
 import { ActivityRow } from './ActivityRow';
 import type { TileRect } from './ProfileShortcutCard';
@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   title: { fontSize: 16.5, fontFamily: fonts.display, color: colors.text },

@@ -1,7 +1,7 @@
 import { Pencil } from 'lucide-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { colors, ICON_STROKE, shadow } from '../theme';
+import { colors, ICON_STROKE } from '../theme';
 import { Avatar } from './Avatar';
 
 const SIZE = 104;
@@ -27,7 +27,7 @@ export function ProfileAvatar({ uri, onEdit }: { uri: string; onEdit: () => void
 
 const styles = StyleSheet.create({
   wrap: { width: SIZE, height: SIZE },
-  photo: { borderRadius: SIZE / 2, boxShadow: shadow.layer },
+  photo: { borderRadius: SIZE / 2 },
   edit: {
     position: 'absolute',
     right: 0,
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
   },
 });

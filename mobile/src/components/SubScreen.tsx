@@ -3,7 +3,7 @@ import { ChevronLeft } from 'lucide-react-native';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 
 /** Title and back button shared by the screens pushed from Profile. */
 export function SubScreen({ title, children }: { title: string; children: React.ReactNode }) {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
   },
   title: { flex: 1, fontSize: 18, fontFamily: fonts.display, color: colors.text, textAlign: 'center' },
   spacer: { width: 42 },
@@ -64,8 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
   cardTitle: { fontSize: 16, fontFamily: fonts.display, color: colors.text },
   cardBody: { marginTop: 6, fontSize: 14.5, fontFamily: fonts.regular, lineHeight: 20, color: colors.textMuted },
