@@ -9,6 +9,7 @@ import { formatCents } from '../utils/format';
 import { Avatar } from './Avatar';
 import { BottomSheet } from './BottomSheet';
 import { Chip, PrimaryButton } from './ui';
+import { GiftConfetti } from './GiftConfetti';
 
 type Props = {
   request: GiftRequest | null;
@@ -141,7 +142,12 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
   }
 
   return (
-    <BottomSheet visible={visible} onClose={close} accessibilityLabel={`Gift ${name}`}>
+    <BottomSheet
+      visible={visible}
+      onClose={close}
+      accessibilityLabel={`Gift ${name}`}
+      overlay={visible && step === 'done' ? <GiftConfetti /> : undefined}
+    >
       {step === 'amount' ? (
         <View>
           <View style={styles.header}>
@@ -228,7 +234,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           <View style={styles.doneBadge}>
             <Check size={30} color={colors.orangeText} strokeWidth={2.25} />
           </View>
-          <Text style={styles.doneTitle}>Demo gift recorded</Text>
+          <Text accessibilityRole="header" accessibilityLiveRegion="polite" style={styles.doneTitle}>Demo gift recorded</Text>
           <Text style={styles.doneBody}>
             {`${amountCents !== null ? formatCents(amountCents) : ''} to ${name} for "${request.title}"${anonymous ? ', anonymously' : ''}. Demo balance: ${formatCents(balanceCents)}.`}
           </Text>

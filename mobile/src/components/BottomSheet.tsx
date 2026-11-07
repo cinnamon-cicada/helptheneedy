@@ -18,10 +18,11 @@ type Props = {
   onClose: () => void;
   accessibilityLabel: string;
   children: React.ReactNode;
+  overlay?: React.ReactNode;
 };
 
 /** Shared bottom sheet: springs up, drag down or tap the scrim to close. */
-export function BottomSheet({ visible, onClose, accessibilityLabel, children }: Props) {
+export function BottomSheet({ visible, onClose, accessibilityLabel, children, overlay }: Props) {
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const [mounted, setMounted] = useState(visible);
@@ -94,6 +95,7 @@ export function BottomSheet({ visible, onClose, accessibilityLabel, children }: 
               </Animated.View>
             </GestureDetector>
           </KeyboardAvoidingView>
+          {overlay}
         </View>
       </GestureHandlerRootView>
     </Modal>
