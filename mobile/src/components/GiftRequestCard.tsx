@@ -160,12 +160,12 @@ export function GiftRequestCard({
       <View style={styles.card}>
         <GestureDetector gesture={pan}>
           <View collapsable={false}>
-            {/* Tapping the image, title or amount expands a collapsed card. */}
+            {/* The image toggles expansion without replacing the card or its content. */}
             <Pressable
-              onPress={expandCard}
-              disabled={expanded}
+              onPress={expanded ? collapse : expandCard}
               accessibilityRole="button"
-              accessibilityLabel={`Open ${request.title}`}
+              accessibilityLabel={`${expanded ? 'Collapse' : 'Open'} ${request.title}`}
+              accessibilityState={{ expanded }}
             >
               <Animated.View style={[styles.imageWrap, imageStyle]}>
                 <View style={StyleSheet.absoluteFill} pointerEvents="none">
