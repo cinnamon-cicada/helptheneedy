@@ -1,18 +1,8 @@
 import type { Person } from '../types';
+import { demoPortraits as headshots } from './demoPhotos';
 
-const headshot = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop&crop=faces`;
-
-/** Large enough for the full-width image on the profile card. */
-export const headshots = {
-  jamie: headshot('1494790108377-be9c29b29330'),
-  alex: headshot('1500648767791-00dcc994a43e'),
-  taylor: headshot('1438761681033-6461ffad8d80'),
-  riley: headshot('1507003211169-0a1dd7228f2d'),
-  morgan: headshot('1517841905240-472988babdf9'),
-  casey: headshot('1506794778202-cad84cf45f1d'),
-  sam: headshot('1539571696357-5a69c17a67c6'),
-  jordan: headshot('1544005313-94ddf0286df2'),
-};
+/** Non-identifying photos represent fictional demo identities, not real members. */
+export { demoPortraits as headshots } from './demoPhotos';
 
 export const mockPeople: Person[] = [
   {

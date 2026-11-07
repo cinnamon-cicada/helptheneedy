@@ -192,3 +192,7 @@ This prototype follows the design spec. In these places the spec differs from `A
 - **Profile labels:** The Profile dashboard shows Total Gifted without the "reported by members, not verified" label that `ARCHITECTURE.md` requires. The Leaderboard keeps it. Settle this before connecting Supabase.
 - **Wishlist:** The backend has no wishlist. The mock maps it to a person's requests, which would be their `open` posts once connected. The mock also shares some requests across people.
 - **Friend stats:** `get_public_profile` returns gift totals only if the person shares them, and has no People Helped or Requests Posted counts.
+
+## Demo photography
+
+Discover and People use licensed, locally bundled photographs with varied everyday settings. Profile illustrations are non-identifying rear views, not stock faces presented as real gift recipients. Demo names and requests remain fictional. See [photo sources and licensing](assets/demo-photos/README.md) and the per-file source manifest. Real user uploads are preserved.
