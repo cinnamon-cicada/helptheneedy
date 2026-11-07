@@ -20,13 +20,9 @@ export type MyAccount = {
   giftedCents: number;
 };
 
-const ADJECTIVES = ['Kind', 'Sunny', 'Gentle', 'Bright', 'Golden', 'Warm', 'Lucky', 'Quiet', 'Honey', 'Maple', 'Peach', 'Cozy'];
-const NOUNS = ['Comet', 'Sparrow', 'Lantern', 'Clover', 'Harbor', 'Meadow', 'Pebble', 'Ember', 'Willow', 'Biscuit', 'Otter', 'Breeze'];
-const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
-
-/** A friendly alias for a new demo account, such as "SunnyOtter". */
+/** A neutral placeholder, editable in Profile; it doesn't invent a personality or name. */
 export function generateAlias() {
-  return `${pick(ADJECTIVES)}${pick(NOUNS)}`;
+  return `Member ${Math.floor(100_000 + Math.random() * 900_000)}`;
 }
 
 /** Usernames must match ^[a-z0-9_]{3,30}$; the suffix keeps them unique. */
