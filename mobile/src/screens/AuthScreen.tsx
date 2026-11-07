@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
-    boxShadow: '0px -10px 32px rgba(138, 90, 43, 0.08)',
   },
   content: { paddingHorizontal: 24, paddingTop: 26, alignItems: 'center' },
   formWrap: { width: '100%', maxWidth: FORM_MAX_W },

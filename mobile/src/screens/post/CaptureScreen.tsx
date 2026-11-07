@@ -449,7 +449,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orange,
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0px 6px 16px rgba(234, 166, 71, 0.4)',
   },
   permission: { maxWidth: 340, padding: 24, borderRadius: radius.card, backgroundColor: colors.card, alignItems: 'center' },
   permissionTitle: { fontSize: 20, fontFamily: fonts.display, color: colors.text, textAlign: 'center' },

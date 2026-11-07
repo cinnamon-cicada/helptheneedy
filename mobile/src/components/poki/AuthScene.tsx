@@ -77,7 +77,7 @@ export function AuthScene({ clock, signals, stage, reducedMotion, onFallback, on
 
   return (
     <View
-      style={StyleSheet.absoluteFill}
+      style={[StyleSheet.absoluteFill, { backgroundColor: colors.white }]}
       pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"

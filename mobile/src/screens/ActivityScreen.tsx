@@ -6,7 +6,7 @@ import type { TileRect } from '../components/ProfileShortcutCard';
 import { RequestCardWindow } from '../components/RequestCardWindow';
 import { SubScreen } from '../components/SubScreen';
 import { useFindRequest, useMyActivity } from '../demo/selectors';
-import { colors, radius, shadow } from '../theme';
+import { colors, radius } from '../theme';
 import { EmptyNote } from '../components/ui';
 
 export function ActivityScreen() {
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
 });

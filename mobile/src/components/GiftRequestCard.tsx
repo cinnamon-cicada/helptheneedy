@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
     overflow: 'hidden',
   },
   imageWrap: {

@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'transparent',
   },
   filterDot: {
     position: 'absolute',

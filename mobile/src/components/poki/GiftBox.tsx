@@ -9,7 +9,6 @@ import { ribbonSegmentProgress } from '../../animation/poki/intro';
 import { lerp } from '../../animation/poki/math';
 import {
   clayMaterial,
-  createShadowTexture,
   deform,
   inkMaterial,
   outlineOf,
@@ -104,7 +103,6 @@ function createResources() {
 
   const shadowGeo = new THREE.PlaneGeometry(1, 1);
   shadowGeo.rotateX(-Math.PI / 2);
-  const shadowTex = createShadowTexture();
 
   return {
     body,
@@ -122,7 +120,6 @@ function createResources() {
     tail,
     segments,
     shadowGeo,
-    shadowTex,
     ivory: clayMaterial(PALETTE.ivory, 0.85),
     ribbon: clayMaterial(PALETTE.ribbon, 0.55),
     ribbonDeep: clayMaterial(PALETTE.ribbonDeep, 0.6),
@@ -134,8 +131,8 @@ function createResources() {
       polygonOffsetUnits: -4,
     }),
     ink: inkMaterial(PALETTE.ink),
-    boxShadow: shadowMaterial(shadowTex, PALETTE.shadow, 0.26),
-    lidShadow: shadowMaterial(shadowTex, PALETTE.shadow, 0.2),
+    boxShadow: shadowMaterial(PALETTE.shadow, 0.26),
+    lidShadow: shadowMaterial(PALETTE.shadow, 0.2),
   };
 }
 
@@ -167,7 +164,7 @@ export function GiftBox({ ref }: { ref?: React.Ref<GiftBoxHandle> }) {
       // While closed the box's own shadow covers it; once it lands, it casts its own.
       lidShadow.current!.visible = airborne < 1;
       lidShadow.current!.position.set(p.x - 0.08, 0.003, p.z);
-      res.lidShadow.opacity = 0.2 * (1 - airborne);
+      res.lidShadow.uniforms.shadowOpacity.value = 0.2 * (1 - airborne);
     },
     setOpen(open) {
       if (inside.current) inside.current.visible = open;

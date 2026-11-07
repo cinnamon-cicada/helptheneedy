@@ -92,33 +92,33 @@ export function clayMaterial(color: string, roughness = 0.7) {
   return new THREE.MeshStandardMaterial({ color, roughness, metalness: 0 });
 }
 
-/** Soft round contact shadow, generated in code so no image asset is needed. */
-export function createShadowTexture(size = 64) {
-  const data = new Uint8Array(size * size * 4);
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const dx = (x + 0.5) / size - 0.5;
-      const dy = (y + 0.5) / size - 0.5;
-      const r = Math.min(1, Math.hypot(dx, dy) * 2);
-      const a = (1 - r) ** 1.8;
-      const i = (y * size + x) * 4;
-      data[i] = data[i + 1] = data[i + 2] = 255;
-      data[i + 3] = Math.round(a * 255);
-    }
-  }
-  const texture = new THREE.DataTexture(data, size, size, THREE.RGBAFormat);
-  texture.magFilter = THREE.LinearFilter;
-  texture.minFilter = THREE.LinearFilter;
-  texture.needsUpdate = true;
-  return texture;
-}
-
-export function shadowMaterial(texture: THREE.Texture, color: string, opacity: number) {
-  return new THREE.MeshBasicMaterial({
-    map: texture,
-    color,
+/** A smooth contact shadow evaluated per pixel, without low-resolution RGBA textures. */
+export function shadowMaterial(color: string, opacity: number) {
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      shadowColor: { value: new THREE.Color(color) },
+      shadowOpacity: { value: opacity },
+    },
+    vertexShader: `
+      varying vec2 shadowUv;
+      void main() {
+        shadowUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 shadowColor;
+      uniform float shadowOpacity;
+      varying vec2 shadowUv;
+      void main() {
+        float radius = min(1.0, length(shadowUv - 0.5) * 2.0);
+        float alpha = pow(1.0 - radius, 1.8) * shadowOpacity;
+        gl_FragColor = vec4(shadowColor, alpha);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }
+    `,
     transparent: true,
-    opacity,
     depthWrite: false,
   });
 }

@@ -1,7 +1,7 @@
 import { ChevronRight, Trophy } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { MyRank } from '../types';
 
 export function YourRankCard({ myRank, onPress }: { myRank: MyRank; onPress: () => void }) {
@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.rankCard,
     borderWidth: 1,
-    borderColor: colors.rankCardBorder,
-    boxShadow: shadow.layer,
+    borderColor: 'transparent',
   },
   rank: { flexShrink: 1 },
   label: { fontSize: 13, fontFamily: fonts.medium, color: colors.text },

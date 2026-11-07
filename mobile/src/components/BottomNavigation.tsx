@@ -3,7 +3,7 @@ import { CirclePlus, type LucideIcon, Search, Trophy, User, Users } from 'lucide
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, fonts, ICON_STROKE, radius, shadow } from '../theme';
+import { colors, fonts, ICON_STROKE, radius } from '../theme';
 
 export type TabKey = 'discover' | 'people' | 'post' | 'ranks' | 'profile';
 
@@ -83,8 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.card,
     backgroundColor: colors.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    boxShadow: shadow.nav,
+    borderColor: 'transparent',
     paddingHorizontal: 6,
   },
   item: {

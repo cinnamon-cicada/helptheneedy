@@ -6,7 +6,6 @@ import { MASCOT, PALETTE } from '../../animation/poki/dims';
 import type { MascotPose } from '../../animation/poki/pose';
 import {
   clayMaterial,
-  createShadowTexture,
   deform,
   inkMaterial,
   outlineOf,
@@ -61,7 +60,6 @@ function createResources() {
   const bowKnot = new THREE.SphereGeometry(0.012, 10, 8);
   const shadowGeo = new THREE.PlaneGeometry(1, 1);
   shadowGeo.rotateX(-Math.PI / 2);
-  const shadowTex = createShadowTexture();
 
   return {
     body,
@@ -75,13 +73,12 @@ function createResources() {
     bowLoop,
     bowKnot,
     shadowGeo,
-    shadowTex,
     clay: clayMaterial(PALETTE.mascot, 0.62),
     clayShade: clayMaterial(PALETTE.mascotShade, 0.7),
     eyeMat: clayMaterial(PALETTE.eye, 0.25),
     bowMat: clayMaterial('#F29B65', 0.55),
     ink: inkMaterial(PALETTE.ink),
-    shadowMat: shadowMaterial(shadowTex, PALETTE.shadow, 0.3),
+    shadowMat: shadowMaterial(PALETTE.shadow, 0.3),
   };
 }
 
