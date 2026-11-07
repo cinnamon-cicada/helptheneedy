@@ -18,6 +18,8 @@ type Props = {
   reducedMotion: boolean;
   /** Called once if 3D can't run, so the screen can skip the intro. */
   onFallback: () => void;
+  /** Called once the 3D canvas is up and drawing. */
+  onReady?: () => void;
 };
 
 /** If the GL context never comes up, fall back rather than show a blank stage. */
@@ -52,7 +54,7 @@ function useAppActive() {
  * Full-screen 3D layer behind the auth UI. It never takes touches, renders
  * only while the app is visible, and only on demand under reduced motion.
  */
-export function AuthScene({ clock, signals, stage, reducedMotion, onFallback }: Props) {
+export function AuthScene({ clock, signals, stage, reducedMotion, onFallback, onReady }: Props) {
   const [failed, setFailed] = useState(false);
   const created = useRef(false);
   const active = useAppActive();
@@ -85,6 +87,7 @@ export function AuthScene({ clock, signals, stage, reducedMotion, onFallback }: 
           frameloop={!active ? 'never' : reducedMotion ? 'demand' : 'always'}
           onCreated={() => {
             created.current = true;
+            onReady?.();
           }}
         >
           <color attach="background" args={[colors.white]} />

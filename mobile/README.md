@@ -10,7 +10,7 @@ npm install
 npx expo start
 ```
 
-To use Supabase, copy `.env.example` to `.env.local` and fill it in. Without those two variables, the app runs on mock data and shows the sign-in screen.
+To use Supabase, copy `.env.example` to `.env.local` and fill it in. Without those two variables, the app runs on mock data with a local account made up on load.
 
 For local Supabase, run `npm run db:start` and `npm run db:reset` from the repo root, then load the demo data with `npx supabase db query --local -f supabase/demo/seed.sql`. The database tests expect an empty database, so run `npm run db:reset` again before `npm test`. `.env.local` must point at an address this device can reach; a LAN IP goes stale when your network changes.
 
@@ -24,7 +24,7 @@ Open the app in Expo Go, or in an iOS simulator or Android emulator. If Expo Go 
 
 ## Web hosting
 
-The web version is hosted on EAS Hosting at https://helptheneedy.expo.app, under the `cinnamoncicada` Expo account. It's a single-page app (`web.output` is `single` in `app.json`) running on the same mock data as the native app. Anyone with the link can open it.
+The web version is hosted on EAS Hosting at https://poki.expo.app, under the `cinnamoncicada` Expo account. It's a single-page app (`web.output` is `single` in `app.json`) running on the hosted Supabase project. Anyone with the link can open it.
 
 To redeploy, export the web build with the `production` EAS environment, then deploy it. Without `--prod`, you get a preview URL instead of updating the production one.
 
