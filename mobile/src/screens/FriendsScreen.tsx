@@ -7,11 +7,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar } from '../components/Avatar';
 import { BottomNavigation, useBottomNavSpace } from '../components/BottomNavigation';
 import { BottomSheet } from '../components/BottomSheet';
+import { useDemo } from '../demo/DemoProvider';
 import { mockPeople } from '../data/mockPeople';
 import { colors, fonts, ICON_STROKE, radius } from '../theme';
 import type { Person } from '../types';
 
 export function FriendsScreen() {
+  const { avatarForUser } = useDemo();
   const insets = useSafeAreaInsets();
   const navSpace = useBottomNavSpace();
   const [people, setPeople] = useState(mockPeople);
@@ -80,7 +82,7 @@ export function FriendsScreen() {
               accessibilityLabel={`View ${item.displayName}'s profile`}
               style={({ pressed }) => [styles.person, pressed && { opacity: 0.7 }]}
             >
-              <Avatar uri={item.avatarUrl} size={54} />
+              <Avatar uri={avatarForUser(item.id, item.avatarUrl)} size={54} />
               <Text style={styles.name} numberOfLines={1}>
                 {item.displayName}
               </Text>

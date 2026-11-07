@@ -1,18 +1,17 @@
 import type { Comment, GiftRequest } from '../types';
-import { headshots } from './mockPeople';
+import { demoRequestPhotos } from './demoPhotos';
+import { LOCAL_USER_ID, requiredDemoAvatar } from './userAvatars';
 
-const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop`;
-const portrait = (path: string) => `https://randomuser.me/api/portraits/${path}.jpg`;
 
 const commenters = {
-  alex: { username: 'alex.k', avatarUrl: portrait('men/32') },
-  maya: { username: 'maya.t', avatarUrl: portrait('women/68') },
-  lily: { username: 'lily.c', avatarUrl: portrait('women/12') },
-  ryan: { username: 'ryan.p', avatarUrl: portrait('men/46') },
-  noor: { username: 'noor.s', avatarUrl: portrait('women/90') },
-  ben: { username: 'ben.w', avatarUrl: portrait('men/11') },
-  ivy: { username: 'ivy.r', avatarUrl: portrait('women/26') },
-  dev: { username: 'dev.m', avatarUrl: portrait('men/86') },
+  alex: { username: 'alex.k', authorId: 'comment-alex', avatarUrl: requiredDemoAvatar('comment-alex') },
+  maya: { username: 'maya.t', authorId: 'comment-maya', avatarUrl: requiredDemoAvatar('comment-maya') },
+  lily: { username: 'lily.c', authorId: 'comment-lily', avatarUrl: requiredDemoAvatar('comment-lily') },
+  ryan: { username: 'ryan.p', authorId: 'comment-ryan', avatarUrl: requiredDemoAvatar('comment-ryan') },
+  noor: { username: 'noor.s', authorId: 'comment-noor', avatarUrl: requiredDemoAvatar('comment-noor') },
+  ben: { username: 'ben.w', authorId: 'k11', avatarUrl: requiredDemoAvatar('k11') },
+  ivy: { username: 'ivy.r', authorId: 'comment-ivy', avatarUrl: requiredDemoAvatar('comment-ivy') },
+  dev: { username: 'dev.m', authorId: 'k4', avatarUrl: requiredDemoAvatar('k4') },
 };
 
 type Commenter = keyof typeof commenters;
@@ -38,9 +37,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Jamie',
       username: 'jamie.lo',
       age: 20,
-      avatarUrl: headshots.jamie,
+      avatarUrl: requiredDemoAvatar('u-jamie'),
     },
-    imageUrl: photo('1515823064-d6e0c04616a7'),
+    imageUrl: demoRequestPhotos.matcha,
     title: 'Matcha after midterms',
     description:
       'I have two exams left this week. Asking for $8 for an iced matcha at the library cafe.',
@@ -60,9 +59,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Alex',
       username: 'alex.rv',
       age: 22,
-      avatarUrl: headshots.alex,
+      avatarUrl: requiredDemoAvatar('u-alex'),
     },
-    imageUrl: photo('1513104890138-7c749659a591'),
+    imageUrl: demoRequestPhotos.pizza,
     title: 'Friday night pizza',
     description:
       'Ordering pizza with my roommates on Friday. My share is $19, including delivery.',
@@ -81,9 +80,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Taylor',
       username: 'taylor.bk',
       age: 24,
-      avatarUrl: headshots.taylor,
+      avatarUrl: requiredDemoAvatar('u-taylor'),
     },
-    imageUrl: photo('1505740420928-5e560c06d30e'),
+    imageUrl: demoRequestPhotos.headphones,
     title: 'New headphones',
     description:
       'The left side of my headphones stopped working. This pair is $89; I use them on the train and for editing audio.',
@@ -104,9 +103,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Riley',
       username: 'riley.jn',
       age: 27,
-      avatarUrl: headshots.riley,
+      avatarUrl: requiredDemoAvatar('u-riley'),
     },
-    imageUrl: photo('1504674900247-0877df9cc836'),
+    imageUrl: demoRequestPhotos.dinner,
     title: 'Dinner after work',
     description:
       'I finish work at 9 tonight. Asking for $22 for takeout on the way home.',
@@ -125,9 +124,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Morgan',
       username: 'morgan.art',
       age: 19,
-      avatarUrl: headshots.morgan,
+      avatarUrl: requiredDemoAvatar('u-morgan'),
     },
-    imageUrl: photo('1513364776144-60967b0f800f'),
+    imageUrl: demoRequestPhotos.sketchbook,
     title: 'New sketchbook',
     description:
       'My sketchbook is full. The A5 one I use costs $15 at the art supply shop.',
@@ -147,9 +146,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Casey',
       username: 'casey.md',
       age: 23,
-      avatarUrl: headshots.casey,
+      avatarUrl: requiredDemoAvatar('u-casey'),
     },
-    imageUrl: photo('1487070183336-b863922373d4'),
+    imageUrl: demoRequestPhotos.flowers,
     title: 'Birthday flowers',
     description:
       'Picking up flowers for my grandma on Sunday. The market has a $25 bouquet.',
@@ -168,9 +167,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Sam',
       username: 'sam.oh',
       age: 21,
-      avatarUrl: headshots.sam,
+      avatarUrl: requiredDemoAvatar('u-sam'),
     },
-    imageUrl: photo('1509042239860-f550ce710b93'),
+    imageUrl: demoRequestPhotos.coffee,
     title: 'Coffee before finals',
     description:
       'Coffee before my 8am exam tomorrow. A flat white at the place near campus is $6.',
@@ -187,9 +186,9 @@ export const mockRequests: GiftRequest[] = [
       displayName: 'Jordan',
       username: 'jordan.ek',
       age: 20,
-      avatarUrl: headshots.jordan,
+      avatarUrl: requiredDemoAvatar('u-jordan'),
     },
-    imageUrl: photo('1497633762265-9d179a990aa6'),
+    imageUrl: demoRequestPhotos.textbook,
     title: 'Textbook for class',
     description:
       'I need a $45 access code for chemistry homework. The used textbook did not come with one.',
@@ -206,5 +205,5 @@ export const mockRequests: GiftRequest[] = [
 
 export const ME = {
   username: 'you',
-  avatarUrl: portrait('women/33'),
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
 };

@@ -19,7 +19,7 @@ type ReactionKind = 'hearts' | 'sparkles';
  * in the card components.
  */
 export function useDiscoverState() {
-  const { profile: me, online } = useDemo();
+  const { profile: me, online, currentUserId } = useDemo();
   const { account } = useAuth();
   const myId = account?.user.id ?? null;
   const [others, setOthers] = useState<GiftRequest[]>(online ? [] : mockRequests);
@@ -127,7 +127,8 @@ export function useDiscoverState() {
       const comment: Comment = {
         id: `local-${Date.now()}`,
         username: me.username,
-        avatarUrl: me.avatarUrl,
+        authorId: currentUserId,
+        avatarUrl: '',
         text: trimmed,
         minutesAgo: 0,
         likes: 0,
@@ -135,7 +136,7 @@ export function useDiscoverState() {
       };
       updateRequest(requestId, (r) => ({ ...r, comments: [comment, ...r.comments] }));
     },
-    [me, updateRequest],
+    [me, currentUserId, updateRequest],
   );
 
   const startOver = useCallback(() => {

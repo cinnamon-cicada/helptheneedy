@@ -1,26 +1,16 @@
 import type { ProfileSection } from '../components/ProfileShortcutGrid';
 import type { ActivityRecord, GiftRequest, ProfileListItem, UserProfile } from '../types';
 import { mockRequests } from './mockRequests';
+import { LOCAL_USER_ID, PROFILE_AVATAR_CHOICES, requiredDemoAvatar } from './userAvatars';
 
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop`;
 
-const avatar = (id: string) => `https://images.unsplash.com/photo-${id}?w=400&q=80&fm=jpg&fit=crop&crop=faces`;
-
-/**
- * Cycled through by the photo placeholder in the Edit Profile sheet. Unsplash
- * allows cross-origin downloads, so the web app can copy one into Supabase
- * Storage when it's chosen.
- */
-export const SAMPLE_AVATARS = [
-  avatar('1534528741775-53994a69daeb'),
-  avatar('1524504388940-b1c1722653e1'),
-  avatar('1506277886164-e25aa3f4ef7f'),
-  avatar('1531123897727-8f129e1688ce'),
-];
+/** Licensed illustrative demo photos also used by the Edit Profile sample picker. */
+export const SAMPLE_AVATARS = PROFILE_AVATAR_CHOICES;
 
 export const MOCK_PROFILE: UserProfile = {
   username: 'robin_24',
-  avatarUrl: SAMPLE_AVATARS[0],
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
   totalGiftedCents: 21000,
   peopleHelped: 12,
   requestsPosted: 5,
@@ -33,7 +23,7 @@ const ME_AS_RECIPIENT = {
   id: 'u-me',
   displayName: MOCK_PROFILE.username,
   username: 'robin_24',
-  avatarUrl: SAMPLE_AVATARS[0],
+  avatarUrl: requiredDemoAvatar(LOCAL_USER_ID),
 };
 
 /** Requests the signed-in user has posted. */

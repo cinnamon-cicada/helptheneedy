@@ -8,12 +8,14 @@ import { ProfileStats } from '../components/ProfileStats';
 import { WishlistDeck } from '../components/WishlistDeck';
 import { mockPeople } from '../data/mockPeople';
 import { mockRequests } from '../data/mockRequests';
+import { useDemo } from '../demo/DemoProvider';
 import { colors, fonts, radius } from '../theme';
 
 const IMAGE_INSET = 8;
 
 /** Someone else's profile, opened from the friends page or a request card. */
 export function UserProfileScreen() {
+  const { avatarForUser } = useDemo();
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const navSpace = useBottomNavSpace();
@@ -36,7 +38,7 @@ export function UserProfileScreen() {
             </Text>
             <View style={styles.imageWrap}>
               <Image
-                source={{ uri: person.avatarUrl }}
+                source={{ uri: avatarForUser(person.id, person.avatarUrl) }}
                 style={styles.image}
                 contentFit="cover"
                 transition={200}

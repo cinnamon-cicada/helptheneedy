@@ -1,3 +1,4 @@
+import { DEMO_DISCLOSURE } from './DemoDisclosure';
 import { Check, EyeOff, Wallet } from 'lucide-react-native';
 import { useMemo, useRef, useState, type ComponentRef } from 'react';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
@@ -59,7 +60,7 @@ function giftErrorMessage(code: string, name: string): string {
  * money saved on this device only. Nothing here charges or moves real money.
  */
 export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete }: Props) {
-  const { balanceCents, sendGift, resetDemo } = useDemo();
+  const { balanceCents, sendGift, resetDemo, avatarForUser } = useDemo();
   const successBadgeRef = useRef<ComponentRef<typeof View>>(null);
   const [step, setStep] = useState<Step>('amount');
   const [selected, setSelected] = useState<number | 'custom'>(0);
@@ -152,7 +153,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
       {step === 'amount' ? (
         <View>
           <View style={styles.header}>
-            <Avatar uri={request.recipient.avatarUrl} size={46} />
+            <Avatar uri={avatarForUser(request.recipient.id, request.recipient.avatarUrl)} size={46} />
             <View style={styles.headerText}>
               <Text style={styles.title}>Gift {name}</Text>
               <Text style={styles.subtitle} numberOfLines={1}>
@@ -227,7 +228,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           />
           {sendError ? <Text style={[styles.error, styles.sendError]}>{sendError}</Text> : null}
           <Text style={styles.footnote}>
-            {`Demo balance ${formatCents(balanceCents)}. No real payment is processed.`}
+            {`Demo balance ${formatCents(balanceCents)}. ${DEMO_DISCLOSURE}`}
           </Text>
         </View>
       ) : (
@@ -239,7 +240,7 @@ export function GiftAmountBottomSheet({ request, visible, onDismiss, onComplete 
           <Text style={styles.doneBody}>
             {`${amountCents !== null ? formatCents(amountCents) : ''} to ${name} for "${request.title}"${anonymous ? ', anonymously' : ''}. Demo balance: ${formatCents(balanceCents)}.`}
           </Text>
-          <Text style={styles.footnote}>Demo only. No real payment was processed.</Text>
+          <Text style={styles.footnote}>{DEMO_DISCLOSURE}</Text>
           <View style={styles.doneButton}>
             <PrimaryButton label="Done" onPress={onComplete} />
           </View>

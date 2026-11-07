@@ -44,14 +44,14 @@ set username = v.username, display_name = v.display_name, avatar_path = v.avatar
     intent = v.intent::public.user_intent, is_adult_confirmed = true,
     onboarded_at = coalesce(pr.onboarded_at, now()), is_demo = true
 from (values
-  (md5('htn-demo:jamie')::uuid, 'jamie_lo', 'Jamie', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:alex')::uuid, 'alex_rv', 'Alex', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:taylor')::uuid, 'taylor_bk', 'Taylor', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:riley')::uuid, 'riley_jn', 'Riley', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:morgan')::uuid, 'morgan_art', 'Morgan', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:casey')::uuid, 'casey_md', 'Casey', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:sam')::uuid, 'sam_oh', 'Sam', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
-  (md5('htn-demo:jordan')::uuid, 'jordan_ek', 'Jordan', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80&fm=jpg&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:jamie')::uuid, 'jamie_lo', 'Jamie', 'https://images.pexels.com/photos/32403507/pexels-photo-32403507.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:alex')::uuid, 'alex_rv', 'Alex', 'https://images.pexels.com/photos/29464288/pexels-photo-29464288.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:taylor')::uuid, 'taylor_bk', 'Taylor', 'https://images.pexels.com/photos/31546395/pexels-photo-31546395.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:riley')::uuid, 'riley_jn', 'Riley', 'https://images.pexels.com/photos/29084683/pexels-photo-29084683.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:morgan')::uuid, 'morgan_art', 'Morgan', 'https://images.pexels.com/photos/37301822/pexels-photo-37301822.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:casey')::uuid, 'casey_md', 'Casey', 'https://images.pexels.com/photos/33049359/pexels-photo-33049359.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces', 'receiver'),
+  (md5('htn-demo:sam')::uuid, 'sam_oh', 'Sam', 'https://images.pexels.com/photos/14600795/pexels-photo-14600795.jpeg?auto=compress&cs=tinysrgb&w=1000', 'receiver'),
+  (md5('htn-demo:jordan')::uuid, 'jordan_ek', 'Jordan', 'https://images.pexels.com/photos/19329545/pexels-photo-19329545.jpeg?auto=compress&cs=tinysrgb&w=1000', 'receiver'),
   (md5('htn-demo:kindsoul')::uuid, 'demo_alex_r', 'alex_r', null, 'gifter'),
   (md5('htn-demo:mysterystar')::uuid, 'demo_mika72', 'mika72', null, 'gifter'),
   (md5('htn-demo:giftninja')::uuid, 'demo_jules', 'jules', null, 'gifter'),
@@ -83,15 +83,15 @@ on conflict (id) do update set title = excluded.title, story = excluded.story;
 
 insert into public.post_photos (post_id, storage_path, position)
 values
-  (md5('htn-demo:post:jamie')::uuid, 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:alex')::uuid, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:taylor')::uuid, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:riley')::uuid, 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:morgan')::uuid, 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:casey')::uuid, 'https://images.unsplash.com/photo-1487070183336-b863922373d4?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:sam')::uuid, 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=900&q=80&fm=jpg&fit=crop', 0),
-  (md5('htn-demo:post:jordan')::uuid, 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=900&q=80&fm=jpg&fit=crop', 0)
-on conflict (post_id, position) do nothing;
+  (md5('htn-demo:post:jamie')::uuid, 'https://images.pexels.com/photos/29684376/pexels-photo-29684376.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:alex')::uuid, 'https://images.pexels.com/photos/4109113/pexels-photo-4109113.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:taylor')::uuid, 'https://images.pexels.com/photos/11512031/pexels-photo-11512031.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:riley')::uuid, 'https://images.pexels.com/photos/6646359/pexels-photo-6646359.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:morgan')::uuid, 'https://images.pexels.com/photos/13443189/pexels-photo-13443189.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:casey')::uuid, 'https://images.pexels.com/photos/13711813/pexels-photo-13711813.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:sam')::uuid, 'https://images.pexels.com/photos/34187295/pexels-photo-34187295.jpeg?auto=compress&cs=tinysrgb&w=1000', 0),
+  (md5('htn-demo:post:jordan')::uuid, 'https://images.pexels.com/photos/5527516/pexels-photo-5527516.jpeg?auto=compress&cs=tinysrgb&w=1000', 0)
+on conflict (post_id, position) do update set storage_path = excluded.storage_path;
 
 insert into public.post_gift_instructions (post_id, instructions)
 values

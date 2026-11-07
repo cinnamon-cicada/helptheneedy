@@ -1,3 +1,4 @@
+import { seededDemoPhotos } from '../data/demoPhotos';
 import { mockRequests } from '../data/mockRequests';
 import type { Category, GiftRequest } from '../types';
 import { db, toApiError } from './client';
@@ -54,6 +55,7 @@ export async function fetchOpenRequests(myId: string): Promise<GiftRequest[]> {
 
   const cards = rows.map((p, i): GiftRequest => {
     const sample = sampleByTitle.get(p.title);
+    const demoPhoto = seededDemoPhotos[p.id];
     const name = p.receiver?.display_name ?? p.receiver?.username ?? 'Someone';
     return {
       id: p.id,
@@ -62,9 +64,9 @@ export async function fetchOpenRequests(myId: string): Promise<GiftRequest[]> {
         displayName: name.split(' ')[0],
         username: p.receiver?.username ?? '',
         age: sample?.recipient.age,
-        avatarUrl: avatars[i] ?? sample?.recipient.avatarUrl ?? '',
+        avatarUrl: demoPhoto?.avatarUrl ?? avatars[i] ?? sample?.recipient.avatarUrl ?? '',
       },
-      imageUrl: photos[i] ?? sample?.imageUrl ?? '',
+      imageUrl: demoPhoto?.imageUrl ?? photos[i] ?? sample?.imageUrl ?? '',
       title: p.title,
       description: p.story,
       category: (CATEGORIES.find((c) => c.toLowerCase() === p.category.toLowerCase()) ?? 'Product') as Category,

@@ -9,6 +9,7 @@ import { useDemo } from '../demo/DemoProvider';
 import { colors, fonts, radius } from '../theme';
 import type { Comment, GiftRequest } from '../types';
 import { formatCents } from '../utils/format';
+import { DEMO_DISCLOSURE } from './DemoDisclosure';
 import { ExpandedCardContent } from './ExpandedCardContent';
 import type { TileRect } from './ProfileShortcutCard';
 
@@ -105,7 +106,7 @@ export function RequestCardWindow({ request, origin, onClose, onClosed }: Props)
 
 /** Info and details, with reactions and comments kept locally for this prototype. */
 function CardBody({ initial }: { initial: GiftRequest }) {
-  const { profile: me } = useDemo();
+  const { profile: me, currentUserId, avatarForUser } = useDemo();
   const [request, setRequest] = useState(initial);
   const [mine, setMine] = useState({ hearts: false, sparkles: false });
 
@@ -127,7 +128,8 @@ function CardBody({ initial }: { initial: GiftRequest }) {
     const comment: Comment = {
       id: `local-${Date.now()}`,
       username: me.username,
-      avatarUrl: me.avatarUrl,
+      authorId: currentUserId,
+      avatarUrl: '',
       text: text.trim(),
       minutesAgo: 0,
       likes: 0,
@@ -143,7 +145,7 @@ function CardBody({ initial }: { initial: GiftRequest }) {
       <View style={styles.info}>
         <View style={styles.recipientRow}>
           <View style={styles.recipient}>
-            <Image source={{ uri: recipient.avatarUrl }} style={styles.avatar} contentFit="cover" transition={150} />
+            <Image source={{ uri: avatarForUser(recipient.id, recipient.avatarUrl) }} style={styles.avatar} contentFit="cover" transition={150} />
             <Text style={styles.name} numberOfLines={1}>
               {recipient.displayName}
               {recipient.age ? <Text style={styles.age}>, {recipient.age}</Text> : null}
@@ -157,6 +159,7 @@ function CardBody({ initial }: { initial: GiftRequest }) {
           {request.title}
         </Text>
         <Text style={styles.amount}>{formatCents(request.amountCents)}</Text>
+        <Text style={styles.disclosure}>{DEMO_DISCLOSURE}</Text>
       </View>
       <ExpandedCardContent
         request={request}
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orangeSoft,
   },
   body: { flex: 1 },
+  disclosure: { marginTop: 8, fontSize: 11, lineHeight: 15, fontFamily: fonts.regular, color: colors.textMuted },
   info: { paddingHorizontal: 18, paddingTop: 14, paddingBottom: 12 },
   recipientRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 30 },
   recipient: { flexDirection: 'row', alignItems: 'center', gap: 9, flexShrink: 1 },

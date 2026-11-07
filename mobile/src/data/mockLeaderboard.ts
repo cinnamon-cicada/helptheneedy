@@ -1,8 +1,9 @@
 import { computeLeaderboard, findRow, startOfMonthUtc } from '../leaderboard/ranking';
-import type { AliasAvatarSpec, AvatarIcon, GiftStatus, GiftTransaction, LeaderboardUser, MyRank } from '../types';
+import type { GiftStatus, GiftTransaction, LeaderboardUser, MyRank } from '../types';
 import { MOCK_PROFILE } from './mockProfile';
+import { LOCAL_USER_ID, requiredDemoAvatar } from './userAvatars';
 
-export const MY_LEADERBOARD_ID = 'me';
+export const MY_LEADERBOARD_ID = LOCAL_USER_ID;
 
 /** Warm pairs, with a little muted contrast, for illustrated avatars. */
 export const PALETTES: [string, string][] = [
@@ -15,20 +16,12 @@ export const PALETTES: [string, string][] = [
   ['#F6E6EE', '#9A5571'],
 ];
 
-const icon = (name: AvatarIcon, palette: number): AliasAvatarSpec => ({
-  kind: 'icon',
-  icon: name,
-  background: PALETTES[palette][0],
-  foreground: PALETTES[palette][1],
-});
-
 /** [gifts, total cents, distinct people] for one stretch of time. */
 type Spend = [count: number, cents: number, people: number];
 
 type Seed = {
   id: string;
   alias: string;
-  avatar: AliasAvatarSpec;
   thisMonth: Spend;
   earlier: Spend;
   isLeaderboardVisible?: boolean;
@@ -38,39 +31,37 @@ type Seed = {
 // Sized so Most Gifted and Most Helped, and Monthly and Overall, all rank
 // people differently: big single gifts versus many small ones.
 const SEEDS: Seed[] = [
-  { id: 'k1', alias: 'alex_r', avatar: icon('sun', 0), thisMonth: [4, 21000, 3], earlier: [10, 64000, 8] },
-  { id: 'k2', alias: 'mika72', avatar: icon('star', 5), thisMonth: [6, 18000, 6], earlier: [12, 41000, 10] },
-  { id: 'k3', alias: 'jules', avatar: icon('gift', 1), thisMonth: [5, 12500, 5], earlier: [20, 52000, 17] },
-  { id: 'k4', alias: 'dev.m', avatar: icon('coffee', 3), thisMonth: [11, 11000, 9], earlier: [15, 22000, 12] },
-  { id: 'k5', alias: 'rpatel', avatar: icon('moon', 5), thisMonth: [7, 9800, 7], earlier: [30, 70000, 21] },
-  { id: 'k6', alias: 'noor_s', avatar: icon('flower', 2), thisMonth: [12, 8700, 11], earlier: [9, 12000, 7] },
-  { id: 'k7', alias: 'lee_204', avatar: icon('heart', 6), thisMonth: [5, 7600, 4], earlier: [14, 30000, 9] },
-  { id: 'k8', alias: 'casey.m', avatar: icon('cherry', 1), thisMonth: [16, 6500, 15], earlier: [25, 18000, 19] },
-  { id: 'k9', alias: 'daniel8', avatar: icon('music', 4), thisMonth: [14, 5400, 13], earlier: [40, 26000, 33] },
-  { id: 'k10', alias: 'tess', avatar: icon('leaf', 4), thisMonth: [3, 4200, 2], earlier: [8, 25000, 6] },
-  { id: 'k11', alias: 'ben_w', avatar: icon('coffee', 0), thisMonth: [6, 3900, 5], earlier: [6, 9000, 5] },
-  { id: 'k12', alias: 'anika_9', avatar: icon('sparkles', 2), thisMonth: [9, 3600, 8], earlier: [4, 3000, 4] },
-  { id: 'k13', alias: 'morgan', avatar: icon('feather', 3), thisMonth: [2, 3300, 2], earlier: [18, 34000, 14] },
-  { id: 'k14', alias: 'chris.p', avatar: icon('star', 6), thisMonth: [3, 3000, 3], earlier: [3, 4500, 3] },
-  { id: 'k15', alias: 'sara_31', avatar: icon('sprout', 4), thisMonth: [4, 2800, 4], earlier: [10, 16000, 9] },
-  { id: 'k16', alias: 'jo_lee', avatar: icon('bird', 0), thisMonth: [5, 2500, 5], earlier: [2, 2000, 2] },
+  { id: 'k1', alias: 'alex_r', thisMonth: [4, 21000, 3], earlier: [10, 64000, 8] },
+  { id: 'k2', alias: 'mika72', thisMonth: [6, 18000, 6], earlier: [12, 41000, 10] },
+  { id: 'k3', alias: 'jules', thisMonth: [5, 12500, 5], earlier: [20, 52000, 17] },
+  { id: 'k4', alias: 'dev.m', thisMonth: [11, 11000, 9], earlier: [15, 22000, 12] },
+  { id: 'k5', alias: 'rpatel', thisMonth: [7, 9800, 7], earlier: [30, 70000, 21] },
+  { id: 'k6', alias: 'noor_s', thisMonth: [12, 8700, 11], earlier: [9, 12000, 7] },
+  { id: 'k7', alias: 'lee_204', thisMonth: [5, 7600, 4], earlier: [14, 30000, 9] },
+  { id: 'k8', alias: 'casey.m', thisMonth: [16, 6500, 15], earlier: [25, 18000, 19] },
+  { id: 'k9', alias: 'daniel8', thisMonth: [14, 5400, 13], earlier: [40, 26000, 33] },
+  { id: 'k10', alias: 'tess', thisMonth: [3, 4200, 2], earlier: [8, 25000, 6] },
+  { id: 'k11', alias: 'ben_w', thisMonth: [6, 3900, 5], earlier: [6, 9000, 5] },
+  { id: 'k12', alias: 'anika_9', thisMonth: [9, 3600, 8], earlier: [4, 3000, 4] },
+  { id: 'k13', alias: 'morgan', thisMonth: [2, 3300, 2], earlier: [18, 34000, 14] },
+  { id: 'k14', alias: 'chris.p', thisMonth: [3, 3000, 3], earlier: [3, 4500, 3] },
+  { id: 'k15', alias: 'sara_31', thisMonth: [4, 2800, 4], earlier: [10, 16000, 9] },
+  { id: 'k16', alias: 'jo_lee', thisMonth: [5, 2500, 5], earlier: [2, 2000, 2] },
   {
     id: MY_LEADERBOARD_ID,
     alias: MOCK_PROFILE.username,
-    avatar: { kind: 'photo', uri: MOCK_PROFILE.avatarUrl },
     // Overall adds up to the Profile screen's lifetime totals: $210, 12 people.
     thisMonth: [4, 2300, 3],
     earlier: [9, 18700, 9],
   },
-  { id: 'k17', alias: 'nina.k', avatar: icon('cloud', 5), thisMonth: [2, 1800, 2], earlier: [5, 6000, 4] },
-  { id: 'k18', alias: 'tom84', avatar: icon('cookie', 1), thisMonth: [1, 1200, 1], earlier: [0, 0, 0] },
-  { id: 'k19', alias: 'erin', avatar: icon('cloud', 2), thisMonth: [0, 0, 0], earlier: [7, 8800, 6] },
-  { id: 'k20', alias: 'ravi_6', avatar: icon('leaf', 0), thisMonth: [3, 900, 3], earlier: [1, 500, 1] },
+  { id: 'k17', alias: 'nina.k', thisMonth: [2, 1800, 2], earlier: [5, 6000, 4] },
+  { id: 'k18', alias: 'tom84', thisMonth: [1, 1200, 1], earlier: [0, 0, 0] },
+  { id: 'k19', alias: 'erin', thisMonth: [0, 0, 0], earlier: [7, 8800, 6] },
+  { id: 'k20', alias: 'ravi_6', thisMonth: [3, 900, 3], earlier: [1, 500, 1] },
   // Would top the monthly board, but opted out of public rankings.
   {
     id: 'k21',
     alias: 'mel.t',
-    avatar: icon('sun', 2),
     thisMonth: [8, 25000, 7],
     earlier: [6, 20000, 6],
     isLeaderboardVisible: false,
@@ -79,7 +70,6 @@ const SEEDS: Seed[] = [
   {
     id: 'k22',
     alias: 'pat_27',
-    avatar: icon('cookie', 3),
     thisMonth: [9, 24000, 9],
     earlier: [3, 6000, 3],
     leaderboardExcluded: true,
@@ -155,7 +145,7 @@ function buildTransactions(now: Date): GiftTransaction[] {
 export const LEADERBOARD_USERS: LeaderboardUser[] = SEEDS.map((s) => ({
   id: s.id,
   alias: s.alias,
-  avatar: s.avatar,
+  avatar: { kind: 'photo', uri: requiredDemoAvatar(s.id) },
   isLeaderboardVisible: s.isLeaderboardVisible ?? true,
   leaderboardExcluded: s.leaderboardExcluded ?? false,
 }));

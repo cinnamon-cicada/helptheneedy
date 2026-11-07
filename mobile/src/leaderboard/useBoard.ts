@@ -4,7 +4,7 @@ import { type Board, fetchBoard } from '../api/leaderboard';
 import { useAuth } from '../auth/AuthContext';
 import { LEADERBOARD_USERS, MOCK_TRANSACTIONS, MY_LEADERBOARD_ID } from '../data/mockLeaderboard';
 import { useDemo } from '../demo/DemoProvider';
-import type { RankingCategory, RankingPeriod } from '../types';
+import type { LeaderboardRow, RankingCategory, RankingPeriod } from '../types';
 import { computeLeaderboard, findRow } from './ranking';
 
 export type BoardState = Board & { myId: string; loading: boolean };
@@ -17,7 +17,7 @@ const cache = new Map<string, Board>();
  * kept for this session, so switching tabs doesn't flash empty.
  */
 export function useBoard(category: RankingCategory, period: RankingPeriod): BoardState {
-  const { online, revision } = useDemo();
+  const { online, revision, avatarForUser } = useDemo();
   const { account } = useAuth();
   const myId = account?.user.id ?? null;
   const key = `${myId}:${category}:${period}`;
@@ -44,11 +44,17 @@ export function useBoard(category: RankingCategory, period: RankingPeriod): Boar
     };
   }, [online, myId, key, category, period, revision]);
 
-  if (mock) return { ...mock, myId: MY_LEADERBOARD_ID, loading: false };
+  const resolveRow = (row: LeaderboardRow): LeaderboardRow => {
+    const fallback = row.user.avatar.kind === 'photo' ? row.user.avatar.uri : undefined;
+    const uri = avatarForUser(row.user.id, fallback);
+    return uri ? { ...row, user: { ...row.user, avatar: { kind: 'photo', uri } } } : row;
+  };
+  const resolvedRows = (mock?.rows ?? board?.rows ?? []).map(resolveRow);
+  const sourceMe = mock?.me ?? board?.me;
   return {
-    rows: board?.rows ?? [],
-    me: board?.me ?? null,
-    myId: myId ?? '',
-    loading: !board && fetched?.key !== key,
+    rows: resolvedRows,
+    me: sourceMe ? resolveRow(sourceMe) : null,
+    myId: mock ? MY_LEADERBOARD_ID : (myId ?? ''),
+    loading: mock ? false : !board && fetched?.key !== key,
   };
 }

@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { useDemo } from '../demo/DemoProvider';
 import { colors, fonts, ICON_STROKE } from '../theme';
 import type { Comment } from '../types';
 import { formatCompact, formatRelative } from '../utils/format';
@@ -41,10 +42,12 @@ function CommentRow({
   onToggleLike: () => void;
   onReply: () => void;
 }) {
+  const { avatarForUser, currentUserId } = useDemo();
+  const authorId = comment.authorId ?? (comment.id.startsWith('local-') ? currentUserId : undefined);
   const liked = comment.likedByMe;
   return (
     <View style={styles.row}>
-      <Avatar uri={comment.avatarUrl} size={32} />
+      <Avatar uri={avatarForUser(authorId, comment.avatarUrl)} size={32} />
       <View style={styles.body}>
         <Text style={styles.username}>{comment.username}</Text>
         <Text style={styles.text}>{comment.text}</Text>

@@ -14,6 +14,7 @@ import { AuthProvider, useAuth } from '../auth/AuthContext';
 import { DemoProvider } from '../demo/DemoProvider';
 import { MyPostsProvider } from '../post/MyPostsContext';
 import { IntroSplash } from '../components/poki/IntroSplash';
+import { DemoDisclosure } from '../components/DemoDisclosure';
 import { TextButton } from '../components/ui';
 import { colors, fonts } from '../theme';
 
@@ -38,7 +39,8 @@ export default function RootLayout() {
           <DemoProvider>
             <MyPostsProvider>
               <StatusBar style="dark" />
-              <RootStack />
+              <View style={styles.root}><RootStack /></View>
+              <DemoDisclosure />
               <LaunchSplash />
             </MyPostsProvider>
           </DemoProvider>
