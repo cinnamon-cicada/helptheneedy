@@ -9,6 +9,14 @@ const photo = (module: number) => {
 };
 
 const photos = {
+  cafe: photo(require('../../assets/demo-photos/avatar-cafe.jpg')),
+  conversation: photo(require('../../assets/demo-photos/avatar-conversation.jpg')),
+  evening: photo(require('../../assets/demo-photos/avatar-evening.jpg')),
+  park: photo(require('../../assets/demo-photos/avatar-park.jpg')),
+  daylight: photo(require('../../assets/demo-photos/avatar-daylight.jpg')),
+  outdoors: photo(require('../../assets/demo-photos/avatar-outdoors.jpg')),
+  selfie: photo(require('../../assets/demo-photos/avatar-selfie.jpg')),
+
   cat: photo(require('../../assets/demo-photos/avatar-cat.jpg')),
   dog: photo(require('../../assets/demo-photos/avatar-dog.jpg')),
   daisies: photo(require('../../assets/demo-photos/avatar-daisies.jpg')),
@@ -27,43 +35,43 @@ const photos = {
 
 /** One avatar per fictional user ID. Never derive identity from a display name. */
 const avatars: Record<string, string> = {
-  'me': photos.cat,
-  'u-jamie': photos.candid,
-  'u-alex': photos.dog,
-  'u-taylor': photos.daisies,
-  'u-riley': photos.sea,
-  'u-morgan': photos.sketchbook,
-  'u-casey': photos.museum,
-  'u-sam': photos.night,
-  'u-jordan': photos.mountains,
-  'comment-alex': photos.headphones,
-  'comment-maya': photos.flowers,
-  'comment-lily': photos.matcha,
-  'comment-ryan': photos.mountains,
-  'comment-noor': photos.sea,
+  'me': photos.selfie,
+  'u-jamie': photos.cafe,
+  'u-alex': photos.park,
+  'u-taylor': photos.evening,
+  'u-riley': photos.outdoors,
+  'u-morgan': photos.daylight,
+  'u-casey': photos.conversation,
+  'u-sam': photos.cat,
+  'u-jordan': photos.dog,
+  'comment-alex': photos.park,
+  'comment-maya': photos.selfie,
+  'comment-lily': photos.evening,
+  'comment-ryan': photos.outdoors,
+  'comment-noor': photos.conversation,
   'comment-ivy': photos.daisies,
-  'k1': photos.cat,
-  'k2': photos.dog,
-  'k3': photos.daisies,
-  'k4': photos.sea,
-  'k5': photos.mountains,
-  'k6': photos.night,
-  'k7': photos.candid,
-  'k8': photos.museum,
-  'k9': photos.sketchbook,
-  'k10': photos.coffee,
-  'k11': photos.flowers,
-  'k12': photos.headphones,
-  'k13': photos.matcha,
-  'k14': photos.textbook,
-  'k15': photos.cat,
-  'k16': photos.dog,
-  'k17': photos.daisies,
-  'k18': photos.sea,
-  'k19': photos.mountains,
-  'k20': photos.night,
-  'k21': photos.candid,
-  'k22': photos.museum,
+  'k1': photos.park,
+  'k2': photos.cafe,
+  'k3': photos.selfie,
+  'k4': photos.daylight,
+  'k5': photos.outdoors,
+  'k6': photos.evening,
+  'k7': photos.conversation,
+  'k8': photos.dog,
+  'k9': photos.cat,
+  'k10': photos.daisies,
+  'k11': photos.park,
+  'k12': photos.cafe,
+  'k13': photos.selfie,
+  'k14': photos.daylight,
+  'k15': photos.outdoors,
+  'k16': photos.evening,
+  'k17': photos.conversation,
+  'k18': photos.dog,
+  'k19': photos.cat,
+  'k20': photos.daisies,
+  'k21': photos.park,
+  'k22': photos.cafe,
 };
 
 // Supabase seed IDs alias the same demo identity, rather than defining another photo.
@@ -103,11 +111,19 @@ export function requiredDemoAvatar(userId: string): string {
   return uri;
 }
 
-export const PROFILE_AVATAR_CHOICES = [photos.cat, photos.dog, photos.daisies, photos.sea, photos.mountains, photos.night];
+export const PROFILE_AVATAR_CHOICES = [photos.selfie, photos.cafe, photos.park, photos.daylight, photos.cat, photos.dog, photos.daisies];
 
 /** Refresh bundled demo choices saved under an older Metro host or asset hash. */
 export function restoreAvatarUri(uri: string): string {
   const choices: Record<string, string> = {
+    'avatar-cafe': photos.cafe,
+    'avatar-conversation': photos.conversation,
+    'avatar-evening': photos.evening,
+    'avatar-park': photos.park,
+    'avatar-daylight': photos.daylight,
+    'avatar-outdoors': photos.outdoors,
+    'avatar-selfie': photos.selfie,
+
     'avatar-cat': photos.cat, 'avatar-dog': photos.dog, 'avatar-daisies': photos.daisies,
     'avatar-sea': photos.sea, 'avatar-mountains': photos.mountains, 'avatar-night': photos.night,
     'person-jamie': photos.cat,

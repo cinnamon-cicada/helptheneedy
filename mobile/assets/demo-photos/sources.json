@@ -143,5 +143,75 @@
     "retrieved": "2026-11-07",
     "sha256": "9041c4969f2e0cacd9e661856b4d56e225e9e2185a84c48ee099cf5c0a80c2bf",
     "use": "Fictional demo avatar illustration; no affiliation or endorsement implied."
+  },
+  {
+    "file": "avatar-cafe.jpg",
+    "source": "https://www.pexels.com/photo/candid-portrait-of-a-woman-in-a-cafe-setting-32403507/",
+    "download": "https://images.pexels.com/photos/32403507/pexels-photo-32403507.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "4eb281c86ea048c82ae87d49ad4e689f49db10b907192588c6d6d1022c73ad84",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "DΛVΞ GΛRCIΛ"
+  },
+  {
+    "file": "avatar-conversation.jpg",
+    "source": "https://www.pexels.com/photo/natural-candid-portrait-of-relaxed-woman-in-cafe-33049359/",
+    "download": "https://images.pexels.com/photos/33049359/pexels-photo-33049359.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "adf366faba513bfb01044853c72b9015a1b9b5e836f1d27b0d31c6e3f0d0c6ed",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Doğan Alpaslan Demir"
+  },
+  {
+    "file": "avatar-evening.jpg",
+    "source": "https://www.pexels.com/photo/candid-portrait-of-a-young-woman-in-urban-setting-31546395/",
+    "download": "https://images.pexels.com/photos/31546395/pexels-photo-31546395.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "8351e6664209886926db8e4161f93d6ac00a1338975df17562691ff95ff54da2",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Murat IŞIK"
+  },
+  {
+    "file": "avatar-park.jpg",
+    "source": "https://www.pexels.com/photo/casual-portrait-of-smiling-man-outdoors-29464288/",
+    "download": "https://images.pexels.com/photos/29464288/pexels-photo-29464288.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "c22396804e5f67ab8156bfde661ca0c745770ddc66f2321e660384327df97324",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Mert Coşkun"
+  },
+  {
+    "file": "avatar-daylight.jpg",
+    "source": "https://www.pexels.com/photo/young-man-smiling-outdoors-in-casual-attire-37301822/",
+    "download": "https://images.pexels.com/photos/37301822/pexels-photo-37301822.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "21549b9365640f44dbf9e572d101789a65ee1b4ff4b378c332658a2e15853146",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Niaj Mahmud"
+  },
+  {
+    "file": "avatar-outdoors.jpg",
+    "source": "https://www.pexels.com/photo/portrait-of-smiling-young-man-outdoors-29084683/",
+    "download": "https://images.pexels.com/photos/29084683/pexels-photo-29084683.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=faces",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "fe1de6f2d28d4af6202f87eebcd23bfc28ec08b1d87d5d932ccd2442024a491d",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Halid Elosman"
+  },
+  {
+    "file": "avatar-selfie.jpg",
+    "source": "https://www.pexels.com/photo/smiling-woman-taking-selfie-on-smartphone-6697309/",
+    "download": "https://images.pexels.com/photos/6697309/pexels-photo-6697309.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop&crop=top",
+    "license": "https://www.pexels.com/license/",
+    "retrieved": "2026-11-07",
+    "sha256": "0a2ce118c753e991cec195ff8beb268cf8b849d86d304c77a3863d95602019e0",
+    "use": "Illustrative licensed stock portrait of a fictional demo identity. Subject is not a user, requester, or endorser.",
+    "photographer": "Tim Samuel"
   }
 ]

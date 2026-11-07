@@ -5,7 +5,7 @@ import { LOCAL_USER_ID, PROFILE_AVATAR_CHOICES, requiredDemoAvatar } from './use
 
 const photo = (id: string) => `https://images.unsplash.com/photo-${id}?w=900&q=80&fm=jpg&fit=crop`;
 
-/** Non-identifying demo photos also used by the Edit Profile sample picker. */
+/** Licensed illustrative demo photos also used by the Edit Profile sample picker. */
 export const SAMPLE_AVATARS = PROFILE_AVATAR_CHOICES;
 
 export const MOCK_PROFILE: UserProfile = {
