@@ -13,6 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth/AuthContext';
 import { DemoProvider } from '../demo/DemoProvider';
 import { MyPostsProvider } from '../post/MyPostsContext';
+import { IntroSplash } from '../components/poki/IntroSplash';
 import { TextButton } from '../components/ui';
 import { colors, fonts } from '../theme';
 
@@ -38,6 +39,7 @@ export default function RootLayout() {
             <MyPostsProvider>
               <StatusBar style="dark" />
               <RootStack />
+              <LaunchSplash />
             </MyPostsProvider>
           </DemoProvider>
         </AuthProvider>
@@ -47,8 +49,7 @@ export default function RootLayout() {
 }
 
 /**
- * Signed-out users only see sign-in; signing in swaps to the app. With
- * Supabase configured the account is created automatically, so sign-in never
+ * The account is created automatically (see AuthProvider), so sign-in never
  * shows: the app waits for the account instead.
  */
 function RootStack() {
@@ -78,6 +79,12 @@ function RootStack() {
       </Stack.Protected>
     </Stack>
   );
+}
+
+/** The Poki intro on launch; it stays up until the account is set up (or setup fails). */
+function LaunchSplash() {
+  const { status } = useAuth();
+  return <IntroSplash ready={status !== 'connecting'} />;
 }
 
 const styles = StyleSheet.create({

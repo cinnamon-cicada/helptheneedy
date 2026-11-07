@@ -7,7 +7,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -29,8 +28,9 @@ import type { AuthService, AuthUser } from '../auth/types';
 import { LoginForm } from '../components/auth/LoginForm';
 import { SignupForm } from '../components/auth/SignupForm';
 import { AuthScene, type StageLayout } from '../components/poki/AuthScene';
+import { Wordmark } from '../components/poki/Wordmark';
 import { TextButton } from '../components/ui';
-import { colors, fonts, radius, spring } from '../theme';
+import { colors, radius, spring } from '../theme';
 
 type Mode = 'login' | 'signup';
 
@@ -56,15 +56,6 @@ function useScreenReader() {
     return () => sub.remove();
   }, []);
   return enabled;
-}
-
-function Wordmark() {
-  return (
-    <View style={styles.wordmark} accessible accessibilityRole="header" accessibilityLabel="poki">
-      <Text style={styles.wordmarkText}>poki</Text>
-      <View style={styles.wordmarkDot} />
-    </View>
-  );
 }
 
 /**
@@ -204,9 +195,6 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.white },
   fill: { flex: 1 },
   header: { position: 'absolute', left: 0, right: 0, top: 0, alignItems: 'center', justifyContent: 'center' },
-  wordmark: { flexDirection: 'row', alignItems: 'flex-end', gap: 3 },
-  wordmarkText: { fontSize: 30, fontFamily: fonts.display, color: colors.text, letterSpacing: -1.2 },
-  wordmarkDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.orange, marginBottom: 7 },
   skip: { position: 'absolute', right: 16 },
   sheet: {
     position: 'absolute',

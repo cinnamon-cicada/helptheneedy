@@ -39,6 +39,12 @@ export class IntroClock {
     return (Date.now() - this.origin) / 1000 + this.offset;
   }
 
+  /** Starts over from 0, such as once the 3D canvas is finally up. */
+  restart() {
+    this.origin = Date.now();
+    this.offset = 0;
+  }
+
   jumpTo(t: number) {
     const now = this.elapsed();
     if (t > now) this.offset += t - now;
@@ -81,11 +87,18 @@ export function useIntroSequence(instant: boolean) {
     [clock, schedule],
   );
 
+  /** Replays from the start, unless it already reached the end. */
+  const restart = useCallback(() => {
+    if (clock.elapsed() >= INTRO.revealEnd) return;
+    clock.restart();
+    schedule();
+  }, [clock, schedule]);
+
   useEffect(() => {
     if (instant) clock.jumpTo(INTRO.revealEnd);
     schedule();
     return clearTimers;
   }, [clock, instant, schedule]);
 
-  return { clock, phase, skip };
+  return { clock, phase, skip, restart };
 }

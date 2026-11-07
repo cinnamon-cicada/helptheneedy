@@ -1,6 +1,6 @@
 import { createContext, use, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ensureDemoAccount, type MyAccount } from '../api/account';
+import { ensureDemoAccount, generateAlias, type MyAccount } from '../api/account';
 import { isOnline } from '../api/client';
 import type { AuthUser } from './types';
 
@@ -41,13 +41,26 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   });
 }
 
+/** A local account for mock mode, named like a Supabase demo account. */
+function createLocalUser(): AuthUser {
+  const alias = generateAlias();
+  return {
+    id: 'local-user',
+    email: '',
+    username: alias.toLowerCase(),
+    displayName: alias,
+    intent: 'gifter',
+  };
+}
+
 /**
- * With Supabase configured, everyone gets an account automatically on first
- * load (see ensureDemoAccount), and it comes back on every visit. Without it,
- * the prototype's in-memory sign-in is used and resets on reload.
+ * Everyone gets an account automatically; there is no sign-in step. With
+ * Supabase configured it's an anonymous Supabase account (see
+ * ensureDemoAccount) that comes back on every visit. Without it, a local
+ * account is made up on load and lasts until reload.
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(() => (isOnline ? null : createLocalUser()));
   const [account, setAccountState] = useState<MyAccount | null>(null);
   const [status, setStatus] = useState<AuthStatus>(isOnline ? 'connecting' : 'ready');
   const [attempt, setAttempt] = useState(0);
